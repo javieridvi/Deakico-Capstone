@@ -1,0 +1,181 @@
+.container{
+    min-height: 100vh;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:#363740;
+    color: #9FA2B4;
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+.login{
+    width: 380px;
+    height: 582px;
+    position: absolute;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.img {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: calc(50% - 80px/2);
+    top: 40px;
+}
+.name{
+/* Deakico */
+position: absolute;
+height: 24px;
+left: 32px;
+right: 32px;
+top: 100px;
+/* Bold/19px */
+font-weight: 700;
+font-size: 22px;
+line-height: 24px;
+/* identical to box height */
+text-align: center;
+letter-spacing: 0.4px;
+/* sidebar / gray */
+color: #A4A6B3;
+opacity: 0.7;
+}
+
+.LogInText {
+/* Log In to Dashboard Kit */
+
+position: relative;
+margin-top:  156px;
+margin-bottom: 0px;
+
+/* Bold/24px */
+
+font-weight: 600;
+font-size: 24px;
+line-height: 30px;
+text-align: center;
+
+/* grayscale / black */
+
+color: #252733;
+}
+
+.enterText {
+/* Enter your email and password below */
+
+position: relative;
+margin-top: 5px;
+
+/* Regular/14px */
+
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+text-align: center;
+
+/* grayscale / gray */
+
+color: #9FA2B4;
+}
+
+.email {
+/* textfield / label + textfield / default */
+position: absolute;
+height: 64px;
+left: 32px;
+right: 32px;
+top: 266px;
+}
+
+.password {
+/* textfield / label + icon / default */
+position: absolute;
+height: 64px;
+left: 32px;
+right: 32px;
+top: 354px;
+}    
+
+.email label, .password label{
+    /* label */
+position: absolute;
+
+/* Bold/12px */
+
+font-weight: 700;
+font-size: 12px;
+line-height: 15px;
+letter-spacing: 0.3px;
+text-transform: uppercase;
+}
+
+.email input, .password input {
+/* textarea bg */
+box-sizing: border-box;
+
+position: absolute;
+left: 0px;
+right: 0px;
+top: 22px;
+bottom: 0px;
+
+/* grayscale / extra light */
+
+background: #FCFDFE;
+/* grayscale / gray lightest */
+
+border: 2px solid #F0F1F7;
+border-radius: 8px;
+}
+
+.email input::placeholder, .password input::placeholder {
+    opacity: 40%;
+    color: #4B506D;
+    font-weight: bold;
+}
+.button {
+
+position: absolute;
+height: 48px;
+left: 32px;
+right: 32px;
+top: 442px;
+
+background: #EA498C;
+/* button / accent default */
+
+box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+border-radius: 8px;
+border-color: #EA498C;
+
+color: white;
+}
+
+.signUp {
+    /* account? */
+position: absolute;
+width: 214px;
+height: 20px;
+left: 83px;
+top: 522px;
+}
+
+.signUp a {
+    color: #EA498C;
+    text-decoration: none;
+}
+
+.signUp a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
