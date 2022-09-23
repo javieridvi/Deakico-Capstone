@@ -39,7 +39,8 @@ lerna-debug.log*
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/deakico-nest-backend/node_modules
+/deakico-next-frontend/node_modules
 /.pnp
 .pnp.js
 
