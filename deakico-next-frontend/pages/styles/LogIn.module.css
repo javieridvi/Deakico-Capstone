@@ -14,8 +14,8 @@
 }
 
 .login{
-    width: 380px;
-    height: 582px;
+    min-width: 380px;
+    min-height: 582px;
     position: absolute;
     background-color: white;
     border-radius: 8px;
@@ -23,11 +23,12 @@
 
 .img {
     position: absolute;
-    width: 80px;
-    height: 80px;
-    left: calc(50% - 80px/2);
+    width: 105px;
+    height: 90px;
+    left: calc(50% - 105px/2);
     top: 40px;
 }
+
 .name{
 /* Deakico */
 position: absolute;
