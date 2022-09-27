@@ -1,7 +1,6 @@
 #nest ignore
 # compiled output
-/dist
-/node_modules
+/deakico-nest-backend/dist
 
 # Logs
 logs
@@ -48,7 +47,7 @@ lerna-debug.log*
 /coverage
 
 # next.js
-/.next/
+/deakico-next-frontend/.next/
 /out/
 
 # production
