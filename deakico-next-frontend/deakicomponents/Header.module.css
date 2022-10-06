@@ -1,5 +1,5 @@
 .container {
-    position: absolute;
+    position: relative;
     min-width: 400px;
     width: 100vw;
     height: 60px;
@@ -34,4 +34,9 @@
     display: flex;
     text-align: center;
     letter-spacing: -0.015em;
+}
+
+.deakico a {
+    text-decoration: none;
+    color: black;
 }

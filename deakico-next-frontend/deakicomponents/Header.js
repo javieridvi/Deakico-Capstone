@@ -4,16 +4,20 @@ import Image from 'next/image'
 
 function Header (props) {
         return (
-            <header className={style.container}>
+            <div className={style.container}>
                 <div className={style.deakico}>
                     <Image 
                     src="/Coqui.PNG"
                     height={45}
                     width={65}
                     />
-                    <div>Deakico.</div>
+                    <div>
+                        <a href='/'>
+                            Deakico.
+                        </a>
+                    </div>
                 </div>
-            </header>
+            </div>
         );
     
 }
