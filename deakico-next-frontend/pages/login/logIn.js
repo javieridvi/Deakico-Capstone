@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CssBaseline, Typography, Container, TextField, Button, Link, Stack, styled } from '@mui/material';
+import { Typography, Container, TextField, Button, Link, Stack, styled } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export default function LogIn (){
@@ -15,7 +15,6 @@ export default function LogIn (){
     return (
         <ThemeProvider theme={theme}>
              {/* Material UI from here on out. */}
-             <CssBaseline />
              <Container  maxWidth={false} sx={{maxWidth: '25em'}} >
                 <Stack
                 direction="column"
