@@ -12,8 +12,6 @@ const theme = createTheme({
   }
 });
 
-// Copiado del los templates todavio no esta costumizado
-
 export default function SignUp() {
 
   const handleSubmit = (event) => {
