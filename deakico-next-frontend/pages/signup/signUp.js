@@ -1,25 +1,21 @@
 import * as React from 'react';
-import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Container, CssBaseline, Stack, Link, TextField, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#EA498C',
+    }
+  }
+});
 
 // Copiado del los templates todavio no esta costumizado
 
 export default function SignUp() {
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,95 +27,128 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs"
+      <Container component="main" maxWidth={false} maxHeight={false}
         sx={{
           backgroundColor: 'white',
-          padding: '1em 2em',
-          borderRadius: '.5em'
+          borderRadius: '1em',
+          padding: '2em 1.5em',
+          maxWidth: { xs:'23em', sm: '28em' },
         }}>
         <CssBaseline />
-        <Box
+        <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            maxHeight: '20%'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
+          <img src='/Deakico-Icon.svg' alt='Deakico Icon' height={'60px'} />
+          <Typography component='h2' variant='h5' color='text.disabled'
+            sx={{
+              fontWeight: 'bold'
+            }}
+          >
+            Deakico.
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="center">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
+          <Stack
+            sx={{
+              alignItems: 'center'
+            }}
+          >
+            <Typography component='h1' variant='h5'
+              sx={{
+                fontWeight: 'bold'
+              }}
+            >Register with Deakico.</Typography>
+            <Typography
+              variant='caption'
+              color='text.disabled'
+              sx={{
+                fontWeight: 'medium',
+                paddingBottom: '2em',
+              }}
+            >Enter your info down below</Typography>
+          </Stack>
+          <Stack component="form" noValidate container spacing={2} onSubmit={handleSubmit}
+            sx={{
+              mt: 3,
+              minWidth: '100%'
+            }}
+          >
+            <Stack item  sx={{ size: {sm: 'small', lg: 'normal'}}}>
+              <TextField
+                id="firstName"
+                name="firstName"
+                label="First Name"
+                autoComplete="given-name"
+                required
+                fullWidth
+                autoFocus
+              />
+            </Stack>
+            <Stack item  >
+              <TextField
+                id="lastName"
+                name="lastName"
+                label="Last Name"
+                autoComplete="family-name"
+                required
+                fullWidth
+              />
+            </Stack>
+            <Stack item >
+              <TextField
+                id="email"
+                name="email"
+                label="Email Address"
+                autoComplete="email"
+                required
+                fullWidth
+              />
+            </Stack>
+            <Stack item >
+              <TextField
+                id="password"
+                name="password"
+                type="password"
+                label="Password"
+                autoComplete="new-password"
+                required
+                fullWidth
+              />
+            </Stack>
+            <Stack item >
+              <TextField
+                id="confirm-password"
+                name="confirm-password"
+                type="password"
+                label="Confirm Password"
+                autoComplete="new-password"
+                required
+                fullWidth
+              />
+            </Stack>
+            <Stack item>
+              <Button type="submit" variant="contained"
+                sx={{
+                  marginLeft: 2,
+                  marginRight: 2,
+                  boxShadow: '0px 4px 12px rgba(55, 81, 255, 0.24)',
+                }}
+              >
+                Register
+              </Button>
+            </Stack>
+          </Stack>
+          <Stack container justifyContent="center">
+            <Stack item>
+              <Typography variant='body1' color='text.disabled' >
+                Already have an account? <Link href="/login" underline='hover' >Log in</Link>
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
       </Container>
     </ThemeProvider>
   );
