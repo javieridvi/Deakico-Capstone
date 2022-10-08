@@ -6,7 +6,7 @@ import styles from './style.module.css'
 import SignUp from './signUp';
 
 
-export default function Test() {
+export default function SignUp() {
 
   return (
     <>
