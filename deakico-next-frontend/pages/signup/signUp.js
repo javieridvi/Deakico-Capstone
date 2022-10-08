@@ -3,15 +3,6 @@ import { Button, Container, CssBaseline, Stack, Link, TextField, Typography } fr
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#EA498C',
-    }
-  }
-});
-
 export default function SignUp() {
 
   const handleSubmit = (event) => {
@@ -24,130 +15,128 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth={false} maxHeight={false}
+    <Container component="main" maxWidth={false} maxHeight={false}
+      sx={{
+        backgroundColor: 'white',
+        borderRadius: '1em',
+        padding: '2em 1.5em',
+        maxWidth: { xs: '23em', sm: '28em' },
+      }}>
+      <CssBaseline />
+      <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
         sx={{
-          backgroundColor: 'white',
-          borderRadius: '1em',
-          padding: '2em 1.5em',
-          maxWidth: { xs:'23em', sm: '28em' },
-        }}>
-        <CssBaseline />
-        <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxHeight: '20%'
+        }}
+      >
+        <img src='/Deakico-Icon.svg' alt='Deakico Icon' height={'60px'} />
+        <Typography component='h2' variant='h5' color='text.disabled'
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            maxHeight: '20%'
+            fontWeight: 'bold'
           }}
         >
-          <img src='/Deakico-Icon.svg' alt='Deakico Icon' height={'60px'} />
-          <Typography component='h2' variant='h5' color='text.disabled'
+          Deakico.
+        </Typography>
+        <Stack
+          sx={{
+            alignItems: 'center'
+          }}
+        >
+          <Typography component='h1' variant='h5'
             sx={{
               fontWeight: 'bold'
             }}
-          >
-            Deakico.
-          </Typography>
-          <Stack
+          >Register with Deakico.</Typography>
+          <Typography
+            variant='caption'
+            color='text.disabled'
             sx={{
-              alignItems: 'center'
+              fontWeight: 'medium',
+              paddingBottom: '2em',
             }}
-          >
-            <Typography component='h1' variant='h5'
-              sx={{
-                fontWeight: 'bold'
-              }}
-            >Register with Deakico.</Typography>
-            <Typography
-              variant='caption'
-              color='text.disabled'
-              sx={{
-                fontWeight: 'medium',
-                paddingBottom: '2em',
-              }}
-            >Enter your info down below</Typography>
+          >Enter your info down below</Typography>
+        </Stack>
+        <Stack component="form" noValidate container spacing={2} onSubmit={handleSubmit}
+          sx={{
+            mt: 3,
+            minWidth: '100%'
+          }}
+        >
+          <Stack item sx={{ size: { sm: 'small', lg: 'normal' } }}>
+            <TextField
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              autoComplete="given-name"
+              required
+              fullWidth
+              autoFocus
+            />
           </Stack>
-          <Stack component="form" noValidate container spacing={2} onSubmit={handleSubmit}
-            sx={{
-              mt: 3,
-              minWidth: '100%'
-            }}
-          >
-            <Stack item  sx={{ size: {sm: 'small', lg: 'normal'}}}>
-              <TextField
-                id="firstName"
-                name="firstName"
-                label="First Name"
-                autoComplete="given-name"
-                required
-                fullWidth
-                autoFocus
-              />
-            </Stack>
-            <Stack item  >
-              <TextField
-                id="lastName"
-                name="lastName"
-                label="Last Name"
-                autoComplete="family-name"
-                required
-                fullWidth
-              />
-            </Stack>
-            <Stack item >
-              <TextField
-                id="email"
-                name="email"
-                label="Email Address"
-                autoComplete="email"
-                required
-                fullWidth
-              />
-            </Stack>
-            <Stack item >
-              <TextField
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                autoComplete="new-password"
-                required
-                fullWidth
-              />
-            </Stack>
-            <Stack item >
-              <TextField
-                id="confirm-password"
-                name="confirm-password"
-                type="password"
-                label="Confirm Password"
-                autoComplete="new-password"
-                required
-                fullWidth
-              />
-            </Stack>
-            <Stack item>
-              <Button type="submit" variant="contained"
-                sx={{
-                  marginLeft: 2,
-                  marginRight: 2,
-                  boxShadow: '0px 4px 12px rgba(55, 81, 255, 0.24)',
-                }}
-              >
-                Register
-              </Button>
-            </Stack>
+          <Stack item  >
+            <TextField
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              autoComplete="family-name"
+              required
+              fullWidth
+            />
           </Stack>
-          <Stack container justifyContent="center">
-            <Stack item>
-              <Typography variant='body1' color='text.disabled' >
-                Already have an account? <Link href="/login" underline='hover' >Log in</Link>
-              </Typography>
-            </Stack>
+          <Stack item >
+            <TextField
+              id="email"
+              name="email"
+              label="Email Address"
+              autoComplete="email"
+              required
+              fullWidth
+            />
+          </Stack>
+          <Stack item >
+            <TextField
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              autoComplete="new-password"
+              required
+              fullWidth
+            />
+          </Stack>
+          <Stack item >
+            <TextField
+              id="confirm-password"
+              name="confirm-password"
+              type="password"
+              label="Confirm Password"
+              autoComplete="new-password"
+              required
+              fullWidth
+            />
+          </Stack>
+          <Stack item>
+            <Button type="submit" variant="contained"
+              sx={{
+                marginLeft: 2,
+                marginRight: 2,
+                boxShadow: '0px 4px 12px rgba(55, 81, 255, 0.24)',
+              }}
+            >
+              Register
+            </Button>
           </Stack>
         </Stack>
-      </Container>
-    </ThemeProvider>
+        <Stack container justifyContent="center">
+          <Stack item>
+            <Typography variant='body1' color='text.disabled' >
+              Already have an account? <Link href="/login" underline='hover' >Log in</Link>
+            </Typography>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Container>
   );
 }

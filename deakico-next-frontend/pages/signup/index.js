@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import Header from '../../deakicomponents/Header';
+import Header from '../../deakicomponents/Header/index';
 import * as React from 'react';
 
 import styles from './style.module.css'
 import SignUp from './signUp';
 
 
-export default function SignUp() {
+export default function SignFunc() {
 
   return (
     <>
