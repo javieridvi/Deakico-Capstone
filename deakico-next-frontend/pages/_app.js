@@ -1,8 +1,8 @@
 import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material'
-import './styles/global.css'
+import Layout from '../deakicomponents/Layout'
 
-function MyApp({Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
 
   const theme = createTheme({
     palette: {
@@ -15,12 +15,25 @@ function MyApp({Component, pageProps}) {
       },
     },
   })
-
-    return (
-      <ThemeProvider theme={theme}>
+  /*Missing: 
+  Layout>Footer
+  Home/General page
+  SignIn/Up functions
+  Profile Settings
+  Provider page
+  Side bar menu
+  Request functions, handling and managing page 
+  Review Page
+  Personal feed page
+  Provider Dashboard page
+  */
+  return (
+    <ThemeProvider theme={theme}>
+      <Layout>
         <Component {...pageProps} />
-      </ThemeProvider>
-    )
+      </Layout>
+    </ThemeProvider>
+  )
 }
 
 export default MyApp

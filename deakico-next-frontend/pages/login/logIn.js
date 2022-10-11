@@ -1,6 +1,5 @@
+import { Button, Container, Link, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
-import { Typography, Container, TextField, Button, Link, Stack, styled } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export default function LogIn() {
 
@@ -14,8 +13,16 @@ export default function LogIn() {
   };
 
   return (
-    <Container component='main' maxWidth={false} sx={{ maxWidth: { xs: '23em', sm: '28em' } }} >
-      <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
+    <Container
+      component='main'
+      maxWidth={false}
+      sx={{ maxWidth: { xs: '23em', sm: '28em' } }}
+    >
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
         sx={{
           backgroundColor: 'white',
           borderRadius: '1em',

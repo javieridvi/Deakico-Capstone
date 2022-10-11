@@ -1,6 +1,6 @@
+import { Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import Head from 'next/head'
-import Header from '../deakicomponents/Header'
-import styles from './styles/Home.module.css'
 
 export default function Home() {
 
@@ -8,16 +8,23 @@ export default function Home() {
   // Para navegar rapido a todas las paginas sera removido y reemplazado luego  
 
   return (
-    <div className={styles.container}>
+    <Box component='html'>
       <Head>
         <title>Home</title>
       </Head>
 
-      <main className={styles.main}>
-        <Header />
-        <h1>Home landing page missing</h1>
+      <Box component='main'
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignContent: 'center'
+        }}
+      >
+        <Typography component='h1' variant='h1'>Home landing page missing</Typography>
 
-      </main>
-    </div>
+      </Box>
+    </Box>
   )
 }

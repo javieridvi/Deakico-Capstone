@@ -1,12 +1,11 @@
-import Head from 'next/head'
-import Header from '../../deakicomponents/Header/index';
+import Head from 'next/head';
 import * as React from 'react';
-
-import styles from './style.module.css'
+import { Box } from '@mui/material';
 import SignUp from './signUp';
 
 
 export default function SignFunc() {
+
 
   return (
     <>
@@ -14,11 +13,16 @@ export default function SignFunc() {
         <title>Sign Up </title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <div className={styles.container} >
-        <Header />
-        <div className={styles.logInContainer} >
-          <SignUp />
-        </div>
-      </div>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: '#363740',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column'
+        }}
+      >
+        <SignUp />
+      </Box>
     </>)
 }

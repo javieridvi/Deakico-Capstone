@@ -1,6 +1,5 @@
+import { Button, Container, CssBaseline, Link, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
-import { Button, Container, CssBaseline, Stack, Link, TextField, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 export default function SignUp() {
