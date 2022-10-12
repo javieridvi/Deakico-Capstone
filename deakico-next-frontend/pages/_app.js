@@ -1,6 +1,6 @@
 import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material'
-import Layout from '../deakicomponents/Layout'
+import Layout from '../deakicomponents/Layout/Layout'
 
 function MyApp({ Component, pageProps }) {
 

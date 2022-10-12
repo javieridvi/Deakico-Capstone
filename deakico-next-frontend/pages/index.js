@@ -1,29 +1,29 @@
-import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Head from 'next/head'
+import Home from './home/index'
 
-export default function Home() {
-
+export default function Main() {
+ 
 
   // Para navegar rapido a todas las paginas sera removido y reemplazado luego  
 
   return (
-    <Box component='html'>
+    <Box component='main'>
       <Head>
         <title>Home</title>
       </Head>
 
-      <Box component='main'
+      <Box component='div'
         sx={{
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          alignContent: 'center'
+          alignItems: 'center',
+          backgroundColor: '#363740'
         }}
       >
-        <Typography component='h1' variant='h1'>Home landing page missing</Typography>
-
+        <Home/>
       </Box>
     </Box>
   )
