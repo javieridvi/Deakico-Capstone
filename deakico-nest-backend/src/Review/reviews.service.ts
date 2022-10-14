@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
-import { Repository } from "typeorm";
+import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { ReviewEntity } from "./reviews.entity";
 import { Review } from "./reviews.interface";
 
@@ -14,10 +14,18 @@ export class ReviewService {
 
     insertReview(review: Review): Observable<Review> { return from(this.reviewRepository.save(review)); }
 
-    getAllReviews() { return this.reviewRepository.find() }
+    getAllReviews(): Observable<Review[]> { return from(this.reviewRepository.find()) }
 
-    getReview(r_id) { return this.reviewRepository.findOneBy(
+    getReview(r_id): Observable<Review> { return from(this.reviewRepository.findOneBy(
         { r_id: r_id, }
-    ) }  
+    )) }
+    
+    updateReview(r_id: number, review: Review): Observable<UpdateResult> { 
+        return from(this.reviewRepository.update(r_id, review));
+    }
+    
+    deleteReview(r_id: number): Observable<DeleteResult> {
+        return from(this.reviewRepository.delete(r_id))
+    }
     
 }

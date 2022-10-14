@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
-import { throws } from "assert";
+import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Item } from "./items.interface";
 import { ItemsService } from "./items.service";
 
@@ -14,12 +14,26 @@ export class ItemsController {
     }
 
     @Get()
-    getAllItems(){
+    getAllItems(): Observable<Item[]>{
         return this.itemsService.getAllItems();
     }
 
     @Get(':i_id')
-    getItem(@Param('i_id') itemId: number,) {
+    getItem(@Param('i_id') itemId: number,): Observable<Item> {
         return this.itemsService.getItem(itemId);
     }
+
+    @Put(':i_id')
+    updateItem(
+        @Param('i_id') itemId: number,
+        @Body() item: Item,
+    ): Observable<UpdateResult> {
+        return this.itemsService.updateItem(itemId, item);
+    }
+
+    @Delete(':i_id')
+    deleteItem(
+        @Param('i_id') itemId: number,): Observable<DeleteResult> {
+            return this.itemsService.deleteItem(itemId);
+        }
 }
