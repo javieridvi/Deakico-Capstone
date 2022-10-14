@@ -5,8 +5,8 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 @Entity('Likes')
 export class LikeEntity {
     @PrimaryGeneratedColumn()
-    l_id: number;
-
+    l_id: number;   
+    
     @ManyToOne(type => UserAccountEntity, user => user.likes)
     @JoinColumn( { name: 'u_id'} )
     user_likes: UserAccountEntity[];
@@ -15,10 +15,14 @@ export class LikeEntity {
     @JoinColumn({ name: 'i_id'})
     likes_item: ItemEntity[];
 
-    @Column({ type: 'int', nullable: false })
+    @Column({ type: 'int', nullable: true })
     u_id: number;
 
-    @Column({ type: 'int', nullable: false })
+    @Column({ type: 'int', nullable: true })
     i_id: number;
+
+    
+
+
 
 }
