@@ -16,10 +16,10 @@ export class FollowEntity {
     @JoinColumn({ name: 'pa_id'})
     follows_provider: ProviderAccountEntity[];
 
-    @Column({ type: 'int', nullable: false })
+    @Column({ type: 'int', nullable: true })
     u_id: number;
 
-    @Column({ type: 'int', nullable: false })
+    @Column({ type: 'int', nullable: true })
     pa_id: number;
 
 }

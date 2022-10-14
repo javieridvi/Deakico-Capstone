@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
-import { Repository } from "typeorm";
+import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { ProviderAccountEntity } from "./providers.entity";
 import { ProviderAccount } from "./providers.interface";
 
@@ -14,10 +14,18 @@ export class ProviderAccountService {
 
     insertProvider(provider: ProviderAccount): Observable<ProviderAccount> { return from(this.providerRepository.save(provider)); }
 
-    getAllProviders() { return this.providerRepository.find() }
+    getAllProviders(): Observable<ProviderAccount[]> { return from(this.providerRepository.find()) }
 
-    getProvider(pa_id) { return this.providerRepository.findOneBy(
+    getProvider(pa_id): Observable<ProviderAccount> { return from(this.providerRepository.findOneBy(
             { pa_id: pa_id, }
-        ) }   
+        )) }   
+
+    updateProvider(pa_id: number, provider: ProviderAccount): Observable<UpdateResult> { 
+        return from(this.providerRepository.update(pa_id, provider));
+    }
+    
+    deleteProvider(pa_id: number): Observable<DeleteResult> {
+        return from(this.providerRepository.delete(pa_id))
+    }
     
 }

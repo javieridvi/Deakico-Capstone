@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Review } from "./reviews.interface";
 import { ReviewService } from "./reviews.service";
 
@@ -13,12 +14,26 @@ export class ReviewController {
     }
 
     @Get()
-    getAllReviews(){
+    getAllReviews(): Observable<Review[]>{
         return this.reviewsService.getAllReviews();
     }
 
     @Get(':r_id')
-    getReview(@Param('r_id') r_Id: number,) {
+    getReview(@Param('r_id') r_Id: number,):Observable<Review> {
         return this.reviewsService.getReview(r_Id);
+    }
+
+    @Put(':r_id')
+    updateReview(
+        @Param('r_id') r_Id: number,
+        @Body() review: Review,
+    ): Observable<UpdateResult> {
+        return this.reviewsService.updateReview(r_Id, review);
+    }
+
+    @Delete(':r_id')
+    deleteReview(
+        @Param('r_id') r_Id: number,): Observable<DeleteResult> {
+            return this.reviewsService.deleteReview(r_Id);
     }
 }

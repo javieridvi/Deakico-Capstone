@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Follow } from "./follows.interface";
 import { FollowsService } from "./follows.service";
 
@@ -13,7 +14,7 @@ export class FollowsController {
     }
 
     @Get()
-    getAllFollows(){
+    getAllFollows(): Observable<Follow[]>{
         return this.followsService.getAllFollows();
     }
 
@@ -21,4 +22,18 @@ export class FollowsController {
     getFollow(@Param('f_id') followId: number,) {
         return this.followsService.getFollow(followId);
     }
+
+    @Put(':f_id')
+    updateFollow(
+        @Param('f_id') followId: number,
+        @Body() follow: Follow,
+    ): Observable<UpdateResult> {
+        return this.followsService.updateFollow(followId, follow);
+    }
+
+    @Delete(':f_id')
+    deleteItem(
+        @Param('f_id') followId: number,): Observable<DeleteResult> {
+            return this.followsService.deleteFollow(followId);
+        }
 }
