@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './UserAccount/auth/auth.module';
 import { FollowsModule } from './Follows/follows.module';
 import { ItemsModule } from './Item/items.module';
 import { LikesModule } from './Likes/likes.module';
@@ -13,7 +14,7 @@ import { UserAccountModule } from './UserAccount/users.module';
 
 @Module({
   imports: [ItemsModule, ProviderAccountModule, RequestModule, UserAccountModule,
-    ReviewModule, LikesModule, FollowsModule,
+    ReviewModule, LikesModule, FollowsModule, AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({ 
       type: "postgres",
