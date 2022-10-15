@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
+import { Request, Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { DeleteResult, InsertQueryBuilder, InsertResult, UpdateResult } from "typeorm";
-import { LikeEntity } from "./likes.entity";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Likes } from "./likes.interface";
 import { LikesService } from "./likes.service";
 
@@ -9,9 +9,10 @@ import { LikesService } from "./likes.service";
 export class LikesController {
     constructor(private readonly likesService: LikesService) {}
 
+    @UseGuards(JwtGuard) //requires user login token authentification
     @Post()
-    insertLike(@Body() like: Likes): Observable<Likes> {
-        return this.likesService.insertLike(like);
+    insertLike(@Body() like: Likes, @Request() req): Observable<Likes> {
+        return this.likesService.insertLike(req.user, like);
     }
 
     @Get()

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DatabaseType, DeleteResult, InsertQueryBuilder, InsertResult, Like, Repository, UpdateResult } from "typeorm";
 import { LikeEntity } from "./likes.entity";
 import { Likes } from "./likes.interface";
@@ -12,7 +13,16 @@ export class LikesService {
     private readonly likeRepository: Repository<LikeEntity>
     ) {}
 
-    insertLike(like: Likes): Observable<Likes> { return from(this.likeRepository.save(like)); }
+    /**
+     * Insertion service method to insert into Likes table in database.
+     * @param {UserAccount} user the user that likes the item
+     * @param {Likes} like Likes object to be saved to the database
+     * @returns {Observable<Likes>} an observable Promise (a promise given representation).
+     */
+    insertLike(user: UserAccount, like: Likes): Observable<Likes> { 
+        like.u_id = user.u_id;
+        return from(this.likeRepository.save(like)); 
+    }
 
     getAllLikes(): Observable<Likes[]> { return from(this.likeRepository.find()); }
 
