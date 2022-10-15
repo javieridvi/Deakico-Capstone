@@ -12,7 +12,6 @@ export default function Home(){
     justifyContent='flex-start'
     alignItems='center'
     spacing={0}
-
     sx={{
       position: 'relative',
       minHeight: '100vh',
@@ -23,7 +22,7 @@ export default function Home(){
       <Banner/>
       <Typography variant="h4">Service/Provider Toggle</Typography>
       <TopProviders/>
-      <Typography variant="h2"><Categories/></Typography>
+      <Categories/>
       <Typography variant="h2">Extra info</Typography>
     </Stack>
   );
