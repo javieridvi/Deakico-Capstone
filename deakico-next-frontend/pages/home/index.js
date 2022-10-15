@@ -8,15 +8,19 @@ export default function Home(){
 
   return (
     <Stack
+    direction='column'
+    justifyContent='flex-start'
+    alignItems='center'
+    spacing={0}
+
     sx={{
+      position: 'relative',
       minHeight: '100vh',
-      backgroundColor: 'white',
       maxWidth: '50rem',
-      display: 'flex',
-      alignItems: 'center',
+      backgroundColor: 'white',
     }}
     >
-      <Typography variant="h2"><Banner/></Typography>
+      <Banner/>
       <Typography variant="h4">Service/Provider Toggle</Typography>
       <TopProviders/>
       <Typography variant="h2"><Categories/></Typography>
