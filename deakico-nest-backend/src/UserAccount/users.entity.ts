@@ -22,7 +22,7 @@ export class UserAccountEntity {
     @Column()
     username: string;
 
-    @Column()
+    @Column() //consider {select: false} for better security
     password: string;  
 
     @OneToMany(type => FollowEntity, follow => follow.user_follows)
