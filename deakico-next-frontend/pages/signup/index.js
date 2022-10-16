@@ -19,7 +19,8 @@ export default function SignFunc() {
           backgroundColor: '#363740',
           display: 'flex',
           justifyContent: 'center',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          padding: '5em 1.5em'
         }}
       >
         <SignUp />

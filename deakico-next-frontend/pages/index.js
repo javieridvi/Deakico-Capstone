@@ -19,7 +19,7 @@ export default function Home() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          alignContent: 'center'
+          alignContent: 'center',
         }}
       >
         <Typography component='h1' variant='h1'>Home landing page missing</Typography>
