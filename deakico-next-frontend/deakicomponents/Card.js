@@ -1,10 +1,11 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 
 export default function Provider(props) {
+  // Serian las llamadas al backend (se anaderia mas si necesario ej. Likes count)
   const image = props.src;
   const title = props.label;
-  const alt = "Card of "+ title;
   const description = props.children;
+  const alt = "Card of "+ title; //El alt del Card se saca del title. (No se tiene que pedir del backend)
 
   return(
     <Card sx={{ maxWidth: '20rem' }}>
@@ -28,6 +29,7 @@ export default function Provider(props) {
   )
 };
 
+//Esto es solo para testing el card en las paginas luego se borrara 
 export function ProviderTest(){
   return(
     <Card sx={{ maxWidth: '20rem' }}>
