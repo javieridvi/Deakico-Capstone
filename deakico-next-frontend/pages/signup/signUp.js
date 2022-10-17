@@ -4,6 +4,7 @@ import * as React from 'react';
 
 export default function SignUp() {
 
+  // Esta funcion es del template. lo que hace es log al console
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
