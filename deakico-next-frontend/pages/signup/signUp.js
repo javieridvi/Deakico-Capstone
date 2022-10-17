@@ -5,6 +5,7 @@ import authService from '../../services/auth/auth.service';
 
 export default function SignUp() {
 
+  // Esta funcion es del template. lo que hace es log al console
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
