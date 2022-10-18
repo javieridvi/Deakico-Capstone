@@ -1,12 +1,28 @@
 import { Button, Container, CssBaseline, Link, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
+import authService from '../../services/auth/auth.service';
 
 
 export default function SignUp() {
 
+  // Esta funcion es del template. lo que hace es log al console
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
+    //register api endpoint 
+    authService.register(
+      data.get('firstName'),
+      data.get('lastName'),
+      data.get('email'),
+      data.get('username'),
+      data.get('password'),).then(
+      () => {
+        window.location.reload(); //this reloads the page
+      }, (err) => {
+        console.log(err.response.data);
+      }
+    )
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -14,12 +30,19 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth={false} maxHeight={false}
+    <Container 
+      component="main"
+      maxWidth={false} 
+      maxHeight={false}
+
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255,255,255, 0.5)',
         borderRadius: '1em',
         padding: '2em 1.5em',
         maxWidth: { xs: '23em', sm: '28em' },
+        backdropFilter: 'blur(10px)',
+        backgroundImage: 'linear-gradient(to bottom right, rgba(188,239,221, 0.4), rgba(255,255,255,0.8))',
+        boxShadow: '10px 10px 10px rgba(30,30,30,0.5)',
       }}>
       <CssBaseline />
       <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
@@ -88,8 +111,18 @@ export default function SignUp() {
             <TextField
               id="email"
               name="email"
+              type= "email"
               label="Email Address"
               autoComplete="email"
+              required
+              fullWidth
+            />
+          </Stack>
+          <Stack item >
+            <TextField
+              id="username"
+              name="username"
+              label="Username"
               required
               fullWidth
             />
