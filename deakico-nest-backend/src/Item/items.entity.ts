@@ -46,8 +46,8 @@ export class ItemEntity {
     @Column( {nullable: true, type: 'int', default: null})
     p_stock: number;
 
-    @Column( {nullable: true, default: null, type: 'timestamp'})
-    s_timeslot: Date;
+    @Column( {nullable: true, type: 'int', default: null})
+    s_timeslot: number;
 
     @ManyToOne(type => ProviderAccountEntity, provider => provider.items) 
     @JoinColumn({name: 'pa_id'})
