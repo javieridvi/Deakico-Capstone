@@ -18,6 +18,11 @@ export class ItemsController {
     return this.itemsService.getItem(itemId);
   }
 
+  /**
+   * Fetches items depending on their type (product or service)
+   * @param itemType the type that is being requested
+   * @returns {Observable<Likes>} an observable Promise (a promise given representation).
+   */
   @Get('type/:i_type')
   getItemByType(@Param('i_type') itemType: string,): Observable<Item[]> {
     const types = ['product', 'service'];
@@ -28,16 +33,30 @@ export class ItemsController {
     }
   }
 
+  /**
+   *Fetches distinct item categories
+   * @returns {Promise<Partial<Item[]>> } a partial Promise (a promise given representation).
+   */
   @Get('category')
   getItemCategories(): Promise<Partial<Item[]>> {
     return this.itemsService.getItemCategories();
   }
 
+  /**
+   * Fetches all items that are from given itemCategory
+   * @param itemCategory the name of category that is being requested
+   * @returns {Observable<Item[]>} an observable promise
+   */
   @Get('category/:i_category')
   getItemByCategory(@Param('i_category') itemCategory: string,): Observable<Item[]> {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
+  /**
+   * Fetches all items from given itemProvider
+   * @param itemProvider the id of the provider that is being requested
+   * @returns {Observable<Item[]>} an observable promise
+   */
   @Get('provider/:pa_id')
   getItemOfProvider(@Param('pa_id') itemProvider: number,): Observable<Item[]> {
     return this.itemsService.getItemOfProvider(itemProvider);
