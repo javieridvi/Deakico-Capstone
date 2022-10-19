@@ -24,6 +24,16 @@ export class ProviderAccountController {
         return this.providersService.getProvider(pa_Id);
     }
 
+    /**
+     * Fetches list of providers that belong to given category or are null
+     * @param providerCat string of 'null' or of category of provider
+     * @returns all providers that are part of given category or null
+     */
+    @Get('category/:pa_category')
+    getProviderCategory(@Param('pa_category') providerCat: string ) {
+      return this.providersService.getProviderCategory(providerCat);
+    }
+
     @Put(':pa_id')
     updateProvider(
         @Param('pa_id') pa_Id: number,
