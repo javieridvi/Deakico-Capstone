@@ -24,16 +24,35 @@ export class LikesService {
         return from(this.likeRepository.save(like)); 
     }
 
+    /**
+     * 
+     * @returns 
+     */
     getAllLikes(): Observable<Likes[]> { return from(this.likeRepository.find()); }
 
+    /**
+     * 
+     * @param l_id 
+     * @returns 
+     */
     getLike(l_id): Observable<Likes> { return from(this.likeRepository.findOneBy(
         { l_id: l_id, }
     )) }  
 
+    /**
+     * 
+     * @param l_id 
+     * @param like 
+     * @returns 
+     */
     updateLike(l_id: number, like: Likes): Observable<UpdateResult> { 
         return from(this.likeRepository.update(l_id, like));
     }
     
+    /**
+     * @param l_id 
+     * @returns 
+     */
     deleteLike(l_id: number): Observable<DeleteResult> {
         return from(this.likeRepository.delete(l_id))
     }
