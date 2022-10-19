@@ -22,6 +22,16 @@ export class ReviewController {
     getReview(@Param('r_id') r_Id: number,):Observable<Review> {
         return this.reviewsService.getReview(r_Id);
     }
+    
+    /**
+     * Fetches all reviews of given item
+     * @param itemId int id of item
+     * @returns list of reviews
+     */
+    @Get('item/:i_id')
+    getItemReview(@Param('i_id') itemId: number,) {
+        return this.reviewsService.getItemReview(itemId);
+    }
 
     @Put(':r_id')
     updateReview(
