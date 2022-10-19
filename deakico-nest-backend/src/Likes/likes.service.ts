@@ -66,5 +66,4 @@ export class LikesService {
   deleteLike(l_id: number): Observable<DeleteResult> {
     return from(this.likeRepository.delete(l_id))
   }
-
 }
