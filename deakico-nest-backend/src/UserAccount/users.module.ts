@@ -14,6 +14,7 @@ import { UserAccountService } from "./users.service";
     ],
     controllers: [UserAccountController],
     providers:[UserAccountService],
+    exports: [UserAccountService]
 })
 
 export class UserAccountModule {}
