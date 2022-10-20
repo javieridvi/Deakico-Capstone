@@ -1,8 +1,7 @@
-import { Request, Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from "@nestjs/common";
-import { get } from "http";
+import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
-import { DeleteResult, UpdateResult } from "typeorm";
+import { DeleteResult } from "typeorm";
 import { Likes } from "./likes.interface";
 import { LikesService } from "./likes.service";
 
@@ -15,19 +14,15 @@ export class LikesController {
     return this.likesService.getAllLikes();
   }
 
-  @Get(':l_id')
-  getLike(@Param('l_id') likeId: number,): Observable<Likes> {
-    return this.likesService.getLike(likeId);
-  }
-
   /**
    * Fetches user id and the items liked by given user id
-   * @param userId the id of the user
+   * @param req token request used to retrieve the id of the user
    * @returns {Observable<Likes[]>} an observable promise
    */
-  @Get('user/:u_id')
-  getUserLiked(@Param('u_id') userId: number,): Observable<Likes[]> {
-    return this.likesService.getUserLiked(userId);
+  @UseGuards(JwtGuard)
+  @Get('user')
+  getUserLiked(@Request() req: any): Promise<Partial<Likes[]>> {
+    return this.likesService.getUserLiked(req.user.u_id);
   }
   
   /**
@@ -42,21 +37,14 @@ export class LikesController {
 
   @UseGuards(JwtGuard) //requires user login token authentification
   @Post()
-  insertLike(@Body() like: Likes, @Request() req): Observable<Likes> {
+  insertLike(@Body() like: Likes, @Request() req: any): Observable<Likes> {
     return this.likesService.insertLike(req.user, like);
   }
 
-  @Put(':l_id')
-  updateLike(
-    @Param('l_id') likeId: number,
-    @Body() like: Likes,
-  ): Observable<UpdateResult> {
-    return this.likesService.updateLike(likeId, like);
-  }
-
-  @Delete(':l_id')
+  @UseGuards(JwtGuard)
+  @Delete()
   deleteItem(
-    @Param('l_id') likeId: number,): Observable<DeleteResult> {
-    return this.likesService.deleteLike(likeId);
+    @Body() like: Likes,@Request() req: any): Observable<DeleteResult> {
+    return this.likesService.deleteLike(req.user.u_id, like.i_id);
   }
 }
