@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Request, UseGuards } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { ProviderAccount } from "./providers.interface";
 import { ProviderAccountService } from "./providers.service";
@@ -14,9 +15,15 @@ export class ProviderAccountController {
     return this.providersService.getAllProviders();
   }
 
-  @Get(':pa_id')
-  getProvider(@Param('pa_id') pa_Id: number,): Observable<ProviderAccount> {
-    return this.providersService.getProvider(pa_Id);
+  /**
+   * Fetches user's provider account
+   * @param req token user to retrieve the id of the provider
+   * @returns user's provider account
+   */
+  @UseGuards(JwtGuard)
+  @Get()
+  getProvider(@Request() req: any,): Observable<ProviderAccount> {
+    return this.providersService.getProvider(req.user.pa_id);
   }
 
   /**
@@ -29,22 +36,43 @@ export class ProviderAccountController {
     return this.providersService.getProviderCategory(providerCat);
   }
 
+  /**
+   * Creates a provider account
+   * @param provider info of provider account to be created
+   * @param req token user to retrieve the id of the provider
+   * @returns created provider account
+   */
+  @UseGuards(JwtGuard)
   @Post()
-  insertProvider(@Body() provider: ProviderAccount): Observable<ProviderAccount> {
+  insertProvider(@Body() provider: ProviderAccount, @Request() req: any): Observable<ProviderAccount> {
+    provider.pa_id = req.user.pa_id;
     return this.providersService.insertProvider(provider);
   }
 
-  @Put(':pa_id')
+  /**
+   * Updates user's provider account
+   * @param req token user to retrieve the id of the provider
+   * @param provider info to be updated 
+   * @returns update confimation
+   */
+  @UseGuards(JwtGuard)
+  @Put()
   updateProvider(
-    @Param('pa_id') pa_Id: number,
+    @Request() req: any,
     @Body() provider: ProviderAccount,
   ): Observable<UpdateResult> {
-    return this.providersService.updateProvider(pa_Id, provider);
+    return this.providersService.updateProvider(req.user.pa_id, provider);
   }
 
-  @Delete(':pa_id')
+  /**
+   * Deletes the provider account of user
+   * @param req token user to retrieve the id of the provider
+   * @returns delete confirmation
+   */
+  @UseGuards(JwtGuard)
+  @Delete()
   deleteProvider(
-    @Param('pa_id') pa_Id: number,): Observable<DeleteResult> {
-    return this.providersService.deleteProvider(pa_Id);
+    @Request() req: any,): Observable<DeleteResult> {
+    return this.providersService.deleteProvider(req.user.pa_id);
   }
 }
