@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { RequestEntity } from "./requests.entity";
 import { ItemRequest } from "./requests.interface";
@@ -31,13 +32,31 @@ export class RequestService {
     return res;
   }
 
-  insertRequest(itemRequest: ItemRequest): Observable<ItemRequest> { return from(this.requestRepository.save(itemRequest)); }
+  async getUserRequest(userId: number) {
 
-  updateRequest(req_id: number, request: ItemRequest): Observable<UpdateResult> {
-    return from(this.requestRepository.update(req_id, request));
+    const res = await this.requestRepository
+    .createQueryBuilder("request")
+    .innerJoin("request.item", "item")
+    .where("item.u_id = :u_id", {u_id: userId})
+    .getRawMany()
+
+    return res;
   }
 
-  deleteRequest(req_id: number): Observable<DeleteResult> {
-    return from(this.requestRepository.delete(req_id))
+  insertRequest(user: UserAccount, itemRequest: ItemRequest): Observable<ItemRequest> { 
+    itemRequest.u_id = user.u_id;
+    return from(this.requestRepository.save(itemRequest)); 
+  }
+
+  async updateRequest(requestId: number, request: ItemRequest, userId: number): Promise<Observable<UpdateResult>> {
+    //check if request exists and belongs to user
+    await this.requestRepository.findOneOrFail({select:{ req_id: true}, where: { req_id: requestId, u_id: userId}});
+    return from(this.requestRepository.update(requestId, request));
+  }
+
+  async deleteRequest(requestId: number, userId: number): Promise<Observable<DeleteResult>> {
+    //check if request exists and belongs to user
+    await this.requestRepository.findOneOrFail({select:{ req_id: true}, where: { req_id: requestId, u_id: userId}});
+    return from(this.requestRepository.delete(requestId))
   }
 }

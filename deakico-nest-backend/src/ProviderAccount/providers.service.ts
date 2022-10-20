@@ -13,8 +13,6 @@ export class ProviderAccountService {
     private readonly providerRepository: Repository<ProviderAccountEntity>
   ) { }
 
-  insertProvider(provider: ProviderAccount): Observable<ProviderAccount> { return from(this.providerRepository.save(provider)); }
-
   getAllProviders(): Observable<ProviderAccount[]> { return from(this.providerRepository.find()) }
 
   getProvider(pa_id): Observable<ProviderAccount> {
@@ -37,6 +35,8 @@ export class ProviderAccountService {
       }
     }));
   }
+
+  insertProvider(provider: ProviderAccount): Observable<ProviderAccount> { return from(this.providerRepository.save(provider)); }
 
   updateProvider(pa_id: number, provider: ProviderAccount): Observable<UpdateResult> {
     return from(this.providerRepository.update(pa_id, provider));
