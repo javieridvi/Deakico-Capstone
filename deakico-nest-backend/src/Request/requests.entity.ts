@@ -1,4 +1,5 @@
 import { ItemEntity } from 'src/Item/items.entity';
+import { UserAccountEntity } from 'src/UserAccount/users.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('Request')
@@ -18,5 +19,9 @@ export class RequestEntity {
     @ManyToOne(type => ItemEntity, item => item.requests) 
     @JoinColumn( {name: 'i_id'})
     item: ItemEntity[];
+    
+    @ManyToOne(type => UserAccountEntity, user => user.requests) 
+    @JoinColumn( {name: 'u_id'})
+    user: UserAccountEntity[];
 
 }

@@ -2,6 +2,7 @@ import { FollowEntity } from 'src/Follows/follows.entity';
 import { ItemEntity } from 'src/Item/items.entity';
 import { LikeEntity } from 'src/Likes/likes.entity';
 import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
+import { RequestEntity } from 'src/Request/requests.entity';
 import { ReviewEntity } from 'src/Review/reviews.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
@@ -40,4 +41,7 @@ export class UserAccountEntity {
 
     @OneToMany(type => ReviewEntity, rev => rev.user)
     reviews: ReviewEntity[];
+
+    @OneToMany(type => RequestEntity, req => req.item)
+    requests: RequestEntity[];
 }
