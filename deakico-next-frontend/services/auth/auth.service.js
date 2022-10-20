@@ -35,13 +35,14 @@ const getCurrentUser = () => {
 const isLoggedIn = () => {
   return !sessionStorage.getItem("user");
 }
-const removeAcount = (id_user,obj) => {
-  return axios.delete(API_URL + "users/"+id_user, {data:obj});
-};
 
-const updateAcount = (id_user,obj) => {
-  return axios.put(API_URL + "users/"+id_user, obj);
-};
+// const removeAcount = (id_user,obj) => {
+//   return axios.delete(API_URL + "users/"+id_user, {data:obj});
+// };
+
+// const updateAcount = (id_user,obj) => {
+//   return axios.put(API_URL + "users/"+id_user, obj);
+// };
 
 
 export default {
@@ -50,6 +51,6 @@ export default {
   logout,
   getCurrentUser,
   isLoggedIn,
-  removeAcount,
-  updateAcount,
+  // removeAcount,
+  // updateAcount,
 };

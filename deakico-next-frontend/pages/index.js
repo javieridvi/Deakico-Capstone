@@ -20,7 +20,7 @@ export default function Main() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#363740',
+          backgroundColor: 'white',
         }}
       >
         <Home/>
