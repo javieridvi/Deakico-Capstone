@@ -21,10 +21,10 @@ export class ReviewController {
   }
 
   /**
-   * Fetches all reviews of given item
-   * @param itemId int id of item
- * @returns list of reviews
- */
+  * Fetches all reviews of given item
+  * @param itemId int id of item
+  * @returns list of reviews
+  */
   @Get('item/:i_id')
   getItemReview(@Param('i_id') itemId: number,) {
     return this.reviewsService.getItemReview(itemId);
@@ -32,21 +32,25 @@ export class ReviewController {
 
   @UseGuards(JwtGuard)
   @Post()
-  insertReview(@Body() review: Review, @Request() req): Observable<Review> {
+  insertReview(@Body() review: Review, @Request() req: any): Observable<Review> {
     return this.reviewsService.insertReview(req.user, review);
   }
 
+  @UseGuards(JwtGuard)
   @Put(':r_id')
   updateReview(
     @Param('r_id') r_Id: number,
     @Body() review: Review,
+    @Request() req: any,
   ): Observable<UpdateResult> {
+    review.u_id = req.user.u_id;
     return this.reviewsService.updateReview(r_Id, review);
   }
 
+  @UseGuards(JwtGuard)
   @Delete(':r_id')
   deleteReview(
-    @Param('r_id') r_Id: number,): Observable<DeleteResult> {
-    return this.reviewsService.deleteReview(r_Id);
+    @Param('r_id') r_Id: number, @Request() req: any,): Promise<Observable<DeleteResult>> {
+    return this.reviewsService.deleteReview(r_Id, req.user.u_id);
   }
 }

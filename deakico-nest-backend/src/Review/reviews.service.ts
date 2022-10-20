@@ -38,8 +38,10 @@ export class ReviewService {
     return from(this.reviewRepository.update(r_id, review));
   }
 
-  deleteReview(r_id: number): Observable<DeleteResult> {
-    return from(this.reviewRepository.delete(r_id))
+  async deleteReview(reviewId: number, userId: number): Promise<Observable<DeleteResult>> {
+    //check if request exists and belongs to user
+    await this.reviewRepository.findOneOrFail({select:{ r_id: true}, where: { r_id: reviewId, u_id: userId}});
+    return from(this.reviewRepository.delete(reviewId));
   }
 
 }

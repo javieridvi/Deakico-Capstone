@@ -32,16 +32,31 @@ export class RequestService {
     return res;
   }
 
+  async getUserRequest(userId: number) {
+
+    const res = await this.requestRepository
+    .createQueryBuilder("request")
+    .innerJoin("request.item", "item")
+    .where("item.u_id = :u_id", {u_id: userId})
+    .getRawMany()
+
+    return res;
+  }
+
   insertRequest(user: UserAccount, itemRequest: ItemRequest): Observable<ItemRequest> { 
     itemRequest.u_id = user.u_id;
     return from(this.requestRepository.save(itemRequest)); 
   }
 
-  updateRequest(req_id: number, request: ItemRequest): Observable<UpdateResult> {
-    return from(this.requestRepository.update(req_id, request));
+  async updateRequest(requestId: number, request: ItemRequest, userId: number): Promise<Observable<UpdateResult>> {
+    //check if request exists and belongs to user
+    await this.requestRepository.findOneOrFail({select:{ req_id: true}, where: { req_id: requestId, u_id: userId}});
+    return from(this.requestRepository.update(requestId, request));
   }
 
-  deleteRequest(req_id: number): Observable<DeleteResult> {
-    return from(this.requestRepository.delete(req_id))
+  async deleteRequest(requestId: number, userId: number): Promise<Observable<DeleteResult>> {
+    //check if request exists and belongs to user
+    await this.requestRepository.findOneOrFail({select:{ req_id: true}, where: { req_id: requestId, u_id: userId}});
+    return from(this.requestRepository.delete(requestId))
   }
 }
