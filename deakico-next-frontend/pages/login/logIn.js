@@ -9,7 +9,9 @@ export default function LogIn() {
     const data = new FormData(event.currentTarget);
     authService.login(data.get('email'), data.get('password')).then(
       () => {
-        window.location.reload(); //this reloads the page.
+        //window.location.reload(); //this reloads the page.
+        useRouter().push('/')
+
       }, (err) => {
         console.log(err);
       }
