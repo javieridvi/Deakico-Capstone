@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { ItemRequest } from "./requests.interface";
 import { RequestService } from "./requests.service";
@@ -28,9 +29,10 @@ export class ItemRequestController {
     return this.requestsService.getProviderRequest(providerId);
   }
 
+  @UseGuards(JwtGuard)
   @Post()
-  insertRequest(@Body() itemRequest: ItemRequest): Observable<ItemRequest> {
-    return this.requestsService.insertRequest(itemRequest);
+  insertRequest(@Body() itemRequest: ItemRequest, @Request() req): Observable<ItemRequest> {
+    return this.requestsService.insertRequest(req.user, itemRequest);
   }
 
   @Put(':req_id')

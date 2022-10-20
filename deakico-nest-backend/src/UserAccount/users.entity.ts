@@ -42,6 +42,6 @@ export class UserAccountEntity {
     @OneToMany(type => ReviewEntity, rev => rev.user)
     reviews: ReviewEntity[];
 
-    @OneToMany(type => RequestEntity, req => req.item)
+    @OneToMany(type => RequestEntity, req => req.user)
     requests: RequestEntity[];
 }

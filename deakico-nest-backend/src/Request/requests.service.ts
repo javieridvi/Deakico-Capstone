@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { RequestEntity } from "./requests.entity";
 import { ItemRequest } from "./requests.interface";
@@ -31,7 +32,10 @@ export class RequestService {
     return res;
   }
 
-  insertRequest(itemRequest: ItemRequest): Observable<ItemRequest> { return from(this.requestRepository.save(itemRequest)); }
+  insertRequest(user: UserAccount, itemRequest: ItemRequest): Observable<ItemRequest> { 
+    itemRequest.u_id = user.u_id;
+    return from(this.requestRepository.save(itemRequest)); 
+  }
 
   updateRequest(req_id: number, request: ItemRequest): Observable<UpdateResult> {
     return from(this.requestRepository.update(req_id, request));
