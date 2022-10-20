@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { FollowEntity } from "./follows.entity";
 import { Follow } from "./follows.interface";
@@ -11,8 +12,6 @@ export class FollowsService {
     @InjectRepository(FollowEntity)
     private readonly followRepository: Repository<FollowEntity>
   ) { }
-
-  insertFollow(follow: Follow): Observable<Follow> { return from(this.followRepository.save(follow)); }
 
   getAllFollows(): Observable<Follow[]> { return from(this.followRepository.find()) }
 
@@ -25,7 +24,7 @@ export class FollowsService {
   async getFollowersCount(providerId: number): Promise<number> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .where("pa_id = :pa_id", {pa_id: providerId })
+      .where("pa_id = :pa_id", { pa_id: providerId })
       .getCount()
     return res;
   }
@@ -34,16 +33,16 @@ export class FollowsService {
     const res = await this.followRepository
       .createQueryBuilder()
       .select("u_id")
-      .where("pa_id = :pa_id", {pa_id: providerId })
+      .where("pa_id = :pa_id", { pa_id: providerId })
       .getRawMany()
-      console.log(res);
+    console.log(res);
     return res;
   }
 
   async getFollowingCount(userId: number): Promise<number> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .where("u_id = :u_id", {u_id: userId })
+      .where("u_id = :u_id", { u_id: userId })
       .getCount()
     return res;
   }
@@ -52,9 +51,17 @@ export class FollowsService {
     const res = await this.followRepository
       .createQueryBuilder()
       .select("pa_id")
-      .where("u_id = :u_id", {u_id: userId })
+      .where("u_id = :u_id", { u_id: userId })
       .getRawMany()
     return res;
+  }
+
+  insertFollow(user: UserAccount, follow: Follow): Observable<Follow> { 
+    follow.u_id = user.u_id;
+    if(follow.pa_id === user.pa_id){
+      throw new Error("Can't follow your own provider account");
+    }
+    return from(this.followRepository.save(follow)); 
   }
 
   updateFollow(f_id: number, follow: Follow): Observable<UpdateResult> {

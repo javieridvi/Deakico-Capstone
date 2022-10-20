@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Request } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { Follow } from "./follows.interface";
 import { FollowsService } from "./follows.service";
@@ -58,9 +59,10 @@ export class FollowsController {
     return this.followsService.getFollowing(userId);
   }
 
+  @UseGuards(JwtGuard)
   @Post()
-  insertFollow(@Body() follow: Follow): Observable<Follow> {
-    return this.followsService.insertFollow(follow);
+  insertFollow(@Body() follow: Follow, @Request() req): Observable<Follow> {
+    return this.followsService.insertFollow(req.user, follow);
   }
 
   @Put(':f_id')
