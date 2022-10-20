@@ -8,10 +8,6 @@ import { ProviderAccountService } from "./providers.service";
 export class ProviderAccountController {
   constructor(private readonly providersService: ProviderAccountService) { }
 
-  @Post()
-  insertProvider(@Body() provider: ProviderAccount): Observable<ProviderAccount> {
-    return this.providersService.insertProvider(provider);
-  }
 
   @Get()
   getAllProviders(): Observable<ProviderAccount[]> {
@@ -31,6 +27,11 @@ export class ProviderAccountController {
   @Get('category/:pa_category')
   getProviderCategory(@Param('pa_category') providerCat: string) {
     return this.providersService.getProviderCategory(providerCat);
+  }
+
+  @Post()
+  insertProvider(@Body() provider: ProviderAccount): Observable<ProviderAccount> {
+    return this.providersService.insertProvider(provider);
   }
 
   @Put(':pa_id')

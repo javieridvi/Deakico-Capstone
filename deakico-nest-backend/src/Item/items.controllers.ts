@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, HttpException, HttpStatus } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Delete, HttpException, HttpStatus, UseGuards, Request } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { Item } from "./items.interface";
 import { ItemsService } from "./items.service";
@@ -62,9 +63,10 @@ export class ItemsController {
     return this.itemsService.getItemOfProvider(itemProvider);
   }
 
+  @UseGuards(JwtGuard)
   @Post()
-  insertItem(@Body() item: Item): Observable<Item> {
-    return this.itemsService.insertItem(item);
+  insertItem(@Body() item: Item, @Request() req): Observable<Item> {
+    return this.itemsService.insertItem(req.user, item);
   }
 
   @Put('/id/:i_id')

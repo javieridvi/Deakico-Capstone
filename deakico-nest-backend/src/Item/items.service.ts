@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { ItemEntity } from "./items.entity";
 import { Item } from "./items.interface";
@@ -12,7 +13,6 @@ export class ItemsService {
     private readonly itemRepository: Repository<ItemEntity>
   ) { }
 
-  insertItem(item: Item): Observable<Item> { return from(this.itemRepository.save(item)); }
 
   getAllItems(): Observable<Item[]> { return from(this.itemRepository.find()); }
 
@@ -53,6 +53,11 @@ export class ItemsService {
         pa_id: itemProvider,
       }
     }));
+  }
+
+  insertItem(user: UserAccount, item: Item): Observable<Item> { 
+    item.pa_id = user.pa_id;
+    return from(this.itemRepository.save(item)); 
   }
 
   updateItem(i_id: number, item: Item): Observable<UpdateResult> {

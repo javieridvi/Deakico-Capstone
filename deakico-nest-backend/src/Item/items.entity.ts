@@ -53,7 +53,7 @@ export class ItemEntity {
     @JoinColumn({name: 'pa_id'})
     provider: ProviderAccountEntity[];
 
-    @Column({type: 'int', nullable: true})
+    @Column({type: 'int', nullable: false})
     pa_id: number;
     
     @OneToMany(type => RequestEntity, req => req.item)
