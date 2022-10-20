@@ -55,31 +55,54 @@ export class ItemsController {
 
   /**
    * Fetches all items from given itemProvider
-   * @param itemProvider the id of the provider that is being requested
+   * @param req token used to retrieve the id of the provider
    * @returns {Observable<Item[]>} an observable promise
    */
-  @Get('provider/:pa_id')
-  getItemOfProvider(@Param('pa_id') itemProvider: number,): Observable<Item[]> {
-    return this.itemsService.getItemOfProvider(itemProvider);
+  @UseGuards(JwtGuard)
+  @Get('provider')
+  getItemOfProvider(@Request() req: any,): Observable<Item[]> {
+    return this.itemsService.getItemOfProvider(req.user.pa_id);
   }
 
+  /**
+   * Creates and returns a new item
+   * @param item the info of the item to be created
+   * @param req token used to retrieve the id of the provider
+   * @returns the item created
+   */
   @UseGuards(JwtGuard)
   @Post()
-  insertItem(@Body() item: Item, @Request() req): Observable<Item> {
-    return this.itemsService.insertItem(req.user, item);
+  insertItem(@Body() item: Item, @Request() req: any): Observable<Item> {
+    return this.itemsService.insertItem(req.user.pa_id, item);
   }
 
+  /**
+   * Updates given item id (Provider must own this item)
+   * @param itemId id of the item being updated
+   * @param item info of the item to be updated
+   * @param req token user to retrieve the id of the provider
+   * @returns update confirmation
+   */
+  @UseGuards(JwtGuard)
   @Put('/id/:i_id')
   updateItem(
     @Param('i_id') itemId: number,
     @Body() item: Item,
-  ): Observable<UpdateResult> {
-    return this.itemsService.updateItem(itemId, item);
+    @Request() req: any,
+  ): Promise<Observable<UpdateResult>> {
+    return this.itemsService.updateItem(itemId, item, req.user.pa_id);
   }
 
+  /**
+   * Deletes given item id (Provider must own this item)
+   * @param itemId id of the item being updated
+   * @param req token user to retrieve the id of the provider
+   * @returns delete confirmation
+   */
+  @UseGuards(JwtGuard)
   @Delete('/id/:i_id')
   deleteItem(
-    @Param('i_id') itemId: number,): Observable<DeleteResult> {
-    return this.itemsService.deleteItem(itemId);
+    @Param('i_id') itemId: number, @Request() req: any): Promise<Observable<DeleteResult>> {
+    return this.itemsService.deleteItem(itemId, req.user.pa_id);
   }
 }

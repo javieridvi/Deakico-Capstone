@@ -55,16 +55,20 @@ export class ItemsService {
     }));
   }
 
-  insertItem(user: UserAccount, item: Item): Observable<Item> { 
-    item.pa_id = user.pa_id;
+  insertItem(provierId: number, item: Item): Observable<Item> { 
+    item.pa_id = provierId;
     return from(this.itemRepository.save(item)); 
   }
 
-  updateItem(i_id: number, item: Item): Observable<UpdateResult> {
-    return from(this.itemRepository.update(i_id, item));
+  async updateItem(itemId: number, item: Item, providerId: number): Promise<Observable<UpdateResult>> {
+    //check if item exists and belongs to provider
+    await this.itemRepository.findOneOrFail({select:{ pa_id: true}, where: { i_id: itemId, pa_id: providerId}});
+    return from(this.itemRepository.update(itemId, item));
   }
 
-  deleteItem(i_id: number): Observable<DeleteResult> {
-    return from(this.itemRepository.delete(i_id))
+  async deleteItem(itemId: number, providerId: number): Promise<Observable<DeleteResult>> {
+    //check if item exists and belongs to provider
+    await this.itemRepository.findOneOrFail({select:{ pa_id: true}, where: { i_id: itemId, pa_id: providerId}});
+    return from(this.itemRepository.delete(itemId))
   }
 }
