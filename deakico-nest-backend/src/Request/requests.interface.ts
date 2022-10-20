@@ -3,4 +3,5 @@ export interface ItemRequest {
     req_totalprice?: number;
     req_date?: Date;
     i_id?: number;
+    u_id?: number;
 } 

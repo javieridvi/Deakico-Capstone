@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { ItemEntity } from "./items.entity";
 import { Item } from "./items.interface";
@@ -12,7 +13,6 @@ export class ItemsService {
     private readonly itemRepository: Repository<ItemEntity>
   ) { }
 
-  insertItem(item: Item): Observable<Item> { return from(this.itemRepository.save(item)); }
 
   getAllItems(): Observable<Item[]> { return from(this.itemRepository.find()); }
 
@@ -55,11 +55,20 @@ export class ItemsService {
     }));
   }
 
-  updateItem(i_id: number, item: Item): Observable<UpdateResult> {
-    return from(this.itemRepository.update(i_id, item));
+  insertItem(provierId: number, item: Item): Observable<Item> { 
+    item.pa_id = provierId;
+    return from(this.itemRepository.save(item)); 
   }
 
-  deleteItem(i_id: number): Observable<DeleteResult> {
-    return from(this.itemRepository.delete(i_id))
+  async updateItem(itemId: number, item: Item, providerId: number): Promise<Observable<UpdateResult>> {
+    //check if item exists and belongs to provider
+    await this.itemRepository.findOneOrFail({select:{ pa_id: true}, where: { i_id: itemId, pa_id: providerId}});
+    return from(this.itemRepository.update(itemId, item));
+  }
+
+  async deleteItem(itemId: number, providerId: number): Promise<Observable<DeleteResult>> {
+    //check if item exists and belongs to provider
+    await this.itemRepository.findOneOrFail({select:{ pa_id: true}, where: { i_id: itemId, pa_id: providerId}});
+    return from(this.itemRepository.delete(itemId))
   }
 }
