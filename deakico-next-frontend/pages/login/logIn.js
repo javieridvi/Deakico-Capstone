@@ -10,9 +10,7 @@ export default function LogIn() {
     authService.login(data.get('email'), data.get('password')).then(
       () => {
         //window.location.reload(); //this reloads the page.
-        useRouter().push('/')
-
-      }, (err) => {
+      }).catch((err) => {
         console.log(err);
       }
     )
