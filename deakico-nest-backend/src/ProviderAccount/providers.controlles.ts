@@ -21,7 +21,7 @@ export class ProviderAccountController {
    * @returns user's provider account
    */
   @UseGuards(JwtGuard)
-  @Get()
+  @Get('account')
   getProvider(@Request() req: any,): Observable<ProviderAccount> {
     return this.providersService.getProvider(req.user.pa_id);
   }
@@ -44,9 +44,8 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Post()
-  insertProvider(@Body() provider: ProviderAccount, @Request() req: any): Observable<ProviderAccount> {
-    provider.pa_id = req.user.pa_id;
-    return this.providersService.insertProvider(provider);
+  insertProvider(@Body() provider: ProviderAccount, @Request() req: any): Promise<ProviderAccount> {
+    return this.providersService.insertProvider(provider, req.user.u_id);
   }
 
   /**
