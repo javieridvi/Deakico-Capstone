@@ -1,9 +1,8 @@
 import { Button, Stack } from "@mui/material";
-import { Link } from "next/link";
 
 export default function NavBar() {
   return (
-    <Stack direction='row' spacing={6}>
+    <Stack direction='row' spacing={2} marginRight={-15}>
       <Button variant='text' href='/'>Home</Button>
       <Button variant='text' href='/#'>Services</Button>
       <Button variant='text' href='/#'>Products</Button>
