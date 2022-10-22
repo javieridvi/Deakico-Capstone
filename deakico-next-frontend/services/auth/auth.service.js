@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const register = (u_firstname, u_lastname, email, username, password) => {
-  return axios.post(API_URL + "auth/register", {
+const register = async (u_firstname, u_lastname, email, username, password) => {
+  return await axios.post(API_URL + "auth/register", {
     email: email,
     username: username,
     u_firstname: u_firstname , 
@@ -11,6 +11,7 @@ const register = (u_firstname, u_lastname, email, username, password) => {
     password: password,
   });
 };
+
 
 const login = async (email, password) => {
   const response = await axios
@@ -22,6 +23,8 @@ const login = async (email, password) => {
     sessionStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
+
+  console.log(apiUrl)
 };
 
 const logout = () => {
