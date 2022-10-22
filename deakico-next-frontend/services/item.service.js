@@ -9,8 +9,8 @@ const insertItem = async () => {
     return await axios.post(endpoint, {headers: authHeader}); 
 };
 
-const updateItem = async () => {
-    return await axios.put(endpoint + "/id/", {headers: authHeader})
+const updateItem = async (i_id) => {
+    return await axios.put(endpoint + "/id/" + i_id, {headers: authHeader})
 }
 
 const getAllItems = async () => {

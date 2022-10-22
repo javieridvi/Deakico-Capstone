@@ -22,19 +22,19 @@ const getFollow = async (f_id) => {
 };
 
 const getFollowersCount = async () => {
-    return await axios.get(endpoint+ "/followers", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint+ "/followers/count", {headers: authHeader});
 };
 
 const getFollowers = async () => {
-    return await axios.get(endpoint + "/followers/user", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/followers", {headers: authHeader});
 };
 
 const getFollowingCount = async () => {
-    return await axios.get(endpoint + "/following", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/following/count", {headers: authHeader});
 };
 
 const getFollowing = async () => {
-    return await axios.get(endpoint + "/following/provider", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/following", {headers: authHeader});
 }
 
 
