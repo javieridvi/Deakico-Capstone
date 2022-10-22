@@ -1,10 +1,31 @@
 import { Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Banner from "../../deakicomponents/Home/Banner";
 import Categories from "../../deakicomponents/Home/Categories";
+import ToggleSection from "../../deakicomponents/Home/ToggleSection";
 import TopProviders from "../../deakicomponents/Home/TopProviders";
+import itemService from "../../services/item.service"
 
+function Home(){
+  
+  // const [categories, setCategories] = useState([]);
 
-export default function Home(){
+  // function callGetItemCategories() {
+  //   itemService.getItemCategories()
+  //   .then((res) => {setCategories(res.data.map((e)=> {return e.i_category}))}).catch((err) => console.log(err));
+  // };
+
+  // useEffect(() => {
+  //   callGetItemCategories();
+  // }, []);
+
+  const categories = [
+    "Hair",
+    "Pastry",
+    "Food",
+    "Clothing",
+    "Other"
+  ];
 
   return (
     <Stack
@@ -20,10 +41,11 @@ export default function Home(){
     }}
     >
       <Banner/>
-      <Typography variant="h4">Service/Provider Toggle</Typography>
+      <ToggleSection/>
       <TopProviders/>
-      <Categories/>
-      <Typography variant="h2">Extra info</Typography>
+      <Categories categoryList={categories}/>
+      
     </Stack>
   );
 };
+export default Home;
