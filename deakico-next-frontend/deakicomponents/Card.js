@@ -53,3 +53,31 @@ export function ProviderTest(){
   </Card>
   );
 };
+
+export function ToggleCard(props){
+  const image = props.src;
+  const title = props.label;
+  const description = props.children;
+  const alt = "Card of "+ title; 
+
+  return(
+    <Card sx={{ maxWidth: '20rem' }}>
+    <CardActionArea>
+      <CardMedia
+        component="img"
+        image={image}
+        alt={alt}
+        sx={{ maxHeight: '14rem'}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {description}
+        </Typography>
+      </CardContent>
+    </CardActionArea>
+  </Card>
+  );
+};
