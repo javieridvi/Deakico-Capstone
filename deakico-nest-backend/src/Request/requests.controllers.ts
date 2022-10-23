@@ -38,7 +38,7 @@ export class ItemRequestController {
   @UseGuards(JwtGuard)
   @Get('of/user')
   getUserRequest(@Request() req: any) {
-    return this.requestsService.getProviderRequest(req.user.u_id);
+    return this.requestsService.getUserRequest(req.user.u_id);
   }
 
   @UseGuards(JwtGuard)
