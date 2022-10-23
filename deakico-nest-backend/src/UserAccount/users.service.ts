@@ -24,6 +24,11 @@ export class UserAccountService {
         return from(this.userRepository.update(u_id, user));
     }
     
+    addProvider(u_id: number, providerId: number): Observable<UpdateResult> { 
+      const user = {"pa_id": providerId}; 
+        return from(this.userRepository.update(u_id, user));
+    }
+
     deleteUser(u_id: number): Observable<DeleteResult> {
         return from(this.userRepository.delete(u_id))
     }
