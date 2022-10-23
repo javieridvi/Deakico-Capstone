@@ -112,7 +112,7 @@ export default function About() {
             José Vazquez
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{mt:'1rem', textAlign:'center'}}>
-          Full Stack developer,Web Engineer, SQL Developer, Data Analyst
+          Full Stack developer, Database Administrator, Software Tester
           </Typography>
         </CardContent>
       <CardActions>
@@ -156,7 +156,7 @@ export default function About() {
             Javier Del Valle-Irizarry
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{mt:'1rem', textAlign:'center'}}>
-          Full Stack developer, Database Administrator, Software Tester
+          Full Stack developer, Web Engineer, SQL Developer, Data Analyst
           </Typography>
         </CardContent>
       <CardActions>
