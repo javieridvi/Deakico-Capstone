@@ -1,9 +1,8 @@
 import React from 'react'
-import { Container,  Typography , Rating, Stack, Button, Box} from '@mui/material';
+import { Container,  Typography , Rating, Stack, Button, Box, styled, Grid, InputLabel, FormControl, Select, MenuItem } from '@mui/material';
 import Image from 'next/image'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { styled, Grid, InputLabel, FormControl, Select, MenuItem } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import EmailIcon from '@mui/icons-material/Email';
@@ -165,7 +164,7 @@ export default function Profile() {
          <Select
           label="Services"
         //   onChange={(event) => setHeight(Number(event.target.value))}
-        //   value={} Service DB
+        //   value={service}
           id="select-service"
           labelId="height-of-container-label"
         >

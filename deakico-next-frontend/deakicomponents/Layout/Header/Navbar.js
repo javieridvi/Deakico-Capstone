@@ -6,7 +6,7 @@ export default function NavBar() {
       <Button variant='text' href='/'>Home</Button>
       <Button variant='text' href='/#'>Services</Button>
       <Button variant='text' href='/#'>Products</Button>
-      <Button variant='text' href='/#'>About</Button>
+      <Button variant='text' href='/about'>About</Button>
     </Stack>
   );
 }
