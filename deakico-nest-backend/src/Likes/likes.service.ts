@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
+import { ItemsService } from "src/Item/items.service";
 import { UserAccount } from "src/UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { LikeEntity } from "./likes.entity";
@@ -15,30 +16,20 @@ export class LikesService {
 
   getAllLikes(): Observable<Likes[]> { return from(this.likeRepository.find()); }
 
-  getLike(l_id): Observable<Likes> {
-    return from(this.likeRepository.findOneBy(
-      { l_id: l_id, }
-    ))
-  }
-
   /**
    * Fetches user id and the items liked by given user id
    * @param userId the id of the user
    * @returns {Observable<Likes[]>} an observable promise
    * Can be modified to only return the items with querybuilder
    */
-  getUserLiked(userId: number): Observable<Likes[]> {
-    return from(this.likeRepository.find({
-      select: {
-        u_id: true,
-      },
-      relations: {
-        likes_item: true,
-      },
-      where: {
-        u_id: userId,
-      }
-    }))
+  async getUserLiked(userId: number): Promise<Partial<Likes[]>> {
+    const res = await this.likeRepository
+    .createQueryBuilder("likes")
+    .innerJoin("likes.likes_item", "items")
+    .select("items")
+    .where("likes.u_id = :u_id", {u_id: userId})
+    .getRawMany()
+    return res;
   }
 
   async getItemLikes(itemId: number): Promise<number> {
@@ -63,7 +54,7 @@ export class LikesService {
     return from(this.likeRepository.update(l_id, like));
   }
 
-  deleteLike(l_id: number): Observable<DeleteResult> {
-    return from(this.likeRepository.delete(l_id))
+  deleteLike(userId: number, itemId: number): Observable<DeleteResult> {
+    return from(this.likeRepository.delete({"u_id": userId, "i_id": itemId}))
   }
 }

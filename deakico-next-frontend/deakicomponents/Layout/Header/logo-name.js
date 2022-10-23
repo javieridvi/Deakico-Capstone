@@ -4,7 +4,7 @@ import Image from "next/image";
 
 let theme = createTheme({
   typography: {
-    fontFamily: 'Abyssinica SIL',
+    fontFamily: 'Comfortaa',
   },
 });
 
@@ -12,7 +12,7 @@ theme = responsiveFontSizes(theme);
 
 export default function LogoName() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider  theme={theme}>
       <Typography variant='h3'>
 
         <Box
@@ -30,7 +30,8 @@ export default function LogoName() {
             />
           </Link>
         </Box>
-        <Box
+        {/* Changed marginLeft and Right */}
+        <Box marginLeft={20} marginRight={-20}
           sx={{
             position: 'relative',
             height: '1em',
@@ -50,7 +51,7 @@ export default function LogoName() {
       }}
       >
         <Typography component='h1' variant="h3">
-          <Link underline='none' color="black" href='/'>Deakico.</Link>
+          <Link marginLeft={20} underline='none' color="black" href='/'>Deakico.</Link>
         </Typography>
       </Box>
     </ThemeProvider>

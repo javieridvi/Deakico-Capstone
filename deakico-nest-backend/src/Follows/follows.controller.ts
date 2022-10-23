@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Request } from "@nestjs/common";
 import { Observable } from "rxjs";
+import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { Follow } from "./follows.interface";
 import { FollowsService } from "./follows.service";
@@ -13,67 +14,60 @@ export class FollowsController {
     return this.followsService.getAllFollows();
   }
 
-  @Get(':f_id')
-  getFollow(@Param('f_id') followId: number,) {
-    return this.followsService.getFollow(followId);
+  /**
+   * Fetches all user that are followers of given provider id
+   * @param req is user to retrived user account and pa_id
+   * @returns all user id that are followers of given provider
+   */
+  @UseGuards(JwtGuard)
+  @Get('followers')
+  getFollowers(@Request() req: any,) {
+    return this.followsService.getFollowers(req.user.pa_id);
   }
 
   /**
    * Fetches count (int) of given providerId followers
-   * @param providerId int pa_id id of provider
+   * @param req is user to retrived user account and pa_id
    * @returns int count of followers
    */
-  @Get('followers/:pa_id')
-  getFollowersCount(@Param('pa_id') providerId: number,) {
-    return this.followsService.getFollowersCount(providerId);
-  }
-
-  /**
-   * Fetches all user that are followers of given provider id
-   * @param providerId int pa_id id of provider
-   * @returns all user id that are followers of given provider
-   */
-  @Get('followers/user/:pa_id')
-  getFollowers(@Param('pa_id') providerId: number,) {
-    return this.followsService.getFollowers(providerId);
+  @UseGuards(JwtGuard)
+  @Get('followers/count')
+  getFollowersCount(@Request() req: any) {
+    return this.followsService.getFollowersCount(req.user.pa_id);
   }
 
   /**
    * Fetches count (int) of given user following providers
-   * @param userId int u_id id of user
-   * @returns int count of following
-   */
-  @Get('following/:u_id')
-  getFollowingCount(@Param('u_id') userId: number,) {
-    return this.followsService.getFollowingCount(userId);
-  }
-
-  /**
-   * Fetches count (int) of given user following providers
-   * @param userId int u_id id of user
+   * @param req is user to retrived user account and u_id
    * @returns all providers ids given user is following
    */
-  @Get('following/provider/:u_id')
-  getFollowing(@Param('u_id') userId: number,) {
-    return this.followsService.getFollowing(userId);
+  @UseGuards(JwtGuard)
+  @Get('following')
+  getFollowing(@Request() req: any,) {
+    return this.followsService.getFollowing(req.user.u_id);
   }
 
+  /**
+   * Fetches count (int) of given user following providers
+   * @param req is user to retrived user account and u_id
+   * @returns int count of following
+   */
+  @UseGuards(JwtGuard)
+  @Get('following/count')
+  getFollowingCount(@Request() req: any,) {
+    return this.followsService.getFollowingCount(req.user.u_id);
+  }
+
+  @UseGuards(JwtGuard)
   @Post()
-  insertFollow(@Body() follow: Follow): Observable<Follow> {
-    return this.followsService.insertFollow(follow);
+  insertFollow(@Body() follow: Follow, @Request() req: any): Observable<Follow> {
+    return this.followsService.insertFollow(req.user, follow);
   }
 
-  @Put(':f_id')
-  updateFollow(
-    @Param('f_id') followId: number,
-    @Body() follow: Follow,
-  ): Observable<UpdateResult> {
-    return this.followsService.updateFollow(followId, follow);
-  }
-
-  @Delete(':f_id')
+  @UseGuards(JwtGuard)
+  @Delete()
   deleteItem(
-    @Param('f_id') followId: number,): Observable<DeleteResult> {
-    return this.followsService.deleteFollow(followId);
+    @Body() follow: Follow, @Request() req: any): Observable<DeleteResult> {
+    return this.followsService.deleteFollow(req.user.u_id, follow.pa_id);
   }
 }

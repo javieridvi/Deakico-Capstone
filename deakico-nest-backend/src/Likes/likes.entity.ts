@@ -1,11 +1,9 @@
 import { ItemEntity } from 'src/Item/items.entity';
 import { UserAccountEntity } from 'src/UserAccount/users.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('Likes')
 export class LikeEntity {
-    @PrimaryGeneratedColumn()
-    l_id: number;   
     
     @ManyToOne(type => UserAccountEntity, user => user.likes)
     @JoinColumn( { name: 'u_id'} )
@@ -15,14 +13,10 @@ export class LikeEntity {
     @JoinColumn({ name: 'i_id'})
     likes_item: ItemEntity[];
 
-    @Column({ type: 'int', nullable: true })
+    @PrimaryColumn({ type: 'int' })
     u_id: number;
 
-    @Column({ type: 'int', nullable: true })
+    @PrimaryColumn({ type: 'int' })
     i_id: number;
-
     
-
-
-
 }
