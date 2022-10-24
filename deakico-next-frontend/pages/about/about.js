@@ -11,7 +11,7 @@ export default function About() {
   
     <Box className='aboutHead' sx={{width:'100%', height:'300px', backgroundColor: 'primary', mt:'8%', justifyContent:'center', textAlign:'center', display:'flex'}}>
       <div className='aboutPic'>
-       <Image src="/Coqui.png" 
+       <Image src="/Coqui.svg" 
         width={500}
         height={474}
         /> </div>  
@@ -151,7 +151,7 @@ export default function About() {
         <CardMedia
           component="img"
           height="300"
-          image="javier.png"
+          image="Javier.png"
           alt="Developer"
         />
         <CardContent>
