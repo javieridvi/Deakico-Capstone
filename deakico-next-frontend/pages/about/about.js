@@ -3,6 +3,7 @@ import { Container, Box , Typography, Card, CardActions,CardContent, CardMedia, 
 import Image from 'next/image'
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
+
 export default function About() {
   return (
     <div>
@@ -15,7 +16,7 @@ export default function About() {
         height={474}
         /> </div>  
           <Typography variant='h2'sx={{width:'50%', fontWeight:'bold',mr:'6%', mt:'5%', position:'relative'}}>
-        "We can help business of every size -from entrepreneurs to iconic brands."
+        "We can help business of every size - from entrepreneurs to iconic brands."
       </Typography>
    
     </Box>
@@ -35,7 +36,7 @@ export default function About() {
  
       <Box sx={{mt:'10%', display:'flex', textAlign:'left' , mt:'8rem', backgroundImage:'radial-gradient( rgb(193,3239,221,0.3) 2%, white 60%)', width:'100%'}}>
         <Typography sx={{fontSize:'40px', fontWeight:'700', pl:'1rem'}}> <mark className='problem-st'>Problem Statement : </mark> 
-           <Typography sx={{fontSize:'25px', fontWeight:'500', mb:'5%', width:'70%',mt:'2%'}}>
+           <Typography sx={{fontSize:'25px', fontWeight:'500', mb:'5%', width:'80%',mt:'2%'}}>
              - customers acknowledge the quality of local services and products because they are made with passion, 
            dedication and with additional freshness or uniqueness. 
            We expect that quality pushes business to a better price and demand. The fact is that big enterprises overshadow 
@@ -46,21 +47,23 @@ export default function About() {
         </Typography>
         </Typography>   
             <div>
-             <Image src="/career.png" 
-              width= {350}
+             <Image src="/solu.jpg" 
+              width= {500}
               height={550}
               layout='fixed'
+              
               />
             </div>
       </Box>
     
-        
-     
-        <Box sx={{display:'flex', width:'100%', height:'40%', p:'5rem', m:'20px'}}>
- <Image src="/connection.png" 
-              width= {300}
-              height={400}
+        <Box sx={{display:'flex', width:'100%', height:'40%', p:'0', m:'10px'}}>
+      <Image  src="/problem.png" 
+              width= {500}
+              height={440}
               layout='fixed'
+              objectFit='scale-down'
+
+
               />
 
         <Typography sx={{fontSize:'40px', fontWeight:'700', ml:'8rem' , textAlign:'left',width:'60%'}}> <mark className='sol' >  Solution Approach: </mark> 
@@ -148,7 +151,7 @@ export default function About() {
         <CardMedia
           component="img"
           height="300"
-          image=""
+          image="javier.png"
           alt="Developer"
         />
         <CardContent>
@@ -160,13 +163,14 @@ export default function About() {
           </Typography>
         </CardContent>
       <CardActions>
-      <LinkedInIcon sx={{ml:'4.5rem'}}/><Button size="large"  href="https://www.linkedin.com/in/jose-vazquez-429a0b182" >
+      <LinkedInIcon sx={{ml:'4.5rem'}}/><Button size="large"  href="https://www.linkedin.com/in/javier-del-valle-01a923191/" >
           More about me  
         </Button>
       </CardActions>
     </Card>
      </Box> 
 </Container>
+{/* ### PROPS STYLE ### */}
 <style jsx>{`
  .sol{
   background-color: #32F3AF;
