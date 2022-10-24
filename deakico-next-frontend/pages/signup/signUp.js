@@ -10,19 +10,19 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
-    //register api endpoint 
-    authService.register(
-      data.get('firstName'),
-      data.get('lastName'),
-      data.get('email'),
-      data.get('username'),
-      data.get('password'),).then(
-      () => {
-        window.location.reload(); //this reloads the page
-      }, (err) => {
-        console.log(err.response.data);
-      }
-    )
+    // //register api endpoint 
+    // authService.register(
+    //   data.get('firstName'),
+    //   data.get('lastName'),
+    //   data.get('email'),
+    //   data.get('username'),
+    //   data.get('password'),).then(
+    //   () => {
+    //     window.location.reload(); //this reloads the page
+    //   }, (err) => {
+    //     console.log(err.response.data);
+    //   }
+    // )
     console.log({
       email: data.get('email'),
       password: data.get('password'),
