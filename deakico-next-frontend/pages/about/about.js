@@ -10,19 +10,19 @@ export default function About() {
       <Container sx={{ width: '100%', height: '100%', justifyContent: 'center' }} >
 
         <Stack className='aboutHead'
-        direction={'row'}
-        justifyContent='center'
-        alignItems='center'
+          direction={'row'}
+          justifyContent='center'
+          alignItems='center'
           sx={{
             width: '100%',
             maxHeight: '300px',
             backgroundColor: 'primary',
-            mt: '8%', 
+            mt: '8%',
             textAlign: 'center',
           }}
         >
           <div className='aboutPic'>
-            <img src='/Coqui.svg' width={"100%"}/>
+            <img src='/Coqui.svg' width={"100%"} />
             {/* <Image src="/Coqui.svg"
               width={500}
               height={474}
@@ -30,7 +30,7 @@ export default function About() {
           </div>
           <Typography variant='h3'
             sx={{
-              width: {xs: '100%', sm: '50%'},
+              width: { xs: '100%', sm: '50%' },
               fontWeight: 'bold',
               fontSize: 'clamp(1rem, 5vw, 3.75rem)',
               position: 'relative',
