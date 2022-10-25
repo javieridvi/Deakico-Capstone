@@ -47,7 +47,7 @@ export default function Header() {
             <LogoName />
           </Grid>
           <Grid item
-            xs={'auto'}
+            xs={2}
             md={4}
             lg={'auto'}
 

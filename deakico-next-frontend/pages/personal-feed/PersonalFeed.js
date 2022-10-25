@@ -22,19 +22,19 @@ let theme = createTheme({
 
 export default function PersonalFeed() {
     const itemList = [
-        "Item 1",
-        "Item 2",
-        "Item 3",
-        "Item 4",
-        "Item 5",
-        "Item 6",
-        "Item 7",
-        "Item 8",
-        "Item 9",
+        "Provider 1",
+        "Provider 2",
+        "Provider 3",
+        "Provider 4",
+        "Provider 5",
+        "Provider 6",
+        "Provider 7",
+        "Provider 8",
+        "Provider 9",
         
     ]
     
-    const cardDesc = "Here goes various items that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
+    const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
 
     return (
 

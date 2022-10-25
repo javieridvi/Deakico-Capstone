@@ -36,7 +36,7 @@ function Home(){
     sx={{
       position: 'relative',
       minHeight: '100vh',
-      maxWidth: '50rem',
+      width: 'min(80rem,100%)',
       backgroundColor: 'white',
     }}
     >
