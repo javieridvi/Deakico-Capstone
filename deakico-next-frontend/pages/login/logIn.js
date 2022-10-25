@@ -7,13 +7,17 @@ export default function LogIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    authService.login(data.get('email'), data.get('password')).then(
-      () => {
-        window.location.reload(); //this reloads the page.
-      }, (err) => {
-        console.log(err);
-      }
-    )
+    // authService.login(data.get('email'), data.get('password')).then(
+    //   () => {
+    //     //window.location.reload(); //this reloads the page.
+    //   }).catch((err) => {
+    //     console.log(err);
+    //   }
+    // )
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
     console.log({
       email: data.get('email'),
       password: data.get('password'),

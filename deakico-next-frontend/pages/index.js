@@ -16,11 +16,12 @@ export default function Main() {
       <Box component='div'
         sx={{
           minHeight: '100vh',
+          width: '100vw',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#363740',
+          backgroundColor: 'white',
         }}
       >
         <Home/>
