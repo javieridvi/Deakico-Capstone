@@ -1,4 +1,4 @@
-import { Box, Button, Collapse, IconButton, Stack } from "@mui/material";
+import { Box, Button, ButtonBase, Collapse, IconButton, Stack } from "@mui/material";
 import { TransitionGroup } from 'react-transition-group';
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
+import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 
 //Example array would be replaced with backend response
 const bannerImages = [
@@ -20,9 +21,9 @@ export default function Banner() {
 
   //Saves the amount of images recieved
   const listLength = bannerImages.length;
-  
+
   //Return empty div if no images are posted
-  if (listLength==0) {
+  if (listLength == 0) {
     return <div className="noImages"></div>
   }
 
@@ -49,7 +50,7 @@ export default function Banner() {
         src={image}
         sx={{
           position: 'relative',
-          minWidth: '50rem',
+          height: '100%',
           aspectRatio: '16/9',
         }}
       />
@@ -60,15 +61,15 @@ export default function Banner() {
   //Stops the auto rotate when this state is false (When Prev() and Next() are called) 
   const [isIntervalRunning, setIsIntervalRunning] = useState(true);
   const intervalDuration = 10; //wait between rotation in seconds
-  useEffect(() => {
-    if(isIntervalRunning){
-      const interval = setInterval(()=>{
-        Next(); 
-      }, intervalDuration*1000);
-      return () => {clearInterval(interval)};
-    }
-  }, [isIntervalRunning]);
-  
+  // useEffect(() => {
+  //   if (isIntervalRunning) {
+  //     const interval = setInterval(() => {
+  //       Next();
+  //     }, intervalDuration * 1000);
+  //     return () => { clearInterval(interval) };
+  //   }
+  // }, [isIntervalRunning]);
+
   //When imageArr state changes sets interval to true
   useEffect(() => {
     setIsIntervalRunning(() => true);
@@ -84,7 +85,7 @@ export default function Banner() {
       return [...current.filter((image) => image != prevIndex), { index: nextIndex, image: bannerImages[nextIndex] }]
     });
   }
-  
+
   //Moves to previous picture on bannerImages array
   function Prev() {
     setIsIntervalRunning(() => false); //Stops interval
@@ -97,7 +98,7 @@ export default function Banner() {
     })
   }
 
-  
+
   //Button creation
   function SideButton(props) {
     return (
@@ -117,37 +118,38 @@ export default function Banner() {
 
   //Bottom nav buttons
   const theme = useTheme();
-  function NavButtons(props) {
-    return (
-      <Box
-        sx={{
-          position: 'absolute',
-          display: { xs: 'none', sm: 'block' },
-          bottom: 0,
-          maxWidth: '100%',
-          maxHeight: '10%',
-          borderRadius: '50vh',
-          backgroundColor: 'rgba(255,255,255,.8)',
-        }}
-      >
-        {props.list.map((el, i) =>
-          <IconButton
-            key={i}
-            size='small'
-            onClick={(e) => navButtonClick(e, i)}
-            sx={{
-              color: i === imageArr[1].index ? theme.palette.primary.main : 'inherit', 
-              '&:hover > .MuiSvgIcon-root': {
-                color: theme.palette.primary.main,
+  let NavButtons = (
+    <Box
+      className="NavButtons">
+      {bannerImages.map((el, i) =>
+        <ButtonBase
+          key={i}
+          onClick={(e) => navButtonClick(e, i)}
+          sx={[
+            {
+              height: '1.25rem',
+              aspectRatio: '1/1',
+              margin: '1rem',
+              borderRadius: '50%',
+              transition: 'all .5s ease-in-out',
+              '&:hover': {
+                backgroundColor: theme.palette.primary.main,
+                scale: '1.25',
+                transition: 'all .1s ease-in-out',
               }
-            }}
-          >
-            <TripOriginIcon />
-          </IconButton>
-        )}
-      </Box>
-    )
-  }
+            },
+            i == imageArr[1].index ? {
+              backgroundColor: theme.palette.primary.main,
+              scale: '1.25',
+            } : {
+              backgroundColor: 'rgba(0, 0, 0, .2)',
+            }
+          ]}
+        >
+        </ButtonBase>
+      )}
+    </Box>
+  );
 
   function navButtonClick(e, index) {
     let currentIndex = imageArr[1].index;
@@ -155,7 +157,7 @@ export default function Banner() {
     if (index != currentIndex) { //If the current index is the same of the button index do nothing
 
       const distance = Math.abs(index - currentIndex);
-      //true = next : false = prev
+      //true = next , false = prev
       let direction = currentIndex < index ? true : false;
       direction = distance < (listLength / 2) ? direction : !direction;
 
@@ -175,38 +177,50 @@ export default function Banner() {
 
   return (
     <Box
+      className="Banner"
       sx={{
         width: '100%',
-        aspectRatio: '16/9',
         position: 'relative',
         display: 'flex',
-        justifyContent: 'center',
-        overflow: 'hidden',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-
-      <TransitionGroup
-        component={Box}
+      <Box
+        className="Banner-Images"
         sx={{
-          position: 'absolute',
-          maxHeight: '100%',
+          width: '100%',
+          aspectRatio: '16/9',
+          position: 'relative',
           display: 'flex',
-          flexDirection: 'row',
           justifyContent: 'center',
-          alignItems: 'center',
+          overflow: 'hidden',
         }}
       >
-        {imageArr.map((element, i) =>
-          <Collapse key={element.index} orientation='horizontal' timeout={duration} unmountOnExit
-            sx={{
-              maxHeight: '100%',
-              minWidth: '100vw',
-              display: 'block',
-            }}>
-            {BannerImage(element.image)}
-          </Collapse>
-        )}
-      </TransitionGroup>
+        <TransitionGroup
+          component={Box}
+          className={'Transition-Group'}
+          sx={{
+            minHeight: '100%',
+            minWidth: '300%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {imageArr.map((element, i) =>
+            <Collapse key={element.index} orientation='horizontal' timeout={duration} unmountOnExit
+              sx={{
+                height: '100%',
+                display: 'block',
+              }}>
+              {BannerImage(element.image)}
+            </Collapse>
+          )}
+        </TransitionGroup>
+
+      </Box>
 
       <Stack direction='row' justifyContent='space-between'
         sx={{
@@ -222,7 +236,7 @@ export default function Banner() {
           <ChevronRightIcon />
         </Button>
       </Stack>
-      <NavButtons list={bannerImages} length={listLength} />
+      {NavButtons}
     </Box>
   );
 };
