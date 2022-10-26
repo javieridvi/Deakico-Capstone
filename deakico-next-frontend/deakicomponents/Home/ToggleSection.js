@@ -81,19 +81,19 @@ export default function ToggleSection() {
       >
         <Typography component='h3' variant='h3'
           sx={{
-            padding: '2rem',
+            paddingTop: '2rem',
           }}
         >
           Service or Product
         </Typography>
-
-        {displayItems()}
         <Switch
           checked={toggle}
           onChange={e => setToggle(e.target.checked)} >
 
         </Switch>
-
+        <Box paddingBottom={'4rem'}>
+          {displayItems()}
+        </Box>
       </Box>
     </ThemeProvider>
   );

@@ -219,23 +219,21 @@ export default function Banner() {
             </Collapse>
           )}
         </TransitionGroup>
-
+        <Stack direction='row' justifyContent='space-between'
+          sx={{
+            position: 'absolute',
+            height: '100%',
+            minWidth: '100%',
+          }}
+        >
+          <SideButton onClick={Prev} >
+            <ChevronLeftIcon />
+          </SideButton>
+          <Button variant='text' onClick={Next}>
+            <ChevronRightIcon />
+          </Button>
+        </Stack>
       </Box>
-
-      <Stack direction='row' justifyContent='space-between'
-        sx={{
-          position: 'absolute',
-          height: '100%',
-          minWidth: '100%',
-        }}
-      >
-        <SideButton onClick={Prev} >
-          <ChevronLeftIcon />
-        </SideButton>
-        <Button variant='text' onClick={Next}>
-          <ChevronRightIcon />
-        </Button>
-      </Stack>
       {NavButtons}
     </Box>
   );
