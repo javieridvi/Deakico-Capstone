@@ -61,14 +61,14 @@ export default function Banner() {
   //Stops the auto rotate when this state is false (When Prev() and Next() are called) 
   const [isIntervalRunning, setIsIntervalRunning] = useState(true);
   const intervalDuration = 10; //wait between rotation in seconds
-  // useEffect(() => {
-  //   if (isIntervalRunning) {
-  //     const interval = setInterval(() => {
-  //       Next();
-  //     }, intervalDuration * 1000);
-  //     return () => { clearInterval(interval) };
-  //   }
-  // }, [isIntervalRunning]);
+  useEffect(() => {
+    if (isIntervalRunning) {
+      const interval = setInterval(() => {
+        Next();
+      }, intervalDuration * 1000);
+      return () => { clearInterval(interval) };
+    }
+  }, [isIntervalRunning]);
 
   //When imageArr state changes sets interval to true
   useEffect(() => {
