@@ -14,12 +14,12 @@ const updateFollow = async (f_id) => {
 }
 
 const getAllFollows = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
-const getFollow = async (f_id) => {
-    return await axios.get(endpoint + "/" + f_id, {headers: authHeader});
-};
+// const getFollow = async (f_id) => {
+//     return await axios.get(endpoint + "/" + f_id, {headers: authHeader});
+// };
 
 const getFollowersCount = async () => {
     return await axios.get(endpoint+ "/followers/count", {headers: authHeader});
@@ -42,7 +42,7 @@ export default {
     insertFollow,
     updateFollow,
     getAllFollows,
-    getFollow,
+    //getFollow,
     getFollowersCount,
     getFollowers,
     getFollowingCount,
