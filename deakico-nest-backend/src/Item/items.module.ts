@@ -3,9 +3,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ItemEntity } from "./items.entity";
 import { ItemsController } from "./items.controllers";
 import { ItemsService } from "./items.service";
-import { ProviderAccountEntity } from "src/ProviderAccount/providers.entity";
-import { RequestEntity } from "src/Request/requests.entity";
-import { ReviewEntity } from "src/Review/reviews.entity";
+import { ProviderAccountEntity } from "../ProviderAccount/providers.entity";
+import { RequestEntity } from "../Request/requests.entity";
+import { ReviewEntity } from "../Review/reviews.entity";
 
 @Module({
     imports: [

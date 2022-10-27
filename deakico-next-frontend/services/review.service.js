@@ -14,15 +14,15 @@ const updateReview = async (r_id) => {
 };
 
 const getAllReviews = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
 const getReview = async (r_id) => {
-    return await axios.get(endpoint + "/" + r_id, {headers: authHeader})
+    return await axios.get(endpoint + "/" + r_id)
 }
 
 const getItemReview = async (i_id) => {
-    return await axios.get(endpoint + "/item/" + i_id, {headers: authHeader});
+    return await axios.get(endpoint + "/item/" + i_id);
 };
 
 

@@ -14,23 +14,23 @@ const updateItem = async (i_id) => {
 }
 
 const getAllItems = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
 const getItem = async (i_id) => {
-    return await axios.get(endpoint + "/id/" + i_id, {headers: authHeader});
+    return await axios.get(endpoint + "/id/" + i_id);
 };
 
 const getItemByType = async (i_type) => {
-    return await axios.get(endpoint + "/type/" + i_type, {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/type/" + i_type); //check endpoint
 };
 
 const getItemCategories = async () => {
-    return await axios.get(endpoint+ "/category", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint+ "/category"); //check endpoint
 };
 
 const getItemByCategory = async (i_category) => {
-    return await axios.get(endpoint+ "/category/" + i_category, {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint+ "/category/" + i_category); //check endpoint
 };
 
 const getItemOfProvider = async () => {
