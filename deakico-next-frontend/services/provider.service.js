@@ -14,7 +14,7 @@ const updateProvider = async (pa_id) => {
 };
 
 const getAllProviders = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
 const getProvider = async (pa_id) => {
@@ -22,7 +22,7 @@ const getProvider = async (pa_id) => {
 }
 
 const getProviderCategory = async (pa_category) => {
-    return await axios.get(endpoint + "/category/" + pa_category, {headers: authHeader});
+    return await axios.get(endpoint + "/category/" + pa_category);
 };
 
 export default {

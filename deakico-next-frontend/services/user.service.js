@@ -6,7 +6,7 @@ const entity = "reviews";
 const endpoint = API_URL + entity;
 
 const insertUser = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint); 
 };
 
 const updateUser = async () => {
@@ -14,7 +14,7 @@ const updateUser = async () => {
 };
 
 const getAllUsers = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
 const getUser = async (u_id) => {

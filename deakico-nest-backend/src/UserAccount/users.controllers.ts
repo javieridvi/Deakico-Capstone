@@ -1,5 +1,4 @@
 import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Request } from "@nestjs/common";
-import { throws } from "assert";
 import { Observable } from "rxjs";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { JwtGuard } from "./auth/guards/jwt.guard";

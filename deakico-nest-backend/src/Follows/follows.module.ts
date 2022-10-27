@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ProviderAccountEntity } from "src/ProviderAccount/providers.entity";
-import { UserAccountEntity } from "src/UserAccount/users.entity";
+import { ProviderAccountEntity } from "../ProviderAccount/providers.entity";
+import { UserAccountEntity } from "../UserAccount/users.entity";
 import { FollowsController } from "./follows.controller";
 import { FollowEntity } from "./follows.entity";
 import { FollowsService } from "./follows.service";

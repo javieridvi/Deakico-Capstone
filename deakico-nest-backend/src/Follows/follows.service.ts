@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
-import { UserAccount } from "src/UserAccount/users.interface";
+import { UserAccount } from "../UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { FollowEntity } from "./follows.entity";
 import { Follow } from "./follows.interface";

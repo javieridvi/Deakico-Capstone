@@ -1,10 +1,9 @@
-import { FollowEntity } from 'src/Follows/follows.entity';
-import { ItemEntity } from 'src/Item/items.entity';
-import { LikeEntity } from 'src/Likes/likes.entity';
-import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
-import { RequestEntity } from 'src/Request/requests.entity';
-import { ReviewEntity } from 'src/Review/reviews.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { FollowEntity } from '../Follows/follows.entity';
+import { LikeEntity } from '../Likes/likes.entity';
+import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
+import { RequestEntity } from '../Request/requests.entity';
+import { ReviewEntity } from '../Review/reviews.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity('User Account')
 export class UserAccountEntity {

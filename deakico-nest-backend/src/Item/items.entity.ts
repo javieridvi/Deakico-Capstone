@@ -1,7 +1,7 @@
-import { LikeEntity } from 'src/Likes/likes.entity';
-import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
-import { RequestEntity } from 'src/Request/requests.entity';
-import { ReviewEntity } from 'src/Review/reviews.entity';
+import { LikeEntity } from '../Likes/likes.entity';
+import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
+import { RequestEntity } from '../Request/requests.entity';
+import { ReviewEntity } from '../Review/reviews.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
 //enumerator for categories. Keep adding categories as we see fit.
