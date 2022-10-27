@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Param, Put, Delete, HttpException, HttpStatus, UseGuards, Request } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
+import { JwtGuard } from "../UserAccount/auth/guards/jwt.guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { Item } from "./items.interface";
 import { ItemsService } from "./items.service";

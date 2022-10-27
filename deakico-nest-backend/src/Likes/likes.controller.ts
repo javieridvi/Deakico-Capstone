@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { JwtGuard } from "src/UserAccount/auth/guards/jwt.guard";
+import { JwtGuard } from "../UserAccount/auth/guards/jwt.guard";
 import { DeleteResult } from "typeorm";
 import { Likes } from "./likes.interface";
 import { LikesService } from "./likes.service";
