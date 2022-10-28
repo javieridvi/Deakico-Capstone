@@ -20,7 +20,7 @@ export default function LogIn() {
     // });
     console.log({
       email: data.get('email'),
-      password: data.get('password'),
+      password: data.get('password').length > 0 ? 'recieved' : 'not recieved',
     });
   };
 

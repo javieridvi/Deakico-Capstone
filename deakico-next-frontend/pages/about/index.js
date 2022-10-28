@@ -10,9 +10,6 @@ export default function index() {
       <title> About </title>
       </Head>
       <About/>
-      <footer>
-        
-      </footer>
     </div>
   )
 }

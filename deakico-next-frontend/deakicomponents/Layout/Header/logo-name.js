@@ -30,8 +30,7 @@ export default function LogoName() {
             />
           </Link>
         </Box>
-        {/* Changed marginLeft and Right */}
-        <Box marginLeft={20} marginRight={-20}
+        <Box marginLeft={5}
           sx={{
             position: 'relative',
             height: '1em',
@@ -51,7 +50,7 @@ export default function LogoName() {
       }}
       >
         <Typography component='h1' variant="h3">
-          <Link marginLeft={20} underline='none' color="black" href='/'>Deakico.</Link>
+          <Link underline='none' color="black" href='/'>Deakico.</Link>
         </Typography>
       </Box>
     </ThemeProvider>

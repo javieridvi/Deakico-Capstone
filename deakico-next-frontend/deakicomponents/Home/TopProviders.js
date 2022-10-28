@@ -22,6 +22,7 @@ export default function TopProviders() {
         justifyContent: 'center',
         alignItems: 'center',
         margin: '2rem',
+        backgroundColor: 'white',
       }}
       >
         <Typography component='h3' variant='h3'
@@ -31,7 +32,15 @@ export default function TopProviders() {
         >
           Top 3 Providers
         </Typography>
-        <Stack direction={'row'} columnGap={4} paddingBottom='2rem'>
+        <Stack 
+        direction={'row'} 
+        gap={4} 
+        paddingBottom='2rem' 
+        sx={{
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+        >
           <ProviderTest/>
           <ProviderTest/>
           <ProviderTest/>
