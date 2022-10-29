@@ -28,10 +28,10 @@ export default function Header() {
   };
 
   return (
-    <AppBar color='secondary' sx={{position: 'relative'}}>
+    <AppBar color='secondary' sx={{ position: 'relative' }}>
       <Toolbar>
-        <Grid container 
-          columns={{ xs: 4, sm: 8 , md: 10, lg: 12}}
+        <Grid container
+          columns={{ xs: 4, sm: 8, md: 10, lg: 12 }}
           spacing={{ xs: 2, md: 1 }}
           display='flex'
           flexWrap='nowrap'
@@ -47,9 +47,9 @@ export default function Header() {
             <LogoName />
           </Grid>
           <Grid item
-            xs={'auto'}
+            xs={2}
             md={4}
-            lg={'auto'}
+            lg={2}
 
             display="flex"
             justifyContent="center"
@@ -58,7 +58,8 @@ export default function Header() {
           >
             <Search />
           </Grid>
-          <Grid item xs={'auto'}
+          <Grid item
+            lg={3}
             display={{ xs: 'none', lg: 'flex' }}
             justifyContent="center"
             alignItems="center"

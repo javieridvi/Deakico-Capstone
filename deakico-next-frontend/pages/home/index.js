@@ -29,15 +29,20 @@ function Home(){
 
   return (
     <Stack
+    className="CenterColumn"
     direction='column'
     justifyContent='flex-start'
     alignItems='center'
     spacing={0}
+    gap={1}
     sx={{
       position: 'relative',
       minHeight: '100vh',
-      maxWidth: '50rem',
-      backgroundColor: 'white',
+      width: 'min(80rem,100%)',
+      '& > *':{
+        width: '100%',
+        marginBottom: '4rem',
+      }
     }}
     >
       <Banner/>
