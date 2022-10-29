@@ -1,6 +1,5 @@
-
-import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
-import { UserAccountEntity } from 'src/UserAccount/users.entity';
+import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
+import { UserAccountEntity } from '../UserAccount/users.entity';
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('Follows')

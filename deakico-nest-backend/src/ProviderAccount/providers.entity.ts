@@ -1,6 +1,6 @@
 import { type } from 'os';
-import { FollowEntity } from 'src/Follows/follows.entity';
-import { ItemEntity } from 'src/Item/items.entity';
+import { FollowEntity } from '../Follows/follows.entity';
+import { ItemEntity } from '../Item/items.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 export enum Categories {

@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
-import { ItemsService } from "src/Item/items.service";
-import { UserAccount } from "src/UserAccount/users.interface";
+import { UserAccount } from "../UserAccount/users.interface";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { LikeEntity } from "./likes.entity";
 import { Likes } from "./likes.interface";

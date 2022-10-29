@@ -100,12 +100,13 @@ export default function Header() {
             >
               <MenuLink link='/login' onClick={handleClose}>Log In</MenuLink>
               <MenuLink link='/signup' onClick={handleClose}>Sign Up</MenuLink>
+              <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
               <Box component='div' display={{ xs: 'block', lg: 'none' }}>
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>Services</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>Products</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>About</MenuLink>
+                <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
+                <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+                <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
               </Box>
             </Menu>
           </Grid>
