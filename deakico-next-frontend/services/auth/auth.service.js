@@ -23,8 +23,6 @@ const login = async (email, password) => {
     sessionStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
-
-  console.log(apiUrl)
 };
 
 const logout = () => {
