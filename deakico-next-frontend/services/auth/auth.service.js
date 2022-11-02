@@ -29,12 +29,13 @@ const logout = () => {
   sessionStorage.removeItem("user");
 };
 
+//getUser() inside user.service.js should replace this method, as it uses authHeader.
 const getCurrentUser = () => {
   return JSON.parse(sessionStorage.getItem("user"));
 };
 
 const isLoggedIn = () => {
-  return !sessionStorage.getItem("user");
+  return sessionStorage.getItem("user") ? true : false;
 }
 
 // const removeAcount = (id_user,obj) => {
