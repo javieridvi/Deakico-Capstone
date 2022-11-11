@@ -1,13 +1,23 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Request } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { JwtGuard } from "../UserAccount/auth/guards/jwt.guard";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { Follow } from "./follows.interface";
-import { FollowsService } from "./follows.service";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { Follow } from './follows.interface';
+import { FollowsService } from './follows.service';
 
 @Controller('follows')
 export class FollowsController {
-  constructor(private readonly followsService: FollowsService) { }
+  constructor(private readonly followsService: FollowsService) {}
 
   @Get()
   getAllFollows(): Observable<Follow[]> {
@@ -21,7 +31,7 @@ export class FollowsController {
    */
   @UseGuards(JwtGuard)
   @Get('followers')
-  getFollowers(@Request() req: any,) {
+  getFollowers(@Request() req: any) {
     return this.followsService.getFollowers(req.user.pa_id);
   }
 
@@ -43,7 +53,7 @@ export class FollowsController {
    */
   @UseGuards(JwtGuard)
   @Get('following')
-  getFollowing(@Request() req: any,) {
+  getFollowing(@Request() req: any) {
     return this.followsService.getFollowing(req.user.u_id);
   }
 
@@ -54,20 +64,25 @@ export class FollowsController {
    */
   @UseGuards(JwtGuard)
   @Get('following/count')
-  getFollowingCount(@Request() req: any,) {
+  getFollowingCount(@Request() req: any) {
     return this.followsService.getFollowingCount(req.user.u_id);
   }
 
   @UseGuards(JwtGuard)
   @Post()
-  insertFollow(@Body() follow: Follow, @Request() req: any): Observable<Follow> {
+  insertFollow(
+    @Body() follow: Follow,
+    @Request() req: any,
+  ): Observable<Follow> {
     return this.followsService.insertFollow(req.user, follow);
   }
 
   @UseGuards(JwtGuard)
   @Delete()
   deleteItem(
-    @Body() follow: Follow, @Request() req: any): Observable<DeleteResult> {
+    @Body() follow: Follow,
+    @Request() req: any,
+  ): Observable<DeleteResult> {
     return this.followsService.deleteFollow(req.user.u_id, follow.pa_id);
   }
 }

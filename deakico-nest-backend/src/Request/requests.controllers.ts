@@ -1,13 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { JwtGuard } from "../UserAccount/auth/guards/jwt.guard";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { ItemRequest } from "./requests.interface";
-import { RequestService } from "./requests.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { ItemRequest } from './requests.interface';
+import { RequestService } from './requests.service';
 
 @Controller('requests')
 export class ItemRequestController {
-  constructor(private readonly requestsService: RequestService) { }
+  constructor(private readonly requestsService: RequestService) {}
 
   @Get()
   getAllRequests(): Observable<ItemRequest[]> {
@@ -15,7 +25,7 @@ export class ItemRequestController {
   }
 
   @Get(':req_id')
-  getRequest(@Param('req_id') req_Id: number,): Observable<ItemRequest> {
+  getRequest(@Param('req_id') req_Id: number): Observable<ItemRequest> {
     return this.requestsService.getRequest(req_Id);
   }
 
@@ -43,7 +53,10 @@ export class ItemRequestController {
 
   @UseGuards(JwtGuard)
   @Post()
-  insertRequest(@Body() itemRequest: ItemRequest, @Request() req: any): Observable<ItemRequest> {
+  insertRequest(
+    @Body() itemRequest: ItemRequest,
+    @Request() req: any,
+  ): Observable<ItemRequest> {
     return this.requestsService.insertRequest(req.user, itemRequest);
   }
 
@@ -61,7 +74,11 @@ export class ItemRequestController {
     @Body() itemRequest: ItemRequest,
     @Request() req: any,
   ): Promise<Observable<UpdateResult>> {
-    return (this.requestsService.updateRequest(req_Id, itemRequest, req.user.u_id));
+    return this.requestsService.updateRequest(
+      req_Id,
+      itemRequest,
+      req.user.u_id,
+    );
   }
 
   /**
@@ -73,7 +90,9 @@ export class ItemRequestController {
   @UseGuards(JwtGuard)
   @Delete(':req_id')
   deleteRequest(
-    @Param('req_id') req_Id: number, @Request() req: any,): Promise<Observable<DeleteResult>> {
+    @Param('req_id') req_Id: number,
+    @Request() req: any,
+  ): Promise<Observable<DeleteResult>> {
     return this.requestsService.deleteRequest(req_Id, req.user.u_id);
   }
 }
