@@ -6,11 +6,11 @@ const entity = "items";
 const endpoint = API_URL + entity;
 
 const insertItem = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint, {headers: authHeader()}); 
 };
 
 const updateItem = async (i_id) => {
-    return await axios.put(endpoint + "/id/" + i_id, {headers: authHeader})
+    return await axios.put(endpoint + "/id/" + i_id, {headers: authHeader()})
 }
 
 const getAllItems = async () => {
@@ -34,7 +34,7 @@ const getItemByCategory = async (i_category) => {
 };
 
 const getItemOfProvider = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/provider", {headers: authHeader()}); //check endpoint
 }
 
 export default {

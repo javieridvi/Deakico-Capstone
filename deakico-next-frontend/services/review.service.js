@@ -6,11 +6,11 @@ const entity = "reviews";
 const endpoint = API_URL + entity;
 
 const insertReview = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint, {headers: authHeader()}); 
 };
 
 const updateReview = async (r_id) => {
-    return await axios.put(endpoint + "/" + r_id, {headers: authHeader});
+    return await axios.put(endpoint + "/" + r_id, {headers: authHeader()});
 };
 
 const getAllReviews = async () => {

@@ -6,11 +6,11 @@ const entity = "requests";
 const endpoint = API_URL + entity;
 
 const insertRequest = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint, {headers: authHeader()}); 
 };
 
 const updateRequest = async (req_id) => {
-    return await axios.put(endpoint + "/" + req_id, {headers: authHeader});
+    return await axios.put(endpoint + "/" + req_id, {headers: authHeader()});
 };
 
 const getAllRequests = async () => {
@@ -22,11 +22,11 @@ const getRequest = async (req_id) => {
 }
 
 const getProviderRequest = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader});
+    return await axios.get(endpoint + "/provider", {headers: authHeader()});
 };
 
 const getUserRequest = async () => {
-    return await axios.get(endpoint + "/user", {headers: authHeader});
+    return await axios.get(endpoint + "/user", {headers: authHeader()});
 }
 
 export default {
