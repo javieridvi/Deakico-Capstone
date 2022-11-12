@@ -15,7 +15,6 @@ import {
 import { type } from 'os';
 
 @Entity('User Account')
-@Unique(['username', 'email'])
 export class UserAccountEntity {
   @PrimaryGeneratedColumn()
   u_id: number;
@@ -26,10 +25,10 @@ export class UserAccountEntity {
   @Column() //find ways to set a default date of "now"
   u_lastname: string;
 
-  @Column() //this attribute might be redundant
+  @Column({unique: true}) //this attribute might be redundant
   email: string;
 
-  @Column()
+  @Column({unique: true})
   username: string;
 
   @Column() //consider {select: false} for better security
