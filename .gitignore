@@ -46,6 +46,9 @@ lerna-debug.log*
 # testing
 /coverage
 
+# Sentry/performance
+.sentryclirc
+
 # next.js
 /deakico-next-frontend/.next/
 /out/

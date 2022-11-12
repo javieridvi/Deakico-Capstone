@@ -21,7 +21,7 @@ export default function Main() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: '#f1f1f1',
         }}
       >
         <Home/>

@@ -20,7 +20,7 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
-export default function Categories( {categoryList }) {
+export default function Categories({ categoryList }) {
 
   const Category = categoryList.slice();
 
@@ -28,8 +28,18 @@ export default function Categories( {categoryList }) {
     const category = props.category;
     return (
       category.map((category) =>
-        <Grid item key={category} xs={1} sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-          <Button variant="contained" href='/#'>{category}</Button>
+        <Grid item
+          key={category}
+          xs={1}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Button variant="outlined" href='/#' size="large">
+            <Typography variante='h4'>{category}</Typography>
+          </Button>
         </Grid>
       )
     );
@@ -38,20 +48,28 @@ export default function Categories( {categoryList }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box component={'div'} 
-      sx={{
-        minHeight: '10rem',
-        padding: '2rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-      }}
+      <Box
+        className="Categories"
+        component={'div'}
+        sx={{
+          minHeight: '10rem',
+          padding: '2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          backgroundColor: 'white',
+        }}
       >
         <Typography component={'h3'} variant='h3' margin={'2rem'}>
           Categories
         </Typography>
-        <Grid container spacing={2} columns={{xs:2, sm:4}} display={'flex'}>
+        <Grid container
+          rowGap={3}
+          columns={{ xs: 2, sm: 4 }}
+          display={'flex'}
+          marginBottom={'2rem'}
+        >
           <CategoryButton category={Category} />
         </Grid>
       </Box>
