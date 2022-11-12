@@ -1,19 +1,21 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { from, Observable } from "rxjs";
-import { UserAccount } from "../UserAccount/users.interface";
-import { DeleteResult, Repository, UpdateResult } from "typeorm";
-import { LikeEntity } from "./likes.entity";
-import { Likes } from "./likes.interface";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { from, Observable } from 'rxjs';
+import { UserAccount } from '../UserAccount/users.interface';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { LikeEntity } from './likes.entity';
+import { Likes } from './likes.interface';
 
 @Injectable()
 export class LikesService {
   constructor(
     @InjectRepository(LikeEntity)
-    private readonly likeRepository: Repository<LikeEntity>
-  ) { }
+    private readonly likeRepository: Repository<LikeEntity>,
+  ) {}
 
-  getAllLikes(): Observable<Likes[]> { return from(this.likeRepository.find()); }
+  getAllLikes(): Observable<Likes[]> {
+    return from(this.likeRepository.find());
+  }
 
   /**
    * Fetches user id and the items liked by given user id
@@ -23,19 +25,19 @@ export class LikesService {
    */
   async getUserLiked(userId: number): Promise<Partial<Likes[]>> {
     const res = await this.likeRepository
-    .createQueryBuilder("likes")
-    .innerJoin("likes.likes_item", "items")
-    .select("items")
-    .where("likes.u_id = :u_id", {u_id: userId})
-    .getRawMany()
+      .createQueryBuilder('likes')
+      .innerJoin('likes.likes_item', 'items')
+      .select('items')
+      .where('likes.u_id = :u_id', { u_id: userId })
+      .getRawMany();
     return res;
   }
 
   async getItemLikes(itemId: number): Promise<number> {
     const res = await this.likeRepository
-    .createQueryBuilder()
-    .where("i_id = :i_id",{i_id: itemId})
-    .getCount()
+      .createQueryBuilder()
+      .where('i_id = :i_id', { i_id: itemId })
+      .getCount();
     return res;
   }
   /**
@@ -54,6 +56,6 @@ export class LikesService {
   }
 
   deleteLike(userId: number, itemId: number): Observable<DeleteResult> {
-    return from(this.likeRepository.delete({"u_id": userId, "i_id": itemId}))
+    return from(this.likeRepository.delete({ u_id: userId, i_id: itemId }));
   }
 }

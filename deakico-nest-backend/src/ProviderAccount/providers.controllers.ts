@@ -1,14 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, Request, UseGuards } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { JwtGuard } from "../UserAccount/auth/guards/jwt.guard";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { ProviderAccount } from "./providers.interface";
-import { ProviderAccountService } from "./providers.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { ProviderAccount } from './providers.interface';
+import { ProviderAccountService } from './providers.service';
 
 @Controller('providers')
 export class ProviderAccountController {
-  constructor(private readonly providersService: ProviderAccountService) { }
-
+  constructor(private readonly providersService: ProviderAccountService) {}
 
   @Get()
   getAllProviders(): Observable<ProviderAccount[]> {
@@ -22,7 +31,7 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Get('account')
-  getProvider(@Request() req: any,): Observable<ProviderAccount> {
+  getProvider(@Request() req: any): Observable<ProviderAccount> {
     return this.providersService.getProvider(req.user.pa_id);
   }
 
@@ -44,14 +53,17 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Post()
-  insertProvider(@Body() provider: ProviderAccount, @Request() req: any): Promise<ProviderAccount> {
+  insertProvider(
+    @Body() provider: ProviderAccount,
+    @Request() req: any,
+  ): Promise<ProviderAccount> {
     return this.providersService.insertProvider(provider, req.user.u_id);
   }
 
   /**
    * Updates user's provider account
    * @param req token user to retrieve the id of the provider
-   * @param provider info to be updated 
+   * @param provider info to be updated
    * @returns update confimation
    */
   @UseGuards(JwtGuard)
@@ -70,8 +82,7 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Delete()
-  deleteProvider(
-    @Request() req: any,): Observable<DeleteResult> {
+  deleteProvider(@Request() req: any): Observable<DeleteResult> {
     return this.providersService.deleteProvider(req.user.pa_id);
   }
 }

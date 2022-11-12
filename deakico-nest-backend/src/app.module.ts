@@ -11,13 +11,22 @@ import { ProviderAccountModule } from './ProviderAccount/providers.module';
 import { RequestModule } from './Request/requests.module';
 import { ReviewModule } from './Review/reviews.module';
 import { UserAccountModule } from './UserAccount/users.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './UserAccount/auth/core/all_exceptions.filter';
 
 @Module({
-  imports: [ItemsModule, ProviderAccountModule, RequestModule, UserAccountModule,
-    ReviewModule, LikesModule, FollowsModule, AuthModule,
+  imports: [
+    ItemsModule,
+    ProviderAccountModule,
+    RequestModule,
+    UserAccountModule,
+    ReviewModule,
+    LikesModule,
+    FollowsModule,
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({ 
-      type: "postgres",
+    TypeOrmModule.forRoot({
+      type: 'postgres',
       host: process.env.POSTGRES_HOST,
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
@@ -26,8 +35,11 @@ import { UserAccountModule } from './UserAccount/users.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-   ],
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_FILTER,
+    useClass: AllExceptionsFilter
+  }],
 })
 export class AppModule {}
