@@ -18,10 +18,7 @@ function MyApp({ Component, pageProps }) {
   })
   /*Missing: 
   Layout>Footer
-  Home/General page
-  SignIn/Up functions
   Profile Settings
-  Provider page
   Side bar menu
   Request functions, handling and managing page 
   Review Page
