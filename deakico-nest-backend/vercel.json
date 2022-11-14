@@ -1,7 +1,7 @@
 {
     "version": 2,
     "env": {
-        "POSTGRES_HOST": "deakico-db-instance.cgpyumkbjlmh.us-east-1.rds.amazonaws.com"
+        "POSTGRES_HOST": "@deakico-db-hostname"
     },
     "builds": [
         {
