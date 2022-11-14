@@ -23,10 +23,6 @@ export default function About() {
         >
           <div className='aboutPic'>
             <img src='/Coqui.svg' width={"100%"} />
-            {/* <Image src="/Coqui.svg"
-              width={500}
-              height={474}
-            /> */}
           </div>
           <Typography variant='h3'
             sx={{
@@ -43,8 +39,8 @@ export default function About() {
 
         <Container className='aboutInfo' sx={{ display: 'flex' }}>
           <Box sx={{ mt: '5%' }}>
-            <Typography sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}> About Deakico :    </Typography>
-            <Typography sx={{ fontSize: '28px', fontWeight: '600', fontStyle: 'italic', m: '10px' }}> "De aqui como el Coqui"   </Typography>
+            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}> About Deakico :    </Typography>
+            <Typography variant='h2' sx={{ fontSize: '28px', fontWeight: '600', fontStyle: 'italic', m: '10px' }}> "De aqui como el Coqui"   </Typography>
             <Typography sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left' }}> - We establish ourselves as
               the platform that connects local small companies with potential customers.
               In addition, a strong Review/Rating system is offered to clients so they can make informed
@@ -54,9 +50,44 @@ export default function About() {
         </Container>
 
 
-        <Box sx={{ mt: '10%', display: 'flex', textAlign: 'left', mt: '8rem', backgroundImage: 'radial-gradient( rgb(193,3239,221,0.3) 2%, white 60%)', width: '100%' }}>
-          <Typography sx={{ fontSize: '40px', fontWeight: '700', pl: '1rem' }}> <mark className='problem-st'>Problem Statement : </mark>
-            <Typography sx={{ fontSize: '25px', fontWeight: '500', mb: '5%', width: '80%', mt: '2%' }}>
+        <Box
+          sx={{
+            position: 'relative',
+            mt: '10%',
+            display: 'flex',
+            mt: '8rem',
+            backgroundImage: 'radial-gradient( rgb(193,239,221,0.3) 2%, white 60%)',
+            width: '100%'
+          }}
+          >
+          <Box
+          sx={{
+            textAlign: 'left',
+            minWidth: '56%',
+            width: '100%',
+          }}
+          >
+            <Typography
+              variant='h3'
+              sx={{
+                fontSize: '40px',
+                fontWeight: '700',
+              }}
+            >
+              <mark className='problem-st'>
+                Problem Statement :
+              </mark>
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{
+                fontSize: '25px',
+                fontWeight: '500',
+                mb: '5%',
+                width: '80%',
+                mt: '2%'
+              }}
+            >
               - customers acknowledge the quality of local services and products because they are made with passion,
               dedication and with additional freshness or uniqueness.
               We expect that quality pushes business to a better price and demand. The fact is that big enterprises overshadow
@@ -65,15 +96,26 @@ export default function About() {
               a previous encounter or recommendation.
 
             </Typography>
-          </Typography>
-          <div>
+          </Box>
+          <Box
+          component={'img'}
+          src='/solu.jpg'
+          sx={{
+            width: 'min(500px, 44%)',
+            maxHeight: '500px',
+            aspectRatio: '1/1',
+            objectFit: 'fill',
+          }}
+          >
+          </Box>
+          {/* <div>
             <Image src="/solu.jpg"
               width={500}
               height={550}
               layout='fixed'
 
             />
-          </div>
+          </div> */}
         </Box>
 
         <Box sx={{ display: 'flex', width: '100%', height: '40%', p: '0', m: '10px' }}>
@@ -82,15 +124,39 @@ export default function About() {
             height={440}
             layout='fixed'
             objectFit='scale-down'
-
-
           />
 
-          <Typography sx={{ fontSize: '40px', fontWeight: '700', ml: '8rem', textAlign: 'left', width: '60%' }}> <mark className='sol' >  Solution Approach: </mark>
-            <Typography sx={{ fontSize: '25px', fontWeight: '500', mb: '5%', mt: '2%' }}>
+          <Box
+            className='Solution-Approach'
+            sx={{
+              width: '60%',
+              textAlign: 'left',
+              ml: '8rem',
+            }}
+          >
+            <Typography
+              variant='h3'
+              sx={{
+                fontSize: '40px',
+                fontWeight: '700',
+                marginBottom: '1rem',
+              }}
+            >
+              <mark className='sol' >
+                Solution Approach:
+              </mark>
+            </Typography>
+            <Typography
+              variant=''
+              sx={{
+                fontSize: '25px',
+                fontWeight: '500',
+                mb: '5%',
+                mt: '2%'
+              }}
+            >
               - The solution we proposed is a web-based system that promotes the growth, organization, and reliability of
               local businesses/services in Puerto Rico. We seek to create a platform that both customers and providers can benefit from.
-              <txt> we </txt>
               <ul>
                 <li>Build a relationship with their customers let them express
                   about a service and give a chance to get positive tips that help the (brand /service) to improve.</li>
@@ -99,14 +165,22 @@ export default function About() {
                 <li> Have inventory management.</li>
               </ul>
             </Typography>
-          </Typography>
+          </Box>
         </Box>
 
         <Box sx={{ mt: '2%', display: 'flex' }}>
           <div>
-            <Typography sx={{ fontSize: '40px', fontWeight: '600', mb: '1rem', }}> <mark className='gap-sol'> Gap with existing solutions: </mark>   </Typography>
+            <Typography
+              sx={{
+                fontSize: '40px',
+                fontWeight: '600',
+                mb: '1rem',
+              }}
+            >
+              <mark className='gap-sol'> Gap with existing solutions: </mark>
+            </Typography>
 
-            <Typography sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left', pb: '3rem', width: '80%' }}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.
+            <Typography variant='body1' sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left', pb: '3rem', width: '80%' }}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.
               In addition, the markets in social networks like Instagram or Facebook tend to distract the client from the commercial content.
               There is a lack of exposure in the local market on top of the new wave of local products and the gestation of new entrepreneurs who want to grow their business in the island.
               Our proposal project also covers the need of finding places near the user’s current localization.

@@ -1,26 +1,28 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { from, Observable } from "rxjs";
-import { UserAccount } from "src/UserAccount/users.interface";
-import { DeleteResult, Repository, UpdateResult } from "typeorm";
-import { FollowEntity } from "./follows.entity";
-import { Follow } from "./follows.interface";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { from, Observable } from 'rxjs';
+import { UserAccount } from '../UserAccount/users.interface';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { FollowEntity } from './follows.entity';
+import { Follow } from './follows.interface';
 
 @Injectable()
 export class FollowsService {
   constructor(
     @InjectRepository(FollowEntity)
-    private readonly followRepository: Repository<FollowEntity>
-  ) { }
+    private readonly followRepository: Repository<FollowEntity>,
+  ) {}
 
-  getAllFollows(): Observable<Follow[]> { return from(this.followRepository.find()) }
+  getAllFollows(): Observable<Follow[]> {
+    return from(this.followRepository.find());
+  }
 
   async getFollowers(providerId: number): Promise<FollowEntity[]> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .select("u_id")
-      .where("pa_id = :pa_id", { pa_id: providerId })
-      .getRawMany()
+      .select('u_id')
+      .where('pa_id = :pa_id', { pa_id: providerId })
+      .getRawMany();
     console.log(res);
     return res;
   }
@@ -28,25 +30,25 @@ export class FollowsService {
   async getFollowersCount(providerId: number): Promise<number> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .where("pa_id = :pa_id", { pa_id: providerId })
-      .getCount()
+      .where('pa_id = :pa_id', { pa_id: providerId })
+      .getCount();
     return res;
   }
 
   async getFollowing(userId: number): Promise<FollowEntity[]> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .select("pa_id")
-      .where("u_id = :u_id", { u_id: userId })
-      .getRawMany()
+      .select('pa_id')
+      .where('u_id = :u_id', { u_id: userId })
+      .getRawMany();
     return res;
   }
 
   async getFollowingCount(userId: number): Promise<number> {
     const res = await this.followRepository
       .createQueryBuilder()
-      .where("u_id = :u_id", { u_id: userId })
-      .getCount()
+      .where('u_id = :u_id', { u_id: userId })
+      .getCount();
     return res;
   }
 
@@ -59,6 +61,8 @@ export class FollowsService {
   }
 
   deleteFollow(userId: number, providerId: number): Observable<DeleteResult> {
-    return from(this.followRepository.delete({ "u_id": userId, "pa_id": providerId }))
+    return from(
+      this.followRepository.delete({ u_id: userId, pa_id: providerId }),
+    );
   }
 }
