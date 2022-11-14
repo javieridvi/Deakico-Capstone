@@ -6,23 +6,23 @@ const entity = "reviews";
 const endpoint = API_URL + entity;
 
 const insertReview = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint, {headers: authHeader()}); 
 };
 
 const updateReview = async (r_id) => {
-    return await axios.put(endpoint + "/" + r_id, {headers: authHeader});
+    return await axios.put(endpoint + "/" + r_id, {headers: authHeader()});
 };
 
 const getAllReviews = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
 const getReview = async (r_id) => {
-    return await axios.get(endpoint + "/" + r_id, {headers: authHeader})
+    return await axios.get(endpoint + "/" + r_id)
 }
 
 const getItemReview = async (i_id) => {
-    return await axios.get(endpoint + "/item/" + i_id, {headers: authHeader});
+    return await axios.get(endpoint + "/item/" + i_id);
 };
 
 

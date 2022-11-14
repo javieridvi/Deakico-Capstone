@@ -6,34 +6,34 @@ const entity = "likes";
 const endpoint = API_URL + entity;
 
 const insertLike = async () => {
-    return await axios.post(endpoint, {headers: authHeader}); 
+    return await axios.post(endpoint, {headers: authHeader()}); 
 };
 
 const updateLike = async (l_id) => {
-    return await axios.put(endpoint + "/" + l_id, {headers: authHeader});
+    return await axios.put(endpoint + "/" + l_id, {headers: authHeader()});
 };
 
 const getAllLikes = async () => {
-    return await axios.get(endpoint, {headers: authHeader});
+    return await axios.get(endpoint);
 };
 
-const getLike = async (l_id) => {
-    return await axios.get(endpoint + "/" + l_id, {headers: authHeader});
-};
+// const getLike = async (l_id) => {
+//     return await axios.get(endpoint + "/" + l_id, {headers: authHeader});
+// };
 
 const getUserLiked = async () => {
-    return await axios.get(endpoint + "user/", {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/user", {headers: authHeader()}); //check endpoint
 };
 
 const getItemLikes = async (i_id) => {
-    return await axios.get(endpoint + "item/" + i_id, {headers: authHeader}); //check endpoint
+    return await axios.get(endpoint + "/item/" + i_id); //check endpoint
 };
 
 export default {
     insertLike,
     updateLike,
     getAllLikes,
-    getLike,
+    //getLike,
     getUserLiked,
     getItemLikes,
     //delete missing
