@@ -1,7 +1,11 @@
 {
     "version": 2,
     "env": {
-        "POSTGRES_HOST": "@deakico-db-hostname"
+        "POSTGRES_HOST": "@deakico_db_hostname",
+        "POSTGRES_PORT": "@deakico_db_port",
+        "POSTGRES_USER": "@deakico_db_user",
+        "POSTGRES_PASSWORD": "@deakico_db_password",
+        "POSTGRES_DATABASE": "@deakico_db_name"
     },
     "builds": [
         {
