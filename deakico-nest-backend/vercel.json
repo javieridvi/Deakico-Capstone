@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "env": {
-        "POSTGRES_HOST": "@deakico-db-hostname"
-    },
     "builds": [
         {
             "src": "src/main.ts",
