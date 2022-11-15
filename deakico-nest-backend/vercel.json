@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "env": {
-        "POSTGRES_HOST": "deakico-db-instance.cgpyumkbjlmh.us-east-1.rds.amazonaws.com"
-    },
     "builds": [
         {
             "src": "src/main.ts",
