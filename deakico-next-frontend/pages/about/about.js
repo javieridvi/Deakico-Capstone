@@ -7,7 +7,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 export default function About() {
   return (
     <div>
-  <Container sx={{width:'100%' ,height:'100%', justifyContent:'center'}} >
+  <Container sx={{justifyContent:'center'}} >
   
     <Box className='aboutHead' sx={{width:'100%', height:'300px', backgroundColor: 'primary', mt:'8%', justifyContent:'center', textAlign:'center', display:'flex'}}>
       <div className='aboutPic'>
@@ -16,14 +16,14 @@ export default function About() {
         height={474}
         /> </div>  
           <Typography variant='h2'sx={{width:'50%', fontWeight:'bold',mr:'6%', mt:'5%', position:'relative'}}>
-        "We can help business of every size - from entrepreneurs to iconic brands."
+        "We can help business of every size - from entrepreneurs to iconic brands in Puerto Rico."
       </Typography>
    
     </Box>
 
     <Container className='aboutInfo' sx={{display:'flex'}}>
       <Box  sx={{mt:'20%'}}>
-        <Typography sx={{fontSize:'46px', fontWeight:'700',mt:'5px' }}> About Deakico :    </Typography>  
+        <Typography sx={{fontSize:'46px', fontWeight:'700',mt:'5px' }}> <mark> About Deakico:  </mark>  </Typography>  
         <Typography sx={{fontSize:'28px', fontWeight:'600',fontStyle:'italic', m:'10px'}}> "De aqui como el Coqui"   </Typography>
         <Typography sx={{fontSize:'25px', fontWeight:'500',textAlign:'left'}}> - We establish ourselves as 
         the platform that connects local small companies with potential customers.
@@ -35,7 +35,7 @@ export default function About() {
       
  
       <Box sx={{mt:'10%', display:'flex', textAlign:'left' , mt:'8rem', backgroundImage:'radial-gradient( rgb(193,3239,221,0.3) 2%, white 60%)', width:'100%'}}>
-        <Typography sx={{fontSize:'40px', fontWeight:'700', pl:'1rem'}}> <mark className='problem-st'>Problem Statement : </mark> 
+        <Typography sx={{fontSize:'40px', fontWeight:'700', pl:'1rem'}}> Problem Statement : 
            <Typography sx={{fontSize:'25px', fontWeight:'500', mb:'5%', width:'80%',mt:'2%'}}>
              - customers acknowledge the quality of local services and products because they are made with passion, 
            dedication and with additional freshness or uniqueness. 
@@ -66,7 +66,7 @@ export default function About() {
 
               />
 
-        <Typography sx={{fontSize:'40px', fontWeight:'700', ml:'8rem' , textAlign:'left',width:'60%'}}> <mark className='sol' >  Solution Approach: </mark> 
+        <Typography sx={{fontSize:'40px', fontWeight:'700', ml:'8rem' , textAlign:'left',width:'60%'}}>  Solution Approach: 
            <Typography sx={{fontSize:'25px', fontWeight:'500', mb:'5%', mt:'2%'}}> 
           - The solution we proposed is a web-based system that promotes the growth, organization, and reliability of 
            local businesses/services in Puerto Rico. We seek to create a platform that both customers and providers can benefit from.
@@ -84,7 +84,7 @@ export default function About() {
 
         <Box  sx={{mt:'2%', display:'flex'}}>
           <div>
-        <Typography sx={{fontSize:'40px', fontWeight:'600',mb:'1rem', }}> <mark className='gap-sol'> Gap with existing solutions: </mark>   </Typography>  
+        <Typography sx={{fontSize:'40px', fontWeight:'600',mb:'1rem', }}> Gap with existing solutions: </Typography>  
        
         <Typography sx={{fontSize:'25px', fontWeight:'500',textAlign:'left', pb:'3rem', width:'80%'}}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.
           In addition, the markets in social networks like Instagram or Facebook tend to distract the client from the commercial content. 
@@ -172,9 +172,7 @@ export default function About() {
 </Container>
 {/* ### PROPS STYLE ### */}
 <style jsx>{`
- .sol{
-  background-color: #32F3AF;
-}
+
 
 .problem-st{
   background-color: #EA4A8E;
