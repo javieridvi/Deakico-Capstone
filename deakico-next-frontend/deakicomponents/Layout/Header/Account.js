@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Typography, IconButton, Menu, MenuItem, Link, Box, Divider} from "@mui/material";
+import { Button, ButtonGroup, Grid, Typography, IconButton, Menu, MenuItem, Link, Box, Divider} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect, useState } from "react";
 import authService from "../../../services/auth/auth.service";
@@ -49,7 +49,7 @@ export default function Account() {
   useEffect(() => {
     checkLoggedIn();    
     checkCurrUser();
-    console.log(loggedIn);
+    //console.log(loggedIn);
   }, [])
 
   return typeof (loggedIn !== 'undefined') ? (
@@ -84,8 +84,6 @@ export default function Account() {
               <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
             </Menu>
       </>
-        
-        
       ) : (
           <ButtonGroup variant="outlined">
             <Button href='/login'>
