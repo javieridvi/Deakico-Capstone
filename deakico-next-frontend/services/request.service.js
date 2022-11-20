@@ -5,12 +5,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "requests";
 const endpoint = API_URL + entity;
 
-const insertRequest = async () => {
-    return await axios.post(endpoint, {headers: authHeader()}); 
+const insertRequest = async (data) => {
+    return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const updateRequest = async (req_id) => {
-    return await axios.put(endpoint + "/" + req_id, {headers: authHeader()});
+const updateRequest = async (req_id, data) => {
+    return await axios.put(endpoint + "/" + req_id, data, {headers: authHeader()});
 };
 
 const getAllRequests = async () => {
