@@ -1,20 +1,13 @@
 import { Box, ThemeProvider, Typography, createTheme, responsiveFontSizes} from "@mui/material";
 import { Stack } from "@mui/system";
-import { ProviderTest } from "../Card";
+import { DefaultTest, ProductTest, ProviderTest } from "../Card";
 
-let theme = createTheme({
-  typography: {
-    fontFamily: 'Comfortaa',
-  },
-});
 
-theme = responsiveFontSizes(theme);
 
 export default function TopProviders() {
 
 
   return (
-    <ThemeProvider theme={theme}>
       <Box component={'div'} 
       sx={{
         display: 'flex',
@@ -46,6 +39,5 @@ export default function TopProviders() {
           <ProviderTest/>
         </Stack>
       </Box>
-    </ThemeProvider>
   );
 };

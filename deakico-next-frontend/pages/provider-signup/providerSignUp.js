@@ -1,40 +1,56 @@
-import { Button, Container, CssBaseline, Link, Stack, TextField, Typography } from '@mui/material';
+import { Button, Container, CssBaseline, Link, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
+import providerService from '../../services/provider.service';
+import userService from '../../services/user.service';
 import authService from '../../services/auth/auth.service';
-import BasicModal from '../../deakicomponents/Modal';
 
 
-export default function SignUp() {
+export default function ProviderSignUp() {
 
-  const [open, setOpen] = React.useState(false); //modal use states
+  const [currUser, setCurrUser] = React.useState(undefined);
+  const [category, setCategory] = React.useState('');
+
+  const checkCurrUser = () => {
+    setCurrUser(userService.getUser()?.then((res) => {
+      setCurrUser(res.data);
+    }).catch((err) => {
+      console.log(err);
+    }));
+  }
+
+  const categories = [
+    'hair',
+    'pastry',
+    'food',
+    'clothing',
+    'cleaning',
+    'jewelry',
+    'other',
+  ]
+
 
   // Esta funcion es del template. lo que hace es log al console
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
-    //register api endpoint 
-    authService.register(
-      data.get('firstName'),
-      data.get('lastName'),
-      data.get('email'),
-      data.get('username'),
-      data.get('password'),).then(
+    //then register, once the user is validated
+    const payload = {
+          pa_companyname: data.get('companyName'),
+          pa_desc: data.get('description'),
+          pa_category: category,
+        };
+    providerService.insertProvider(payload).then(
       () => {
-        authService.login(
-          data.get('email'),
-          data.get('password')).then(() => {}).catch((err) => {console.log(err.response.data)})
-
-        location.assign('/'); //return to home page
+        window.location.reload(); //this reloads the page
       }, (err) => {
-        setOpen(true); //opens error modal
+        console.log(err.response.data);
       }
     )
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  }
+  
+  React.useEffect(() => {   
+    checkCurrUser();
+  }, [])
 
   return (
     <Container 
@@ -52,15 +68,6 @@ export default function SignUp() {
         boxShadow: '10px 10px 10px rgba(30,30,30,0.5)',
       }}>
       <CssBaseline />
-
-      {/**Error Modal */}
-      <BasicModal 
-      open={open} 
-      handleClose={() => {setOpen(false)}} 
-      title="Email or Username already taken" 
-      message="Either the Email or Username you're trying to use has been taken. Please use other options." 
-      />
-
       <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
         sx={{
           display: 'flex',
@@ -86,7 +93,7 @@ export default function SignUp() {
             sx={{
               fontWeight: 'bold'
             }}
-          >Register with Deakico.</Typography>
+          >Register as a Provider</Typography>
           <Typography
             variant='caption'
             color='text.disabled'
@@ -104,9 +111,9 @@ export default function SignUp() {
         >
           <Stack item sx={{ size: { sm: 'small', lg: 'normal' } }}>
             <TextField
-              id="firstName"
-              name="firstName"
-              label="First Name"
+              id="companyName"
+              name="companyName"
+              label="Company"
               autoComplete="given-name"
               required
               fullWidth
@@ -115,30 +122,42 @@ export default function SignUp() {
           </Stack>
           <Stack item  >
             <TextField
-              id="lastName"
-              name="lastName"
-              label="Last Name"
-              autoComplete="family-name"
+              id="description"
+              name="description"
+              label="Company Description"
+              type='text'
               required
               fullWidth
+              multiline
             />
+          </Stack>
+          <Stack item  >
+          <TextField
+              id="category"
+              name="category"
+              label="Company Category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              fullWidth
+              select
+            >
+            {categories.map((cat, i) => {
+              return (
+                <MenuItem key={i+1} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</MenuItem>
+              )
+            })}
+          </TextField>
           </Stack>
           <Stack item >
             <TextField
               id="email"
               name="email"
               type= "email"
-              label="Email Address"
+              //label="Email Address"
               autoComplete="email"
-              required
-              fullWidth
-            />
-          </Stack>
-          <Stack item >
-            <TextField
-              id="username"
-              name="username"
-              label="Username"
+              disabled={true}
+              value={currUser?.email}
               required
               fullWidth
             />
