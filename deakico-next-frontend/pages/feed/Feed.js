@@ -1,6 +1,7 @@
-import { Box, Button, ButtonBase, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
-import { useState } from "react";
-import { ProviderCard } from "../../deakicomponents/Card";
+import { Box, Button, ButtonBase, CircularProgress, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { ProviderCard, ProviderTest } from "../../deakicomponents/Card";
+import providerService from "../../services/provider.service"
 
 
 const itemList = [
@@ -16,10 +17,45 @@ const itemList = [
 ]
 
 export default function Feed(props) {
-  const [displayedCards, setDisplayedCards] = useState(itemList);
+  const [displayedCards, setDisplayedCards] = useState([]);
+  const [loadedProviders, setLoadedProviders] = useState(true);
+  const [optionsVis, setOptionsVis] = useState(false);
+  const [filter, setFilters] = useState({
+    category: {
+      index: -1,
+      name: ''
+    },
+    sort: {
+      index: -1,
+      name: ''
+    }
+  });
 
   const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
+  
+  async function RequestProviders() {
+    const response = await providerService.getAllProviders().then((res) => {
+      return res.data;
+    }).catch((err) => {
+      console.log(err);
+    })
+    console.log(response);
+    setDisplayedCards( response );
+  }
+  
+  useEffect(() =>{
+    RequestProviders();
+  },[])
 
+  function handleOptionsVis() {
+    setOptionsVis((state) => !state);
+  }
+  
+  function handleFilters(filter) {
+    handleOptionsVis();
+    setFilters(filter);
+  }
+  
   function TypeSelect() {
     const [val, setVal] = useState(props.type); // int default 0 / services
 
@@ -41,28 +77,6 @@ export default function Feed(props) {
         </Select>
       </FormControl>
     )
-  }
-
-  const [optionsVis, setOptionsVis] = useState(false);
-
-  function handleOptionsVis() {
-    setOptionsVis((state) => !state);
-  }
-
-  const [filter, setFilters] = useState({
-    category: {
-      index: -1,
-      name: ''
-    },
-    sort: {
-      index: -1,
-      name: ''
-    }
-  });
-
-  function handleFilters(filter) {
-    handleOptionsVis();
-    setFilters(filter);
   }
 
   return (
@@ -129,13 +143,13 @@ export default function Feed(props) {
           return (
             <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
               <ProviderCard
-                type={index%2 == 0 ? 'Product' : 'Service'}
-                category={'Other'}
+                type={index % 2 == 0 ? 'Product' : 'Service'}
+                category={e.pa_category}
                 src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                title={e.title}
+                title={e.pa_companyname}
                 description={cardDesc}
-                price={e.price}
-                rating={e.rating}
+                price={e.pa_price}
+                rating={e.pa_rating}
               />
             </Grid>
           );
@@ -205,7 +219,7 @@ function Options(props) {
     "jewelry",
     "other"
   ]
-  
+
   const sortOptions = [
     "cheap to expensive",
     "expensive to cheap",
@@ -326,6 +340,14 @@ function Options(props) {
   )
 }
 
-function resultsModify(array, category, sort){
+function resultsModify(array, category, sort) {
 
+}
+
+function CircularLoad() {
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>
+  );
 }
