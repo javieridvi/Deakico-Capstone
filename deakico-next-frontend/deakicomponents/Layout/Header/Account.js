@@ -17,13 +17,13 @@ export default function Account() {
     setLoggedIn(authService.isLoggedIn());
   }
   
-  // const checkCurrUser = () => {
-  //   setCurrUser(userService.getUser()?.then((res) => {
-  //     setCurrUser(res.data);
-  //   }).catch((err) => {
-  //     // console.log(err);
-  //   }));
-  // }
+  const checkCurrUser = () => {
+    setCurrUser(userService.getUser()?.then((res) => {
+      setCurrUser(res.data);
+    }).catch((err) => {
+      console.log(err);
+    }));
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,8 +48,8 @@ export default function Account() {
 
   useEffect(() => {
     checkLoggedIn();    
-    // checkCurrUser();
-    //console.log(loggedIn);
+    checkCurrUser();
+    console.log(loggedIn);
   }, [])
 
   return typeof (loggedIn !== 'undefined') ? (
