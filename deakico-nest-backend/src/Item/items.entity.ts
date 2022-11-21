@@ -2,6 +2,7 @@ import { LikeEntity } from '../Likes/likes.entity';
 import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
 import { RequestEntity } from '../Request/requests.entity';
 import { ReviewEntity } from '../Review/reviews.entity';
+// import { Categories } from '../ProviderAccount/providers.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -10,13 +11,15 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
+import { from } from 'rxjs';
 
-//enumerator for categories. Keep adding categories as we see fit.
 export enum Categories {
   HAIR = 'hair',
   PASTRY = 'pastry',
   FOOD = 'food',
   CLOTHING = 'clothing',
+  CLEANING = 'cleaning',
+  JEWELRY = 'jewelry',
   OTHER = 'other',
 }
 

@@ -23,10 +23,17 @@ export default function LogoName() {
             display: { xs: 'block', sm: 'none' }
           }}
         >
-          <Link href='/'>
+          <Link href='/' 
+          sx={{
+            position: 'relative',
+            width: '32px',
+            height: '32px',
+            }}
+            >
             <Image
               src="/Deakico-Icon.svg"
-              layout='fill'
+              width={32}
+              height={32}
             />
           </Link>
         </Box>

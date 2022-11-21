@@ -13,8 +13,10 @@ export default function Main() {
         <title>Home</title>
       </Head>
 
-      <Box component='div'
-        sx={{
+      <Box 
+      component='div'
+      className='TopDiv'
+      sx={{
           minHeight: '100vh',
           width: '100vw',
           display: 'flex',

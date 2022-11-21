@@ -5,13 +5,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "likes";
 const endpoint = API_URL + entity;
 
-const insertLike = async () => {
-    return await axios.post(endpoint, {headers: authHeader()}); 
+const insertLike = async (data) => {
+    return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const updateLike = async (l_id) => {
-    return await axios.put(endpoint + "/" + l_id, {headers: authHeader()});
-};
+//most likely unnecessary
+// const updateLike = async (l_id, data) => {
+//     return await axios.put(endpoint + "/" + l_id, data, {headers: authHeader()});
+// };
 
 const getAllLikes = async () => {
     return await axios.get(endpoint);
