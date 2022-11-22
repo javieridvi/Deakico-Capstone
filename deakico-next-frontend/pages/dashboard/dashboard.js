@@ -49,21 +49,19 @@ export default function Dashboard() {
         }]
     });
     
-    return (
-        <Box>
+    return (<>
             <DashboardSidebar/>
-            <Box sx={{width: '100%'}}>
-                <Grid item xl={8} lg={8} md={12} sm={12} xs={12}>
-                    <CardBar title="Activity" chart={<LineChart chartData={userData} />} />
+                <Grid container xs={12} sx={{width: '100%'}}>
+                    <Grid item xs={6}>
+                        {/** Likes might need date */}
+                        <CardBar title="Activity: Requests, Likes, Follows" chart={<LineChart chartData={userData} />} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <CardBar title="Stat: Best Seller" chart={<PieChart chartData={userData} />} />
+                    </Grid>
                 </Grid>
-                <Grid item xl={4} lg={4} md={12} sm={12} xs={12}>
-                    <CardBar title="Stat" chart={<PieChart chartData={userData} />} />
-                </Grid>
-            </Box>
-            
-                
             <DashboardTable/>
-        </Box>
+        </>
         
     )
 }

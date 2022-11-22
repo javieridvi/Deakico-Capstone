@@ -126,7 +126,7 @@ export default function DashboardSidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -136,10 +136,10 @@ export default function DashboardSidebar() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> 
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -151,14 +151,14 @@ export default function DashboardSidebar() {
           ))}
         </List>
       </Drawer>
-      <Main open={open}>
+      {/* <Main open={open}> */}
         <DrawerHeader />
         {/** Whatever is inside here (Main component) will be passed through props and displayed in dashboard page
          * and it will adapt size with the sidebar's opening.
          * I (José) advice not to use any dynamic call to the api through this component yet, as we don't know what problems
          * it might cause. For now just display static data inside here.
          */}
-      </Main>
+      {/* </Main> */}
     </Box>
   );
 }
