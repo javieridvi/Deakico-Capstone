@@ -6,29 +6,41 @@ import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios' ;
 import {ReviewForm} from './reviewButton';
 import {CardView} from './CardView' ;
+import { rootShouldForwardProp } from '@mui/material/styles/styled';
+// import ReactDOM from 'react-dom/client';
 
   
 
 export default function Review() {
-  
-  const cards = [{
-  name : "Pedro",
-   img : " product" , 
-  r_rating : 5 , 
-   r_message : "The best"
-}
-  ]
+
+  // function clickHander(){
+  //   let arr = []
+  //   arr.push(
+  //     {CardView}
+  //   )
+  // }
+ 
+  // const [{items}, setItems] = useState ({items : []})
+  // // const addItem = () => {
+  // //   items.push()
+  // // }
+  // const element = <CardView name= '@gracie' r_rating= {3} />;
+
+ const [open, setOpen] = useState(false); //modal use states
+
   const handleClickOpen = () => {
     console.log("Open") ;
-         }; 
+    setOpen(true); // opens modal
+  }
+ 
+  const handleClose = (e, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
+  }
    
-  // const AddCard = () => {
-  // CardView(cards.name, cards.img, cards.r_rating, cards.r_message)
-  // }
-
   return (
-    
-        <Container >
+    <>
         <Box sx={{
             position:'inherit',
             m:'0', 
@@ -39,7 +51,7 @@ export default function Review() {
         }}> 
                 <Typography variant='h2'  sx={{
                     textAlign:'center', color:'white', justifyContent:'center', ml:'6rem' , alignContent:'center', mt:'6rem', fontFamily:'Comfortaa', fontStyle: 'normal', 
-                }}> Review It 
+                }}> Review It !
                 </Typography>
                 <div className='reviewPic' >
                     <Image  
@@ -50,17 +62,22 @@ export default function Review() {
                     </Image>
                 </div>
         </Box>
-        <style jsx>{`
+        {/* <style jsx>{`
         .reviewPic{
         margin-top: 36px }
         textarea { resize: none}
        `}</style>
-     
+      */}
         <Container>
        
-<Button > AQUI</Button>
-<ReviewForm/>
-        </Container>
+<Button onClick={handleClickOpen}> AQUI</Button>
+<ReviewForm 
+ open = {open}
+//  handleClose={() => {setOpen(false)}} 
+handleClose= {handleClose}
+ title = "-Company Name-"
+
+/>
 
  {/* REVIEW CARDS  */}
     <Container className="grid-reviews " justifyContent='center'>
@@ -76,13 +93,17 @@ export default function Review() {
       {/* </Grid> */}
 
       <CardView/>
+     {/* <TESTING PURPOSE> */}
+      <CardView name= '@gracie' r_rating= {3}  r_message="Cool"/> 
+      <CardView name= '@gracie' r_rating= {5}  r_message="awesome"/> 
+      <CardView name= '@gracie' r_rating= {4}  r_message="Gr8"/> 
 
    </Grid>
     </Container>
   
   </Container>
 
-  
+  </>
   
   )
 }

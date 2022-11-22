@@ -1,6 +1,7 @@
 import {React,useState, useCallback,} from 'react'
-import {Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating,Pagination, Stack, Input, TextField, debounce , Button, Box, Typography} from '@mui/material'
+import {Dialog,  FormControl, Container , Slider, Rating,Pagination, Stack, Input, TextField, debounce , Button, Box, Typography} from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
+import { maxWidth } from '@mui/system';
 
 
 const marks = [
@@ -30,37 +31,50 @@ const marks = [
 
 
 
-export  function ReviewForm() {
+export  function ReviewForm(props) {
     const [ value, setValue] = useState(0); 
-    var rate = 0;
-    var ovRating = 0;  // para guardar el overall-Rating
+
+    var [a,b,c,d] = useState(0);
+      
+
+    const ovRating = () =>{
+     return a+b+c+d 
+    }
+    
+
+    // para guardar el overall-Rating
 
     //Function para hacer el OverallRating 
 
    function valuetext(value) {
     return `${value}`;
+
   }
- 
-  
-    const handleSliderChange = useCallback((event,value) => {
+
+    const handleSliderChange = useCallback((event,  value) => {
       
-      debounceSliderChange(value);
+      console.log(value);
+      setValue = value;
+     
+      if( event.target.id == "experience"){
+        console.log("YEs,true");
+      }
+      
+     
+      return value;
 
     },[]);
   
-    
-    const debounceSliderChange = debounce((val) => {   
-      console.log(val);
-      setValue = val;
-    //   ovRating = val;
-      // console.log("ov", ovRating)
-      },5);
+
+
+    // const debounceSliderChange = debounce((val) => {   
+    //   console.log(val);
+    //   setValue = val;
+    //   },[]);
   
     
-  
-    const [open, setOpen] = useState(true);
-     
-    const handleClose = (e, reason) => {
+       
+    const handleSubmit = (e, reason) => {
       if (reason !== 'backdropClick') {
         setOpen(false);
       }
@@ -69,23 +83,24 @@ export  function ReviewForm() {
   return (
 
     <div>
-        <Dialog disableEscapeKeyDown open={open} onClose={handleClose} fullWidth 
+           <Dialog  
+         open={props.open}
+         onClose={props.handleClose} 
+         aria-labelledby="modal-modal-title"    
+         sx={{
+          maxWidth:'xl',
+         }}    
         >
-            <DialogTitle height="5rem" fontWeight="bold" > Your Review </DialogTitle>
+            <Typography id = "modal-modal-title" sx={{m:'2rem', fontWeight:'bold'}}> My {props.title} Review </Typography>
             <Box
       sx={{
-        
-        display: 'inline-block',
+     
         justifyContent:'center',
         alignItems: 'center',
-        ml:'40%'
+      
       }}
     >
-      {/* Possible picture of the product/service */}
-      <div className='ps-userPicture'>
-        {/* <input type = 'file'/> */}
-        {/* <button>Upload</button> */}
-      </div>
+  
    
       {/* Dinamic Overall Rating  */}
       <Rating
@@ -94,19 +109,18 @@ export  function ReviewForm() {
         readOnly
         precision={0.5}
         emptyIcon={<StarIcon style={{ opacity: 0.55,  }} fontSize="inherit" />}
-        
+        sx={{ml:'39%'}}
       />
-
     </Box>
-            <Typography sx={{
+            {/* <Typography sx={{
                 ml:'30px' ,
                 fontFamily:'comfortaa'
-            }}> Company Name </Typography>
-            <DialogContent>
+            }}> {props.title} </Typography> */}
+
                 <Box component= "form" sx = {{
-                    display: 'flex', flexWrap: 'wrap', height:'30rem', justifyContent:'center'
+                  ml:'3rem', mr:'3rem',
                 }}>
-                <FormControl sx={{ m: 4, minWidth: 400 }}> 
+                <FormControl sx={{ m: '2rem', minWidth: '15rem' ,}}> 
                 <Typography>
                 ¿How was your overall experience?
                 </Typography>
@@ -124,8 +138,9 @@ export  function ReviewForm() {
             mb:'3rem'
             
         }} 
-        onChange={(e,v) => handleSliderChange(e,v *.50) 
-                 } 
+        onChange={(e,v) => a= handleSliderChange(e,v *.50)  
+                 
+                                 } 
       
       />  
      
@@ -145,7 +160,7 @@ export  function ReviewForm() {
         sx={{
             mb:'3rem'
         }}
-        // onChange={(e,v) => handleSliderChange(e,v*.25)}
+        onChange={(e,v) => b= handleSliderChange(e,v*.25)}
 
       />  
           <Typography>
@@ -188,20 +203,18 @@ export  function ReviewForm() {
           required
           multiline          
           maxRows={3}
-          sx={{ mb: 1 }}
+          sx={{ mt:'2.5rem' }}
         />
          
                 </FormControl>
                 </Box>
-                <DialogActions>
-            <Box sx={{m:'10%'}}>
+            <Box sx={{mb:'2rem', textAlign:'right'}}>
              <div>
-          <Button sx={{mt:' 2rem'}} onClick={handleClose}>Cancel</Button>      
-          <Button sx={{mt:'2rem'}} onClick={handleClose}>Ok</Button>
+          <Button sx={{mt:' 2rem'}} onClick={props.handleClose}>Cancel</Button>      
+          <Button sx={{mt:'2rem'}} onClick={handleSubmit}>Ok</Button>
             </div>
          </Box>
-        </DialogActions>
-            </DialogContent>
+      
         </Dialog>
     </div>
   )

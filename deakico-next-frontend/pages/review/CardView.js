@@ -3,21 +3,21 @@ import {Box, Button, Typography,Rating} from '@mui/material'
 import { borderRadius, height, textAlign } from '@mui/system'
 
 
-//  const image = props.src;
-//  const rating = props.number;  // hasta 5 
-// const description = props;
+
 
 CardView.defaultProps= {
- name : "@fulanita" ,
- img : 'url("Grace.png")' ,
- r_rating : 4.5 ,
- r_message : "LOVE IT !, justo lo que buscaba",
+ name : "@fulanita" ,                            //username
+//  img : 'url("Grace.png")' ,
+ r_rating : 4.5 ,                                // rating
+ r_message : "LOVE IT !, justo lo que buscaba",  //description
 }
 
 
-export function CardView({name, img, r_rating, r_message}){
+export function CardView(props){
+// const img = 'url("Grace.png")' , name = '@grace' , r_rating= 3.0 , r_message = 'test'
 
-  return (
+
+    return (
     <div>
  <Box sx={{
        backgroundColor:'black',
@@ -51,7 +51,7 @@ export function CardView({name, img, r_rating, r_message}){
 
  </Box>
  <Box id='user-img' sx={{
-  backgroundImage: {img},
+  // backgroundImage: {},
   backgroundSize: ' 80px ',
   backgroundRepeat:'no-repeat',
   backgroundColor:'pink',
@@ -64,16 +64,17 @@ export function CardView({name, img, r_rating, r_message}){
  
  </Box>
 
- <Typography sx={{textAlign:'center', m:'2px', fontSize:'12px', mt:'10px'}} >{name}</Typography><div>
+ <Typography sx={{textAlign:'center', m:'2px', fontSize:'12px', mt:'10px'}} >{props.name}</Typography><div>
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white', fontWeight:'bold'}} > Product Name</Typography>
 </div>  
  
- <Rating name="read-only" value={r_rating} precision={0.5} size="small" sx={{justifyContent:'center', }} readOnly /> 
- <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}} >{r_message}</Typography>
-({r_rating})
+ <Rating name="read-only" value={props.r_rating} precision={0.5} size="small" sx={{justifyContent:'center', }} readOnly /> 
+ <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}} >{props.r_message}</Typography>
+({props.r_rating})
  </Box>   
   
     </div>
   )
 }
+
 
