@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head';
 import Profile from './profile';
+// import { ProviderTest } from "../../deakicomponents/Card";
 
 
 export default function index() {
@@ -20,6 +21,9 @@ export default function index() {
 
     </main>
 
+<div>
+
+</div>
     </div>
     
     </>

@@ -17,7 +17,6 @@ const StyledRating = styled(Rating)({
   },
 });
 
-export default function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,8 +27,27 @@ export default function Profile() {
       price: data.get('price'),
       category: data.get('category')
     });
-  };
 
+
+  if( elem.innerHTML == "+ Follow"){
+      elem.innerHTML = "Followed";
+      elem.value = "Followed";
+      elem.style.backgroundColor= 'Pink';
+      console.log('followed');
+  
+
+  }
+  else {
+    elem.innerHTML= "+ Follow";
+    elem.style.backgroundColor = '#c1efdd';
+    console.log('unfollow');
+    alert('Unfollow');
+  }
+
+}
+
+export default function Profile() {  
+  
   return (
 
     <Container>
