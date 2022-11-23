@@ -73,7 +73,7 @@ export default function Review() {
 <Button onClick={handleClickOpen}> AQUI</Button>
 <ReviewForm 
  open = {open}
-//  handleClose={() => {setOpen(false)}} 
+// handleClose={() => {setOpen(false)}} 
 handleClose= {handleClose}
  title = "-Company Name-"
 

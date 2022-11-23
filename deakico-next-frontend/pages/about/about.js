@@ -39,7 +39,7 @@ export default function About() {
 
         <Container className='aboutInfo' sx={{ display: 'flex' }}>
           <Box sx={{ mt: '5%' }}>
-            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}> About Deakico :    </Typography>
+            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}><mark>About Deakico :  </mark>  </Typography>
             <Typography variant='h2' sx={{ fontSize: '28px', fontWeight: '600', fontStyle: 'italic', m: '10px' }}> "De aqui como el Coqui"   </Typography>
             <Typography sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left' }}> - We establish ourselves as
               the platform that connects local small companies with potential customers.
@@ -73,10 +73,8 @@ export default function About() {
                 fontSize: '40px',
                 fontWeight: '700',
               }}
-            >
-              <mark className='problem-st'>
-                Problem Statement :
-              </mark>
+            >   Problem Statement :
+          
             </Typography>
             <Typography
               variant='body1'
@@ -142,9 +140,9 @@ export default function About() {
                 marginBottom: '1rem',
               }}
             >
-              <mark className='sol' >
+         
                 Solution Approach:
-              </mark>
+           
             </Typography>
             <Typography
               variant=''
@@ -258,14 +256,8 @@ export default function About() {
         </Container>
         {/* ### PROPS STYLE ### */}
         <style jsx>{`
- .sol{
-  background-color: #32F3AF;
-}
 
-.problem-st{
-  background-color: #EA4A8E;
-  margin: 3px
-}`}</style>
+ `}</style>
 
       </Container>
 

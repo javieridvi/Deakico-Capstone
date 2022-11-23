@@ -28,23 +28,39 @@ const StyledRating = styled(Rating)({
       category: data.get('category')
     });
 
+  }
 
-  if( elem.innerHTML == "+ Follow"){
-      elem.innerHTML = "Followed";
-      elem.value = "Followed";
-      elem.style.backgroundColor= 'Pink';
-      console.log('followed');
+  const Follow = () => {
+    var elem = document.getElementById("follow") ;
   
-
+    if( elem.innerHTML == "+ Follow") {
+        elem.innerHTML = "Followed";
+        elem.value = "Followed";
+        elem.style.backgroundColor= 'Pink';
+        console.log('followed');
+        alert('Follow!');
+  
+    }
+    else {
+      elem.innerHTML= "+ Follow";
+      elem.style.backgroundColor = '#c1efdd';
+      console.log('unfollow');
+     
+    }
+  
   }
-  else {
-    elem.innerHTML= "+ Follow";
-    elem.style.backgroundColor = '#c1efdd';
-    console.log('unfollow');
-    alert('Unfollow');
-  }
 
-}
+  function mailMe(props){
+
+    return parent.location = 'mailto:' + String(props.email) 
+    
+  }
+ 
+ const email = Profile.defaultProps = 
+   ' deakicomoelcoqui@gmail.com'
+
+ 
+
 
 export default function Profile() {  
   
@@ -92,16 +108,8 @@ export default function Profile() {
                 sx={{ left: '2px', }}
                 readOnly
               />
-              <StyledRating
-                sx={{
-                  left: '10px',
-                }}
-                name="likes"
-                max={1}
-                precision={1}
-                emptyIcon={<FavoriteBorderIcon color="RED" />}
-                icon={<FavoriteIcon fontSize="inherit" />}
-              />
+              
+            
             </Box>
             <Typography
               sx={{
@@ -117,9 +125,19 @@ export default function Profile() {
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />} >Follow </Button>
-            <Button variant="contained" startIcon={<StarOutlineIcon />}>Review</Button>
-            <Button variant="contained" startIcon={<EmailIcon />}>Contact Provider</Button>
+          <Button variant="contained" id='follow'  color="secondary"  defaultValue= '+Follow'
+    onClick={()=>{
+      Follow();
+    }}
+    
+    >+ Follow
+    </Button>   
+            <Button variant="contained" onClick = {()=>{
+    parent.location = '/review'
+    }} startIcon={<StarOutlineIcon />}>Review</Button>
+            <Button variant="contained" onClick ={()=>{
+              mailMe({email})
+            }} startIcon={<EmailIcon />}>Contact Provider</Button>
           </Stack>
         </Container>
         <Box xs={6}
@@ -130,9 +148,10 @@ export default function Profile() {
         >
           <div className='profilePic'>
             <Image src="/Logphotos.png"
-              width={850}
-              height={474}
+             width = {500}
+              height={500}
               top={40} />
+                   
           </div>
         </Box>
       </div>
@@ -153,18 +172,7 @@ export default function Profile() {
       `}
       </style>
       <main>
-        <Container className='secondLayer'>
-          <Container>
-            <Box className='subNavigation' sx={{ mt: '4rem', fontWeight: 'bold', }}>
-              <Button variant="text">Products/Services </Button>
-              <Button variant="text">Projects </Button>
-              <Button variant="text">Collections </Button>
-              <Button variant="text">Likes </Button>
-              <Button variant="text">Reviews </Button>
-              <Button variant="text">Settings </Button>
-            </Box>
-          </Container>
-        </Container>
+
 
         <Container className='servicesReq'>
           <Container className='serviceTab'>
@@ -182,7 +190,7 @@ export default function Profile() {
                 <>
                   <FormControl sx={{ width: '100%', mt: '2rem' }}>
                     <InputLabel >
-                      Select Service
+                      Select 
                     </InputLabel>
 
                     <Select
@@ -217,12 +225,11 @@ export default function Profile() {
             </Grid>
           </Container>
 
-          <Container className='Products' width='90%'>
+          <Box className='Products' width='90%'>
             <Stack>
 
             </Stack>
-
-          </Container>
+          </Box>
         </Container>
       </main>
     </Container>
