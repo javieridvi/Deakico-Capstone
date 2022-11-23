@@ -109,7 +109,7 @@ export default function Header() {
           >
             <LogoName />
           </Grid>
-          <Grid item
+          {/* <Grid item
             xs={2}
             md={4}
             lg={2}
@@ -120,14 +120,14 @@ export default function Header() {
             flexGrow='2'
           >
             <Search />
-          </Grid>
+          </Grid> */}
           <Grid item
             lg={3}
             display={{ xs: 'none', lg: 'flex' }}
             justifyContent="center"
             alignItems="center"
           >
-            <NavBar />
+          <NavBar />
           </Grid>
           <Grid item
             xs={2}

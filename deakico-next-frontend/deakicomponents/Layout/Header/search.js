@@ -9,12 +9,13 @@ export default function Search() {
     <Box
       component="form"
       sx={{
-        p: '2px 4px',
         display: 'flex',
         alignItems: 'center',
         width: '100%',
+        height: '100%',
+        borderRadius: '.5rem',
+        border: 'solid rgb(200,200,200) 2px',
         backgroundColor: 'rgba(255, 255, 255, 0.80)',
-        borderRadius: '.5rem'
       }}
     >
       <InputBase

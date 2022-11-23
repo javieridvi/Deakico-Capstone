@@ -1,6 +1,7 @@
 import { Box, Button, ButtonBase, CircularProgress, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ProviderCard, ProviderTest } from "../../deakicomponents/Card";
+import Search from "../../deakicomponents/Layout/Header/search";
 import providerService from "../../services/provider.service"
 
 
@@ -15,6 +16,8 @@ const itemList = [
   { title: "Provider 8", rating: 3.5, price: '$' + 100.00 },
   { title: "Provider 9", rating: 4, price: '$' + 100.00 },
 ]
+
+const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
 
 export default function Feed(props) {
   const [displayedCards, setDisplayedCards] = useState([]);
@@ -31,8 +34,6 @@ export default function Feed(props) {
     }
   });
 
-  const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
-  
   async function RequestProviders() {
     const response = await providerService.getAllProviders().then((res) => {
       return res.data;
@@ -40,22 +41,22 @@ export default function Feed(props) {
       console.log(err);
     })
     console.log(response);
-    setDisplayedCards( response );
+    setDisplayedCards(response);
   }
-  
-  useEffect(() =>{
+
+  useEffect(() => {
     RequestProviders();
-  },[])
+  }, [])
 
   function handleOptionsVis() {
     setOptionsVis((state) => !state);
   }
-  
+
   function handleFilters(filter) {
     handleOptionsVis();
     setFilters(filter);
   }
-  
+
   function TypeSelect() {
     const [val, setVal] = useState(props.type); // int default 0 / services
 
@@ -69,7 +70,6 @@ export default function Feed(props) {
           onChange={handleChange}
           sx={{
             height: '40px',
-            marginLeft: '.5rem',
           }}
         >
           <MenuItem value={0}>Services</MenuItem>
@@ -81,36 +81,45 @@ export default function Feed(props) {
 
   return (
     <Box
-      className="SearchRoot"
+      className="FeedContainer"
       sx={{
         position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
-        maxWidth: '1600px',
+        width: 'min(1600px, 100%)',
         backgroundColor: 'white',
       }}
     >
-      <Box className="Filters"
+      <Box className="Search" >
+        <Box className="Input"
         sx={{
-          width: '100%',
-          height: '60px',
-          background: 'rgba(0, 0, 0, .16)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          height: '50px',
+          padding: '10px .5rem 0 .5rem',
         }}
-      >
-        <TypeSelect />
-        <Button variant="outlined"
-          onClick={handleOptionsVis}
+        >
+          <Search/>
+        </Box>
+        <Box className="Filters"
           sx={{
-            height: '40px',
-            marginRight: '.5rem',
+            width: '100%',
+            height: '60px',
+            padding: '0 .5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          options
-        </Button>
+          <TypeSelect />
+          <Button variant="outlined"
+            onClick={handleOptionsVis}
+            sx={{
+              height: '40px',
+            }}
+          >
+            options
+          </Button>
+        </Box>
       </Box>
       <Box
         className="options"
