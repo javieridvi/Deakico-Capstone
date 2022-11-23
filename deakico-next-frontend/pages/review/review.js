@@ -57,7 +57,7 @@ export default function Review() {
                     <Image  
                     src="/reviewIt.png"
                      width={150}
-                     height={100}
+                     height={150}
                     >    
                     </Image>
                 </div>

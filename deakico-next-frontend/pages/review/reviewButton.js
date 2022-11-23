@@ -32,42 +32,51 @@ const marks = [
   ];
 
 
+var a,b,c,d = 0;
 
 export  function ReviewForm(props) {
-    const [ value, setValue] = useState(0); 
-
-    var [a,b,c,d] = useState(0);
-      
-
-    const ovRating = () =>{
-     return a+b+c+d 
-    }
-    
-
+    const [ratingS, setValue] = useState(0); 
     // para guardar el overall-Rating
 
+    console.log("Value: " + ratingS);
     //Function para hacer el OverallRating 
 
-   function valuetext(value) {
-    return `${value}`;
-
-  }
+  const handleSliderChange1 = useCallback((event,  value) => {
+    a = value;
+    ratingS = ovRating();
+    setValue(ratingS);
+  },[]);
 
     const handleSliderChange = useCallback((event,  value) => {
-      
-      console.log(value);
-      setValue = value;
-     
-      if( event.target.id == "experience"){
-        console.log("YEs,true");
-      }
-      
-     
-      return value;
-
+      //setValue = value;
+      b = value;
+      // console.log("myvalue: "+b);
+      ratingS = ovRating();
+      setValue(ratingS);
     },[]);
-  
-
+    
+    const handleSliderChange2 = useCallback((event,  value) => {
+      //setValue = value;
+      c = value;
+      // console.log("value: "+c);
+      ratingS = ovRating();
+      setValue(ratingS);
+    },[]);
+    
+    const handleSliderChange3 = useCallback((event,  value) => {
+      //setValue = value;
+      d = value;
+      console.log("value: "+ d);
+      ratingS = ovRating();
+      setValue(ratingS);
+    },[]);
+   
+    
+ const ovRating = ()=> {
+  var sum = a+b+c+d ; 
+  // console.log("sum: "+ sum)
+  return sum;
+ };
 
     // const debounceSliderChange = debounce((val) => {   
     //   console.log(val);
@@ -80,6 +89,7 @@ export  function ReviewForm(props) {
       if (reason !== 'backdropClick') {
         setOpen(false);
       }
+
     }
     
   return (
@@ -106,8 +116,10 @@ export  function ReviewForm(props) {
    
       {/* Dinamic Overall Rating  */}
       <Rating
+
         id="overall-feedback"
-        defaultValue= {ovRating}
+        defaultValue= {0}
+        value={ratingS}
         readOnly
         precision={0.5}
         emptyIcon={<StarIcon style={{ opacity: 0.55,  }} fontSize="inherit" />}
@@ -122,15 +134,14 @@ export  function ReviewForm(props) {
                 <Box component= "form" sx = {{
                   ml:'3rem', mr:'3rem',
                 }}>
-                <FormControl sx={{ m: '2rem', minWidth: '15rem' ,}}> 
+                <FormControl sx={{ m: '2rem', minWidth: '15rem', }}> 
                 <Typography>
                 ¿How was your overall experience?
                 </Typography>
               <Slider
         id = 'experience'
-        aria-labelledby='experience'
-        defaultValue={value}
-        getAriaValueText={valuetext}
+        label="Experience"
+        defaultValue={2}
         step={0.5}
         valueLabelDisplay="auto"
         marks={marks}
@@ -140,10 +151,9 @@ export  function ReviewForm(props) {
             mb:'3rem'
             
         }} 
-        onChange={(e,v) => a= handleSliderChange(e,v *.50)  
+        onChange={(e,v) =>  handleSliderChange(e,v *.50)  
                  
-                                 } 
-      
+                 } 
       />  
      
              <Typography>
@@ -152,8 +162,8 @@ export  function ReviewForm(props) {
               <Slider
               id= 'rate'
         aria-label="marks"
-        defaultValue={0}
-        getAriaValueText={valuetext}
+        defaultValue={2}
+        // getAriaValueText={valuetext}
         step={0.5}
         valueLabelDisplay="auto"
         marks={marks}
@@ -162,7 +172,7 @@ export  function ReviewForm(props) {
         sx={{
             mb:'3rem'
         }}
-        onChange={(e,v) => b= handleSliderChange(e,v*.25)}
+        onChange={(e,v) =>  handleSliderChange1(e,v*.25)}
 
       />  
           <Typography>
@@ -171,8 +181,8 @@ export  function ReviewForm(props) {
               <Slider
               id='price'
         aria-label="Custom marks"
-        defaultValue={value}
-        getAriaValueText={valuetext}
+        defaultValue={2}
+        // getAriaValueText={valuetext}
         step={0.5}
         valueLabelDisplay="auto"
         marks={marks}
@@ -181,6 +191,7 @@ export  function ReviewForm(props) {
         sx={{
             mb:'3rem'
         }}
+        onChange={(e,v) => handleSliderChange2(e,v*.25)}
 
       />  
       <Typography>
@@ -189,8 +200,8 @@ export  function ReviewForm(props) {
               <Slider
               id='recom'
         aria-label="Custom marks"
-        defaultValue={3}
-        getAriaValueText={valuetext}
+        defaultValue={2}
+        // getAriaValueText={valuetext}
         step={0.5}
         valueLabelDisplay="auto"
         marks={marks}
@@ -199,6 +210,8 @@ export  function ReviewForm(props) {
         sx={{
             mb:'3rem'
         }}
+        onChange={(e,v) => handleSliderChange3(e,v*.25)}
+
       />  
            <TextField
           placeholder="Here your comment!"
