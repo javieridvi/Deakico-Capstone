@@ -20,8 +20,8 @@ const itemList = [
 const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
 
 export default function Feed(props) {
+  let providers;
   const [displayedCards, setDisplayedCards] = useState([]);
-  const [loadedProviders, setLoadedProviders] = useState(true);
   const [optionsVis, setOptionsVis] = useState(false);
   const [filter, setFilters] = useState({
     category: {
@@ -41,12 +41,19 @@ export default function Feed(props) {
       console.log(err);
     })
     console.log(response);
+    providers = response;
     setDisplayedCards(response);
   }
 
   useEffect(() => {
     RequestProviders();
   }, [])
+
+  // useEffect(() => {
+  //   let results = providers;
+  //   results = filterRes(results);
+  //   setDisplayedCards(sortRes(results));
+  // },[filter] )
 
   function handleOptionsVis() {
     setOptionsVis((state) => !state);
@@ -230,8 +237,6 @@ function Options(props) {
   ]
 
   const sortOptions = [
-    "cheap to expensive",
-    "expensive to cheap",
     "A to Z",
     "Z to A",
     "Best Ratings",
@@ -351,12 +356,22 @@ function Options(props) {
 
 function resultsModify(array, category, sort) {
 
-}
+// pa_category
+// pa_companyname
+// pa_desc
+// pa_followers
+// pa_id
+// pa_rating
 
-function CircularLoad() {
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
-    </Box>
-  );
+  // array = array.filter(provider => provider.pa_category == category)
+
+  // switch (sort) {
+  //   case "A to Z":
+  //     array.sort(function(a,b)}{return a-b});
+  //   case "Z to A":
+  //   case "Best Ratings":
+  //   case "Most Followed":
+
+  // }
+
 }
