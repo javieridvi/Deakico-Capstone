@@ -39,7 +39,7 @@ export default function About() {
 
         <Container className='aboutInfo' sx={{ display: 'flex' }}>
           <Box sx={{ mt: '5%' }}>
-            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}><mark>About Deakico :  </mark>  </Typography>
+            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}> About Deakico :    </Typography>
             <Typography variant='h2' sx={{ fontSize: '28px', fontWeight: '600', fontStyle: 'italic', m: '10px' }}> "De aqui como el Coqui"   </Typography>
             <Typography sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left' }}> - We establish ourselves as
               the platform that connects local small companies with potential customers.
@@ -73,8 +73,10 @@ export default function About() {
                 fontSize: '40px',
                 fontWeight: '700',
               }}
-            >   Problem Statement :
-          
+            >
+              <mark className='problem-st'>
+                Problem Statement :
+              </mark>
             </Typography>
             <Typography
               variant='body1'
@@ -140,9 +142,9 @@ export default function About() {
                 marginBottom: '1rem',
               }}
             >
-         
+              <mark className='sol' >
                 Solution Approach:
-           
+              </mark>
             </Typography>
             <Typography
               variant=''
@@ -168,16 +170,24 @@ export default function About() {
 
         <Box sx={{ mt: '2%', display: 'flex' }}>
           <div>
-        <Typography sx={{fontSize:'40px', fontWeight:'600',mb:'1rem', }}> Gap with existing solutions: </Typography>  
-       
-        <Typography sx={{fontSize:'25px', fontWeight:'500',textAlign:'left', pb:'3rem', width:'80%'}}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.
-          In addition, the markets in social networks like Instagram or Facebook tend to distract the client from the commercial content. 
-           There is a lack of exposure in the local market on top of the new wave of local products and the gestation of new entrepreneurs who want to grow their business in the island.
-            Our proposal project also covers the need of finding places near the user’s current localization. 
-        </Typography></div>
-        <div>
-        <Image src="/presentation.png" 
-              width= {300}
+            <Typography
+              sx={{
+                fontSize: '40px',
+                fontWeight: '600',
+                mb: '1rem',
+              }}
+            >
+              <mark className='gap-sol'> Gap with existing solutions: </mark>
+            </Typography>
+
+            <Typography variant='body1' sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left', pb: '3rem', width: '80%' }}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.
+              In addition, the markets in social networks like Instagram or Facebook tend to distract the client from the commercial content.
+              There is a lack of exposure in the local market on top of the new wave of local products and the gestation of new entrepreneurs who want to grow their business in the island.
+              Our proposal project also covers the need of finding places near the user’s current localization.
+            </Typography></div>
+          <div>
+            <Image src="/presentation.png"
+              width={300}
               height={400}
               layout='fixed'
             /></div>  </Box>
@@ -256,8 +266,14 @@ export default function About() {
         </Container>
         {/* ### PROPS STYLE ### */}
         <style jsx>{`
+ .sol{
+  background-color: #32F3AF;
+}
 
- `}</style>
+.problem-st{
+  background-color: #EA4A8E;
+  margin: 3px
+}`}</style>
 
       </Container>
 
