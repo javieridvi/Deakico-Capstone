@@ -17,6 +17,8 @@ function MyApp({ Component, pageProps }) {
       },
       secondary: {
         main: '#BCEFDD',
+        // 55efba
+        // BCEFDD
       },
     },
   })

@@ -23,7 +23,7 @@ export default function Feed(props) {
   let providers;
   const [displayedCards, setDisplayedCards] = useState([]);
   const [optionsVis, setOptionsVis] = useState(false);
-  const [filter, setFilters] = useState({
+  const [filters, setfilters] = useState({
     category: {
       index: -1,
       name: ''
@@ -51,17 +51,16 @@ export default function Feed(props) {
 
   // useEffect(() => {
   //   let results = providers;
-  //   results = filterRes(results);
-  //   setDisplayedCards(sortRes(results));
-  // },[filter] )
+  //   setDisplayedCards(resultsModify(results, filters.category, filters.sort))
+  // },[filters])
 
   function handleOptionsVis() {
     setOptionsVis((state) => !state);
   }
 
-  function handleFilters(filter) {
+  function handleFilters(filters) {
     handleOptionsVis();
-    setFilters(filter);
+    setFilters(filters);
   }
 
   function TypeSelect() {
@@ -100,12 +99,12 @@ export default function Feed(props) {
     >
       <Box className="Search" >
         <Box className="Input"
-        sx={{
-          height: '50px',
-          padding: '10px .5rem 0 .5rem',
-        }}
+          sx={{
+            height: '50px',
+            padding: '10px .5rem 0 .5rem',
+          }}
         >
-          <Search/>
+          <Search />
         </Box>
         <Box className="Filters"
           sx={{
@@ -143,7 +142,7 @@ export default function Feed(props) {
           overflow: 'clip',
         }}
       >
-        <Options start={filter} save={handleFilters} />
+        <Options start={filters} save={handleFilters} />
       </Box>
       <Grid className="Results"
         container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
@@ -356,22 +355,29 @@ function Options(props) {
 
 function resultsModify(array, category, sort) {
 
-// pa_category
-// pa_companyname
-// pa_desc
-// pa_followers
-// pa_id
-// pa_rating
-
-  // array = array.filter(provider => provider.pa_category == category)
-
-  // switch (sort) {
-  //   case "A to Z":
-  //     array.sort(function(a,b)}{return a-b});
-  //   case "Z to A":
-  //   case "Best Ratings":
-  //   case "Most Followed":
-
+  // pa_category
+  // pa_companyname
+  // pa_desc
+  // pa_followers
+  // pa_id
+  // pa_rating
+  // if (category != '') {
+  //   array = array.filter(provider => provider.pa_category === category);
   // }
+
+  // if (sort != '') {
+  //   switch (sort) {
+  //     case "A to Z":
+  //       array.sort((a, b) => a.pa_companyname.localecompare(b.pa_companyname));
+  //     case "Z to A":
+  //       array.sort((a, b) => b.pa_companyname.localecompare(a.pa_companyname));
+  //     case "Best Ratings":
+  //       array.pa_rating.sort();
+  //     case "Most Followed":
+  //       array.pa_followers.sort();
+  //   }
+  // }
+
+  return array;
 
 }
