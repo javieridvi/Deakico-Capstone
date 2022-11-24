@@ -1,6 +1,5 @@
 import React from 'react'
-import {Box, Button, Typography,Rating} from '@mui/material'
-import { borderRadius, height, textAlign } from '@mui/system'
+import {Box,  Typography,Rating} from '@mui/material'
 
 
 
@@ -28,7 +27,6 @@ export function CardView(props){
           height: 400,
           color:'white',
           borderRadius: 2 ,
-          justifyContent:'center',
           alignItems:'center',
           textAlign:'center',
     
@@ -51,7 +49,6 @@ export function CardView(props){
 
  </Box>
  <Box id='user-img' sx={{
-  // backgroundImage: {},
   backgroundSize: ' 80px ',
   backgroundRepeat:'no-repeat',
   backgroundColor:'pink',
@@ -68,7 +65,7 @@ export function CardView(props){
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white', fontWeight:'bold'}} > Product Name</Typography>
 </div>  
  
- <Rating name="read-only" value={props.r_rating} precision={0.5} size="small" sx={{justifyContent:'center', }} readOnly /> 
+ <Rating name="read-only" value={props.r_rating} precision={0.5} size="small"  readOnly /> 
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}} >{props.r_message}</Typography>
 ({props.r_rating})
  </Box>   

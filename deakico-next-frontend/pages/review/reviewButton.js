@@ -1,7 +1,6 @@
 import {React,useState, useCallback,} from 'react'
-import {Dialog,  FormControl, Container , Slider, Rating,Pagination, Stack, Input, TextField, debounce , Button, Box, Typography} from '@mui/material'
+import {Dialog,  FormControl , Slider, Rating, Stack, Button, TextField , Box, Typography} from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
-import { maxWidth } from '@mui/system';
 
 
 const marks = [

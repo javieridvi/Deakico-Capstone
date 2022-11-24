@@ -1,8 +1,8 @@
-import { Typography, Button, Grid,Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating,Pagination, Stack, Input, TextField, debounce} from '@mui/material';
+import { Typography, Button, Grid,Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating, Stack, Input, TextField,} from '@mui/material';
 import { Container, Box, } from '@mui/system';
 import{React, useState, useRef, useEffect, useCallback} from 'react';
 import Image from 'next/image';
-import StarIcon from '@mui/icons-material/Star';
+
 import axios from 'axios' ;
 import {ReviewForm} from './reviewButton';
 import {CardView} from './CardView' ;
@@ -50,7 +50,7 @@ export default function Review() {
             width: 1, display:'flex', justifyContent:'center',   m:'0', p:'0 ', mt:'0', mb:'2rem', 
         }}> 
                 <Typography variant='h2'  sx={{
-                    textAlign:'center', color:'white', justifyContent:'center', ml:'6rem' , alignContent:'center', mt:'6rem', fontFamily:'Comfortaa', fontStyle: 'normal', 
+                    textAlign:'center', color:'white', ml:'6rem' , alignContent:'center', mt:'6rem', fontFamily:'Comfortaa', fontStyle: 'normal', 
                 }}> Review It !
                 </Typography>
                 <div className='reviewPic' >
@@ -80,7 +80,7 @@ handleClose= {handleClose}
 />
 
  {/* REVIEW CARDS  */}
-    <Container className="grid-reviews " justifyContent='center'>
+    <Container className="grid-reviews " >
     <Grid container item spacing={2} sx={{
       // m:'10px',
       display:'flex',
