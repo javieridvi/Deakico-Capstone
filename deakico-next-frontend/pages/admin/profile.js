@@ -43,13 +43,14 @@ export default function Profile() {
     <Box  xs={6} sx={{
         maxWidth:'80%' ,
         flexDirection:'column',
-    }} className="presentation-u"  >
+    }} className="presentation-u"    >
 
          <Box xs={4} sx={{
         width:'100%' ,
         display:'flex' ,
         flexDirection: 'row' ,
         flexWrap: 'wrap' ,
+      
      
             }} > 
       
@@ -68,7 +69,7 @@ export default function Profile() {
    
      </Box>
        <Typography  sx={{
-        textAlign:'left' ,
+        
         fontSize: '28px',
         fontWeight:'800',
         mt:'10px',
@@ -139,7 +140,7 @@ export default function Profile() {
 </Container>
 
 <Container className='servicesReq'>
-    <Container className='serviceTab' textAlign='left' >
+    <Container className='serviceTab'  >
 <Grid container-spacing={1}>
     <Grid item xs={6}>
         <Typography sx={{
