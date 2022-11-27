@@ -1,63 +1,83 @@
 import { Box, Typography, Stack, Divider, Container, Grid } from '@mui/material';
 import DashboardSidebar from '../../deakicomponents/Sidebar'
 import DashboardTable from '../../deakicomponents/Table';
-import { useState } from 'react';
-import LineChart from '../../deakicomponents/LineChart';
-import PieChart from '../../deakicomponents/PieChart';
-import { CardBar } from '../../deakicomponents/CardBar';
+import { useEffect, useState } from 'react';
+import LineChart from '../../deakicomponents/Dashboard/Chart';
+import PieChart from '../../deakicomponents/Dashboard/Chart';
+import { PieCard, LineCard, BarCard } from '../../deakicomponents/Dashboard/ChartCard';
+import itemService from '../../services/item.service'
+import likesService from '../../services/likes.service';
 
-    export const UserData = [
-            {
-                id: 1,
-                year: 2016,
-                userGain: 80000,
-                userLost: 212,
-            },
-            {
-                id: 2,
-                year: 2022,
-                userGain: 12000,
-                userLost: 4212,
-            },
-            {
-                id: 3,
-                year: 2021,
-                userGain: 82000,
-                userLost: 2121,
-            },
-            {
-                id: 4,
-                year: 2021,
-                userGain: 10200,
-                userLost: 2121,
-            },
-            {
-                id: 5,
-                year: 2021,
-                userGain: 72000,
-                userLost: 221,
-            }
 
-    ]
 export default function Dashboard() {
-    const [userData, setUserData] = useState({
-        labels: UserData?.map((data) => data?.year),
-        datasets: [{
-            label: "Users Gained",
-            data: UserData?.map((data) => data?.userGain),
 
+    const [itemsRating, setItemsRating] = useState({
+        labels: ["No data"],
+        datasets: [{
+            label: "No data",
+            data: []
+        }]
+    });
+
+    const [itemLikes, setItemLikes] = useState({
+        labels: ["No data"],
+        datasets: [{
+            label: "No data",
+            data: []
+        }]
+    });
+
+    const [itemReviews, setItemReviews] = useState({
+        labels: ["No data"],
+        datasets: [{
+            label: "No data",
+            data: []
         }]
     });
     
+    const fetchItems = () => {
+        itemService.getItemOfProvider().then((res) => {
+            setItemsRating({
+                labels: res.data?.map((item) => item?.i_name),
+                datasets: [{
+                    label: "Item Ratings",
+                    data: res.data?.map((item) => item?.i_rating),
+                }]
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        likesService.getLikesOfProvider().then((res) => {
+            setItemLikes({
+                labels: res.data?.map((item) => item?.i_name),
+                datasets: [{
+                    label: "Item Likes",
+                    data: res.data?.map((item) => item?.likes),
+                }]
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }
+
+
+    useEffect(() => {
+        fetchItems();
+    }, []);
+
+    
     return (<>
-            <DashboardSidebar/>
+            {/* <DashboardSidebar/> */}
                 <Grid container xs={12} sx={{width: '100%'}}>
                     <Grid item xs={6}>
                         {/** Likes might need date */}
-                        <CardBar title="Activity: Requests, Likes, Follows" chart={<LineChart chartData={userData} />} />
+                        <LineCard type="Line" title="Activity" data={itemsRating}/>
+                        <BarCard type="Line" title="Activity" data={itemsRating}/>
                     </Grid>
                     <Grid item xs={6}>
-                        <CardBar title="Stat: Best Seller" chart={<PieChart chartData={userData} />} />
+                        <PieCard type="Pie" title="Items Stats" data={itemLikes} />
                     </Grid>
                 </Grid>
             <DashboardTable/>

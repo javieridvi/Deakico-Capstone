@@ -18,6 +18,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+
+import userService from '../services/user.service';
 
 const drawerWidth = 240;
 
@@ -40,23 +48,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   }),
 );
 
-// const AppBar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== 'open',
-// })(({ theme, open }) => ({
-//   transition: theme.transitions.create(['margin', 'width'], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(open && {
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     marginLeft: `${drawerWidth}px`,
-//     transition: theme.transitions.create(['margin', 'width'], {
-//       easing: theme.transitions.easing.easeOut,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
-
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -66,7 +57,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function DashboardSidebar() {
+export default function MainSidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -78,6 +69,61 @@ export default function DashboardSidebar() {
     setOpen(false);
   };
 
+//render switch function to display icons accordingly
+  function renderSwitch(param) {
+    switch(param) {
+      case 'Dashboard':
+        return <DashboardIcon/>;
+      case 'Requests':
+        return <RequestPageIcon/>;
+      case 'Reviews':
+        return <RateReviewIcon/>;
+      case 'Profile':
+        return <AccountBoxIcon/>;
+      case 'Settings':
+        return <SettingsIcon/>;
+      case 'Events':
+        return <LocalActivityIcon/>;
+      default:
+        return <SettingsIcon/>;
+    }
+  }
+
+  //render switch function to display icons accordingly
+  function redirectSwitch(param) {
+    switch(param) {
+      case 'Dashboard':
+        return '/dashboard';
+      case 'Requests':
+        return '#';
+      case 'Reviews':
+        return '#';
+      case 'Profile':
+        return '/admin';
+      case 'Settings':
+        return '#';
+      case 'Events':
+        return '#';
+      default:
+        return '#';
+    }
+  }
+
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const checkUser = () => {
+    userService.getUser().then((res) => {
+      setIsLoggedIn(res.data.pa_id? true : false);
+    }).catch((err) => {
+      console.log(err);
+      setIsLoggedIn(false);
+    });
+  };
+
+  React.useEffect(() => {
+    checkUser();
+  }, []);
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -86,7 +132,8 @@ export default function DashboardSidebar() {
         <Box 
         position='fixed' 
         top='0'
-        paddingTop='75px'
+        paddingTop='70px'
+        paddingLeft='15px'
         >
             <IconButton
             size='large'
@@ -124,26 +171,33 @@ export default function DashboardSidebar() {
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        <Divider />
-        <List>
-          {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> 
+        {isLoggedIn == true 
+        ? <>
+          <Divider />
+            <List>
+              {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton href={redirectSwitch(text)}>
+                    <ListItemIcon>
+                      {renderSwitch(text)}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List> 
+          </>
+        : <>
+          </>
+        }
+
         <Divider />
         <List>
           {['Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton href={redirectSwitch(text)}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {renderSwitch(text)}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>

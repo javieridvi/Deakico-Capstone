@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Box } from '@mui/material';
 import Dashboard from './dashboard';
 
-export default function DashboardFunc() {
 
+export default function DashboardFunc({ UserData }) {
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function DashboardFunc() {
           padding: '5em 1.5em'
         }}
       >
-        <Dashboard />
+        <Dashboard/>
       </Box>
     </>)
 }
