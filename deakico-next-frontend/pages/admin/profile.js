@@ -31,67 +31,50 @@ export default function Profile() {
   };
 
   return (
+  
+<Container>
+  <div className="topProfile"    > 
+  <Container 
+     sx={{
+        mt: 20 ,
+        width:'100%'
+    }}  > 
+    
+    <Box  xs={6} sx={{
+        maxWidth:'80%' ,
+        flexDirection:'column',
+    }} className="presentation-u"    >
 
-    <Container>
-      <div className="topProfile">
-        <Container
-          sx={{
-            mt: 20,
-            width: '100%'
-          }}
-        >
-          <Box xs={6}
-            sx={{
-              maxWidth: '60%',
-              flexDirection: 'column',
-            }}
-            className="presentation-u"
-          >
-            <Box xs={4}
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexWrap: 'wrap',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                sx={{
-                  left: '0',
-                  top: '10',
-                  fontWeight: 'bold',
-                  fontSize: '28px',
-                  mr: '3px'
-                }}
-              >
-                Company Name
-              </Typography>
-              <Rating
-                name="half-rating"
-                defaultValue={3.5}
-                precision={0.5}
-                sx={{ left: '2px', }}
-                readOnly
-              />
-              <StyledRating
-                sx={{
-                  left: '10px',
-                }}
-                name="likes"
-                max={1}
-                precision={1}
-                emptyIcon={<FavoriteBorderIcon color="RED" />}
-                icon={<FavoriteIcon fontSize="inherit" />}
-              />
-            </Box>
-            <Typography
-              sx={{
-                fontSize: '28px',
-                fontWeight: '800',
-                mt: '10px',
-                mb: '20px',
-                direction: 'column'
+         <Box xs={4} sx={{
+        width:'100%' ,
+        display:'flex' ,
+        flexDirection: 'row' ,
+        flexWrap: 'wrap' ,
+      
+     
+            }} > 
+      
+        <Typography 
+      sx={{
+        left: '0' ,
+        top: '10' ,
+        fontWeight: '700' ,
+        fontSize: '28px' ,
+        mr:'2px',
+  
+      
+       }} > Company Name  </Typography>
+    
+       <Rating name="half-rating" defaultValue={3.5} precision={0.5}  sx={{ position: 'absolute', ml:'14rem' , mt:'10px' ,}}readOnly></Rating>  
+   
+     </Box>
+       <Typography  sx={{
+        
+        fontSize: '28px',
+        fontWeight:'800',
+        mt:'10px',
+        mb:'20px',
+        direction:'column'
 
               }}
             >
@@ -136,36 +119,23 @@ export default function Profile() {
       </style>
       <main>
         <Container className='secondLayer'>
-          <Container>
-            <Box className='subNavigation' sx={{ mt: '4rem', fontWeight: 'bold', }}>
-              <Button variant="text">Products/Services </Button>
-              <Button variant="text">Projects </Button>
-              <Button variant="text">Collections </Button>
-              <Button variant="text">Likes </Button>
-              <Button variant="text">Reviews </Button>
-              <Button variant="text">Settings </Button>
-            </Box>
-          </Container>
+
         </Container>
 
-        <Container className='servicesReq'>
-          <Container className='serviceTab'>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography
-                  sx={{
-                    mt: '4rem',
-                    fontSize: '18px',
-                    fontWeight: '200'
-                  }}
-                >
-                  Provided Services
-                </Typography>
-                <>
-                  <FormControl sx={{ width: '100%', mt: '2rem' }}>
-                    <InputLabel >
-                      Select Service
-                    </InputLabel>
+<Container className='servicesReq'>
+    <Container className='serviceTab'  >
+<Grid container-spacing={1}>
+    <Grid item xs={6}>
+        <Typography sx={{
+            mt:'4rem',
+            fontSize: '18px',
+            fontWeight:'200'
+        }}>
+            Provided Services
+        </Typography>
+        
+    <>
+    <FormControl sx={{width: '50%' , mt:'2rem', }}>
 
                     <Select
                       label="Services"
