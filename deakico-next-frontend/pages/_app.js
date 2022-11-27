@@ -1,6 +1,7 @@
-import React from 'react'
-import { createTheme, ThemeProvider } from '@mui/material'
-import Layout from '../deakicomponents/Layout/Layout'
+import React from 'react';
+import { createTheme, ThemeProvider } from '@mui/material';
+import Layout from '../deakicomponents/Layout/Layout';
+import MainSidebar from '../deakicomponents/Sidebar';
 
 export function reportWebVitals(metric) {
   console.log(metric)
@@ -31,7 +32,9 @@ function MyApp({ Component, pageProps }) {
   */
   return (
     <ThemeProvider theme={theme}>
+      <MainSidebar/>
       <Layout>
+      
         <Component {...pageProps} />
       </Layout>
     </ThemeProvider>

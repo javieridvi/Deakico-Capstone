@@ -12,7 +12,7 @@ import { RequestModule } from './Request/requests.module';
 import { ReviewModule } from './Review/reviews.module';
 import { UserAccountModule } from './UserAccount/users.module';
 import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from './UserAccount/auth/core/all_exceptions.filter';
+// import { AllExceptionsFilter } from './UserAccount/auth/core/all_exceptions.filter';
 
 @Module({
   imports: [
@@ -37,9 +37,11 @@ import { AllExceptionsFilter } from './UserAccount/auth/core/all_exceptions.filt
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_FILTER,
-    useClass: AllExceptionsFilter
-  }],
+  providers: [AppService, 
+  //   {
+  //   provide: APP_FILTER,
+  //   useClass: AllExceptionsFilter
+  // }
+],
 })
 export class AppModule {}

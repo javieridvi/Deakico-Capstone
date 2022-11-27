@@ -13,6 +13,11 @@ export enum Categories {
   OTHER = 'other',
 }
 
+export enum ItemType {
+  PRODUCT = 'product',
+  SERVICE = 'service',
+}
+
 @Entity('Provider Account')
 export class ProviderAccountEntity {
   @PrimaryGeneratedColumn()
@@ -32,6 +37,9 @@ export class ProviderAccountEntity {
 
   @Column({ nullable: true, type: 'enum', enum: Categories })
   pa_category: string;
+
+  @Column({ nullable: true, type: 'enum', enum: ItemType})
+  pa_type: string;
 
   @OneToMany((type) => ItemEntity, (item) => item.provider)
   items: ItemEntity[];

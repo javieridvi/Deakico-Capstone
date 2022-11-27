@@ -5,13 +5,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "follows";
 const endpoint = API_URL + entity;
 
-const insertFollow = async () => {
-    return await axios.post(endpoint, {headers: authHeader()}); 
+const insertFollow = async (data) => {
+    return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const updateFollow = async (f_id) => {
-    return await axios.put(endpoint + "/" + f_id, {headers: authHeader()})
-}
+//Most likely unnecessary
+// const updateFollow = async (f_id) => {
+//     return await axios.put(endpoint + "/" + f_id, {headers: authHeader()})
+// }
 
 const getAllFollows = async () => {
     return await axios.get(endpoint);
