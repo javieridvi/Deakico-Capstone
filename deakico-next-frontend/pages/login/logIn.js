@@ -1,23 +1,28 @@
 import { Button, Container, Link, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import authService from '../../services/auth/auth.service';
+import { useRouter } from 'next/router'
+import BasicModal from '../../deakicomponents/Modal';
 
 export default function LogIn() {
+
+  // const router = useRouter();
+
+  const [open, setOpen] = React.useState(false); //modal use states
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     authService.login(data.get('email'), data.get('password')).then(
       () => {
-        window.location.reload(); //this reloads the page.
-      }, (err) => {
-        console.log(err);
+        //on successful login, redirect to Home Page
+        //router.replace('/'); //router is conflicting with how we render in Home Page
+        location.assign('/')
+      }).catch((err) => {
+        //console.log(err);
+        setOpen(true); //opens error modal
       }
     )
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (
@@ -29,6 +34,12 @@ export default function LogIn() {
         backdropFilter: 'blur(10px)',
       }}
     >
+      <BasicModal 
+      open={open} 
+      handleClose={() => {setOpen(false)}} 
+      title="Unauthorized User" 
+      message="Invalid Email or Password." 
+      />
       <Stack
         direction="column"
         justifyContent="center"

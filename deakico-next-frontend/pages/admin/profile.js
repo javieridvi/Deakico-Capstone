@@ -1,35 +1,35 @@
-import {React, useState }from 'react'
-
-import { Container,  Typography , Rating, Stack, Button, Box, styled, Grid, FormControl, Select, MenuItem,  Slide, } from '@mui/material';
-import Image from 'next/image'
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import AddIcon from '@mui/icons-material/Add';
 import EmailIcon from '@mui/icons-material/Email';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
+import Image from 'next/image';
+import React from 'react';
 
 
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#ff6d75',
+  },
+  '& .MuiRating-iconHover': {
+    color: '#ff3d47',
+  },
+});
 
+export default function Profile() {
 
-const Follow = () => {
-  var elem = document.getElementById("follow") ;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      name: data.get('name'),
+      description: data.get('description'),
+      price: data.get('price'),
+      category: data.get('category')
+    });
+  };
 
-  if( elem.innerHTML == "+ Follow"){
-      elem.innerHTML = "Followed";
-      elem.value = "Followed";
-      elem.style.backgroundColor= 'Pink';
-      console.log('followed');
-  
-
-  }
-  else {
-    elem.innerHTML= "+ Follow";
-    elem.style.backgroundColor = '#c1efdd';
-    console.log('unfollow');
-    alert('Unfollow');
-  }
-
-}
-
-export default function Profile() {  
-  
   return (
   
 <Container>
@@ -76,68 +76,51 @@ export default function Profile() {
         mb:'20px',
         direction:'column'
 
-    }}> Here goes a fancy text that sets you apart from other companies.</Typography>   
-
-    </Box >  
-    <Stack className='topButtons' direction="row" spacing={2}>
-    
-    <Button variant="contained" id='follow'  color="secondary"  defaultValue= '+ Follow'
-    onClick={()=>{
-      Follow();
-    }}
-    
-    >+ Follow
-    </Button>      
-  
-    <Button variant="contained" startIcon={<StarOutlineIcon/>} 
-    onClick = {()=>{
-    parent.location = '/review'
-    }}
-    >Review</Button> 
-    <Button variant="contained" startIcon={<EmailIcon/>}   
-     onClick={()=>{
-      parent.location = 'mailto: deakicomoelcoqui@gmail.com'
-
-    }}>Contact Provider</Button>
-    </Stack>
-     </Container> 
-
-      <Box xs={6} sx={{
-          justifyContent:'flex',
-          position:'left'
-           }}>
-      <div className='profilePic'>
-       <Image src="/Logphotos.png" 
-        width={550}
-        height={284}
-        layout={'fixed'}
-        /> </div>   
-      </Box>
+              }}
+            >
+              Here goes a fancy text that sets you apart from other companies.
+            </Typography>
+          </Box >
+          <Stack className='topButtons' direction="row" spacing={2}>
+            <Button variant="contained" color="secondary" startIcon={<AddIcon />} >Follow </Button>
+            <Button variant="contained" startIcon={<StarOutlineIcon />}>Review</Button>
+            <Button variant="contained" startIcon={<EmailIcon />}>Contact Provider</Button>
+          </Stack>
+        </Container>
+        <Box xs={6}
+          sx={{
+            justifyContent: 'flex',
+            position: 'left'
+          }}
+        >
+          <div className='profilePic'>
+            <Image src="/Logphotos.png"
+              width={850}
+              height={474}
+              top={40} />
+          </div>
+        </Box>
+      </div>
+      <style jsx>{`
+        .topProfile {
+            margin:0px;
+            display: flex;
+            margin-top:1.5rem;
+        }
       
-    </div> 
+        .profilePic{
+            margin-top: 10rem;
+            margin-left: 20px;
+        }
+        .presentation-u{
+            grid-row: 1 / 3;
+        }
+      `}
+      </style>
+      <main>
+        <Container className='secondLayer'>
 
-      
-<style jsx>{`
-.topProfile {
-    margin:0px;
-    display: flex;
-    margin-top:1.5rem;
-}
-
-.profilePic{
-    margin-top: 10rem;
-    margin-left: 20px;
-}
-.presentation-u{
-    grid-row: 1 / 3;
-}
-
-`}</style>
-
-       <main>
-<Container className='secondLayer'>
-
-</Container>
+        </Container>
 
 <Container className='servicesReq'>
     <Container className='serviceTab'  >
@@ -154,46 +137,46 @@ export default function Profile() {
     <>
     <FormControl sx={{width: '50%' , mt:'2rem', }}>
 
-         <Select
-        //   onChange={(event) => setHeight(Number(event.target.value))}
-        //   value={service}
-          id="select-service"
-        >
-          <MenuItem value="service">Reselling</MenuItem>
-          <MenuItem value="service">Classes</MenuItem>
-          <MenuItem value="service">Video Conference</MenuItem>
-          <MenuItem value="service">  </MenuItem>
-        </Select>
-    </FormControl>
-    <Typography sx={{
-        mt:'2rem' ,
-        mb:'4rem',
-        width:'50%',
+                    <Select
+                      label="Services"
+                      // onChange={(event) => setHeight(Number(event.target.value))}
+                      value={""}
+                      id="select-service"
+                      labelId="height-of-container-label"
+                    >
+                      <MenuItem value="service">Reselling</MenuItem>
+                      <MenuItem value="service">Classes</MenuItem>
+                      <MenuItem value="service">Video Conference</MenuItem>
+                      <MenuItem value="service"></MenuItem>
+                    </Select>
+                  </FormControl>
+                  <Typography
+                    sx={{
+                      mt: '2rem',
+                      mb: '4rem'
+                    }}
+                  >
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+                  </Typography>
+                </>
+              </Grid>
+              <Grid item xs={6} className="Feature">
+              </Grid>
+            </Grid>
+          </Container>
 
-    }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-        et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.</Typography>
-    </>
-    </Grid>
-    <Grid item xs={6} className="Feature">
+          <Container className='Products' width='90%'>
+            <Stack>
 
-    </Grid>
-</Grid>
-    </Container>
+            </Stack>
 
-    <Container className='Products' width='90%'>
-        <Stack>
-
-        </Stack>
-
-    </Container>
-</Container>
-       </main>
- 
+          </Container>
         </Container>
-      
-   
+      </main>
+    </Container>
   )
 }

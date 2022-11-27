@@ -4,7 +4,7 @@ import Image from "next/image";
 
 let theme = createTheme({
   typography: {
-    fontFamily: 'Abyssinica SIL',
+    fontFamily: 'Comfortaa',
   },
 });
 
@@ -12,7 +12,7 @@ theme = responsiveFontSizes(theme);
 
 export default function LogoName() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider  theme={theme}>
       <Typography variant='h3'>
 
         <Box
@@ -23,14 +23,21 @@ export default function LogoName() {
             display: { xs: 'block', sm: 'none' }
           }}
         >
-          <Link href='/'>
+          <Link href='/' 
+          sx={{
+            position: 'relative',
+            width: '32px',
+            height: '32px',
+            }}
+            >
             <Image
               src="/Deakico-Icon.svg"
-              layout='fill'
+              width={32}
+              height={32}
             />
           </Link>
         </Box>
-        <Box
+        <Box marginLeft={5}
           sx={{
             position: 'relative',
             height: '1em',

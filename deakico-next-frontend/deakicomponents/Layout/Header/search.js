@@ -14,7 +14,7 @@ export default function Search() {
         alignItems: 'center',
         width: '100%',
         backgroundColor: 'rgba(255, 255, 255, 0.80)',
-        borderRadius: '2rem'
+        borderRadius: '.5rem'
       }}
     >
       <InputBase

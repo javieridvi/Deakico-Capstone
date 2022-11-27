@@ -5,20 +5,25 @@ import Account from './Account';
 import LogoName from './logo-name';
 import NavBar from './Navbar';
 import Search from './search';
+import authService from "../../../services/auth/auth.service";
 
 
 export default function Header() {
 
+  const [loggedIn, setLoggedIn] = React.useState(undefined);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-  setAnchorEl(event.currentTarget);
+
+  const checkLoggedIn = () => {
+    setLoggedIn(authService.isLoggedIn());
+  }  
   
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   function MenuLink(props) {
     return (
       <MenuItem onClick={props.onClick}>
@@ -28,11 +33,68 @@ export default function Header() {
     );
   };
 
+  const handleLogout = () => {
+    authService.logout();
+    location.reload();
+  }
+
+  React.useEffect(() => {
+    checkLoggedIn();    
+    //console.log(loggedIn);
+  }, [])
+
+  const renderAccount = () => {
+    if(loggedIn) {
+      return (
+        <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
+              <MenuLink onClick={handleLogout}>Log Out</MenuLink> 
+              <Box component='div' display={{ xs: 'block', lg: 'none' }}>
+                <Divider />
+                <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
+                <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
+                <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+                <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+              </Box>
+            </Menu>
+      )
+    } else {
+      return (<Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuLink link='/login' onClick={handleClose}>Log In</MenuLink>
+        <MenuLink link='/signup' onClick={handleClose}>Sign Up</MenuLink>
+        <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
+        <Box component='div' display={{ xs: 'block', lg: 'none' }}>
+          <Divider />
+          <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
+          <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
+          <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+          <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+        </Box>
+      </Menu>)
+    }
+  }
+
   return (
-    <AppBar color='secondary' sx={{position: 'relative'}}>
+    <AppBar color='secondary' sx={{ position: 'fixed' }}>
       <Toolbar>
-        <Grid container 
-          columns={{ xs: 4, sm: 8 , md: 10, lg: 12}}
+        <Grid container
+          columns={{ xs: 4, sm: 8, md: 10, lg: 12 }}
           spacing={{ xs: 2, md: 1 }}
           display='flex'
           flexWrap='nowrap'
@@ -48,9 +110,9 @@ export default function Header() {
             <LogoName />
           </Grid>
           <Grid item
-            xs={'auto'}
+            xs={2}
             md={4}
-            lg={'auto'}
+            lg={2}
 
             display="flex"
             justifyContent="center"
@@ -59,7 +121,8 @@ export default function Header() {
           >
             <Search />
           </Grid>
-          <Grid item xs={'auto'}
+          <Grid item
+            lg={3}
             display={{ xs: 'none', lg: 'flex' }}
             justifyContent="center"
             alignItems="center"
@@ -90,25 +153,7 @@ export default function Header() {
             >
               <AccountCircleIcon fontSize='large' />
             </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <MenuLink link='/login' onClick={handleClose}>Log In</MenuLink>
-              <MenuLink link='/signup' onClick={handleClose}>Sign Up</MenuLink>
-              <Box component='div' display={{ xs: 'block', lg: 'none' }}>
-                <Divider />
-                <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>Services</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>Products</MenuLink>
-                <MenuLink link='/#' onClick={handleClose}>About</MenuLink>
-              </Box>
-            </Menu>
+            {renderAccount()}
           </Grid>
         </Grid>
       </Toolbar>

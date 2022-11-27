@@ -1,9 +1,12 @@
 import { Button, Container, CssBaseline, Link, Stack, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import authService from '../../services/auth/auth.service';
+import BasicModal from '../../deakicomponents/Modal';
 
 
 export default function SignUp() {
+
+  const [open, setOpen] = React.useState(false); //modal use states
 
   // Esta funcion es del template. lo que hace es log al console
   const handleSubmit = (event) => {
@@ -18,9 +21,13 @@ export default function SignUp() {
       data.get('username'),
       data.get('password'),).then(
       () => {
-        window.location.reload(); //this reloads the page
+        authService.login(
+          data.get('email'),
+          data.get('password')).then(() => {}).catch((err) => {console.log(err.response.data)})
+
+        location.assign('/'); //return to home page
       }, (err) => {
-        console.log(err.response.data);
+        setOpen(true); //opens error modal
       }
     )
     console.log({
@@ -45,6 +52,15 @@ export default function SignUp() {
         boxShadow: '10px 10px 10px rgba(30,30,30,0.5)',
       }}>
       <CssBaseline />
+
+      {/**Error Modal */}
+      <BasicModal 
+      open={open} 
+      handleClose={() => {setOpen(false)}} 
+      title="Email or Username already taken" 
+      message="Either the Email or Username you're trying to use has been taken. Please use other options." 
+      />
+
       <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}
         sx={{
           display: 'flex',

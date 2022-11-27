@@ -1,9 +1,10 @@
 import { Box, Button, ButtonBase, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
-import { useState } from "react";
-import { ProviderCard } from "../../deakicomponents/Card";
+import { useEffect, useState } from "react";
+import { ProductCard } from "../../deakicomponents/Card";
+import itemService from '../../services/item.service'
 
 
-const itemList = [
+let itemList = [
   { title: "Provider 1", rating: 0, price: '$' + 1.50 },
   { title: "Provider 2", rating: 0.5, price: '$' + 61.32 },
   { title: "Provider 3", rating: 1, price: '$' + 50.00 },
@@ -16,12 +17,79 @@ const itemList = [
 ]
 
 export default function Feed(props) {
-  const [displayedCards, setDisplayedCards] = useState(itemList);
+  const [displayedCards, setDisplayedCards] = useState(itemList); 
+
+  const [prodList, setProdList] = useState();
+  const [servList, setServList] = useState();
+
+  const getProducts = () => {
+    itemService.getItemByType('product').then((res) => {
+      setProdList(res.data);
+    }).catch((err) => {
+      //console.log(err);
+    })
+  }
+
+  const getServices = () => {
+    itemService.getItemByType('service').then((res) => {
+      setServList(res.data);
+    }).catch((err) => {
+      //console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    getProducts();
+    getServices();
+  }, []);
 
   const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
+  
+  const [val, setVal] = useState(props.type); // int default 0 / services
+
+
+  const renderProdOrServ = () => {
+    if(val == 1) {
+      return (
+        prodList?.map((e, index) => {
+          return (
+            <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <ProductCard
+                category={e.i_category}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                title={e.i_name}
+                description={e.i_description}
+                price={e.i_price}
+                rating={e.i_rating}
+              />
+            </Grid>
+          )
+        }
+      )
+      )
+    } else {
+      return (
+        servList?.map((e, index) => {
+          return (
+            <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <ProductCard
+                category={e.i_category}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                title={e.i_name}
+                description={e.i_description}
+                price={e.i_price}
+                rating={e.i_rating}
+              />
+            </Grid>
+          )
+        }
+      )
+      )
+    }
+  }
+
 
   function TypeSelect() {
-    const [val, setVal] = useState(props.type); // int default 0 / services
 
     const handleChange = (event) => {
       setVal(event.target.value);
@@ -116,31 +184,17 @@ export default function Feed(props) {
         <Options start={filter} save={handleFilters} />
       </Box>
       <Grid className="Results"
-        container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-        sx={{
-          position: 'relative',
-          height: '100%',
-          maxWidth: '100rem',
-          paddingTop: '1rem',
-          paddingBottom: '100px'
-        }}
-      >
-        {displayedCards.map((e, index) => {
-          return (
-            <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <ProviderCard
-                type={index%2 == 0 ? 'Product' : 'Service'}
-                category={'Other'}
-                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                title={e.title}
-                description={cardDesc}
-                price={e.price}
-                rating={e.rating}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+      container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+      sx={{
+        position: 'relative',
+        height: '100%',
+        maxWidth: '100rem',
+        paddingTop: '1rem',
+        paddingBottom: '100px'
+      }}
+    >
+      { renderProdOrServ()}
+    </Grid>
       {/* <Box sx={{
         backgroundImage: 'linear-gradient(rgba(255,0,0, 0), rgba(0,0,0, 1))',
         position: 'fixed',

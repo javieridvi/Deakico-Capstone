@@ -1,5 +1,5 @@
-export interface Likes{
-    l_id?: number;
-    u_id?: number;
-    i_id?: number; 
-} 
+export interface Likes {
+  u_id?: number;
+  i_id?: number;
+  //To-Do: Create date column
+}

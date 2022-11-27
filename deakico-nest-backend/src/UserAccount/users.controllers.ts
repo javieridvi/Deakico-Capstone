@@ -1,40 +1,52 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
-import { throws } from "assert";
-import { Observable } from "rxjs";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { UserAccount } from "./users.interface";
-import { UserAccountService } from "./users.service";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { JwtGuard } from './auth/guards/jwt.guard';
+import { UserAccount } from './users.interface';
+import { UserAccountService } from './users.service';
 
 @Controller('users')
 export class UserAccountController {
-    constructor(private readonly usersService: UserAccountService) {}
+  constructor(private readonly usersService: UserAccountService) {}
 
-    @Post()
-    insertUser(@Body() user: UserAccount): Observable<UserAccount> {
-        return this.usersService.insertUser(user);
-    }
+  @Post() //unnused. Instead using the register request in auth.controllers.ts
+  insertUser(@Body() user: UserAccount): Observable<UserAccount> {
+    return this.usersService.insertUser(user);
+  }
 
-    @Get()
-    getAllUsers(): Observable<UserAccount[]>{
-        return this.usersService.getAllUsers();
-    }
+  @Get()
+  getAllUsers(): Observable<UserAccount[]> {
+    return this.usersService.getAllUsers();
+  }
 
-    @Get(':u_id')
-    getUser(@Param('u_id') u_Id: number,): Observable<UserAccount> {
-        return this.usersService.getUser(u_Id);
-    }
+  @UseGuards(JwtGuard)
+  @Get('user')
+  getUser(@Request() req: any): Observable<UserAccount> {
+    return this.usersService.getUser(req.user.u_id);
+  }
 
-    @Put(':u_id')
-    updateUser(
-        @Param('u_id') u_Id: number,
-        @Body() user: UserAccount,
-    ): Observable<UpdateResult> {
-        return this.usersService.updateUser(u_Id, user);
-    }
+  @UseGuards(JwtGuard)
+  @Put()
+  updateUser(
+    @Request() req: any,
+    @Body() user: UserAccount,
+  ): Observable<UpdateResult> {
+    return this.usersService.updateUser(req.user.u_id, user);
+  }
 
-    @Delete(':u_id')
-    deleteUser(
-        @Param('u_id') u_Id: number,): Observable<DeleteResult> {
-            return this.usersService.deleteUser(u_Id);
-    }
+  @UseGuards(JwtGuard)
+  @Delete()
+  deleteUser(@Request() req: any): Observable<DeleteResult> {
+    return this.usersService.deleteUser(req.user.u_id);
+  }
 }

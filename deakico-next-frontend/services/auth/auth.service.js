@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const register = (u_firstname, u_lastname, email, username, password) => {
-  return axios.post(API_URL + "auth/register", {
+const register = async (u_firstname, u_lastname, email, username, password) => {
+  return await axios.post(API_URL + "auth/register", {
     email: email,
     username: username,
     u_firstname: u_firstname , 
@@ -11,6 +11,7 @@ const register = (u_firstname, u_lastname, email, username, password) => {
     password: password,
   });
 };
+
 
 const login = async (email, password) => {
   const response = await axios
@@ -28,12 +29,13 @@ const logout = () => {
   sessionStorage.removeItem("user");
 };
 
+//getUser() inside user.service.js should replace this method, as it uses authHeader.
 const getCurrentUser = () => {
   return JSON.parse(sessionStorage.getItem("user"));
 };
 
 const isLoggedIn = () => {
-  return !sessionStorage.getItem("user");
+  return sessionStorage.getItem("user") ? true : false;
 }
 
 // const removeAcount = (id_user,obj) => {
