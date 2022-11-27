@@ -23,6 +23,12 @@ export class LikesController {
     return this.likesService.getAllLikes();
   }
 
+  @UseGuards(JwtGuard)
+  @Get('provider')
+  getLikesOfProvider(@Request() req: any): Promise<Partial<Likes[]>> {
+    return this.likesService.getLikesOfProvider(req.user.pa_id);
+  }
+
   /**
    * Fetches user id and the items liked by given user id
    * @param req token request used to retrieve the id of the user

@@ -17,6 +17,22 @@ export class LikesService {
     return from(this.likeRepository.find());
   }
 
+  /**Gets all items of a given provider and the amount of likes it has.
+   * 
+   * @param providerId the pa_id of the logged-in provider
+   * @returns a list of Item objects with an additional 'likes' attribute that contains
+   *          the amount of likes each item has.
+   */
+  async getLikesOfProvider(providerId: number): Promise<Partial<Likes[]>> {
+    const res = await this.likeRepository.manager
+    .query(`select I.i_id, I.i_name, I.i_type, I.i_category, I.i_description, I.i_price, I.i_rating, I.s_timeslot, I.p_stock,
+    count(L.i_id) as likes from "Items" as I full outer join "Likes" L on I.i_id = L.i_id
+    where pa_id = $1
+    group by I.i_id;`,
+    [providerId])
+    return res;
+  }
+
   /**
    * Fetches user id and the items liked by given user id
    * @param userId the id of the user
