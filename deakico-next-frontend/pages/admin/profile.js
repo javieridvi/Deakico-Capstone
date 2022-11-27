@@ -4,8 +4,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
+import { width } from '@mui/system';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 
 const StyledRating = styled(Rating)({
@@ -16,6 +17,9 @@ const StyledRating = styled(Rating)({
     color: '#ff3d47',
   },
 });
+
+//Test const email
+const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile() {
 
@@ -30,6 +34,29 @@ export default function Profile() {
     });
   };
 
+  const sendEmail = () =>{
+    return window.open('mailto:'+ email)
+  }
+  const [Follow] = useState(""); 
+
+  const handleFollow = () => {
+    const elem = document.getElementById('Follow');
+
+    if(elem.value == "Follow"){
+      alert("Followed");
+      elem.value = 'Followed';
+      elem.innerHTML = 'Followed';
+      elem.style.backgroundColor= 'Pink';
+    }
+
+    else{
+      elem.value = "Follow";
+      elem.innerHTML = '+ Follow';
+      elem.style.backgroundColor = '#c1efdd';
+    }
+
+ 
+  }
   return (
   
 <Container>
@@ -82,9 +109,9 @@ export default function Profile() {
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />} >Follow </Button>
-            <Button variant="contained" startIcon={<StarOutlineIcon />}>Review</Button>
-            <Button variant="contained" startIcon={<EmailIcon />}>Contact Provider</Button>
+            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="secondary" startIcon={<AddIcon />} >Follow </Button>
+            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}>Review</Button>
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact Provider</Button>
           </Stack>
         </Container>
         <Box xs={6}
@@ -153,7 +180,8 @@ export default function Profile() {
                   <Typography
                     sx={{
                       mt: '2rem',
-                      mb: '4rem'
+                      mb: '4rem',
+                      width:'50%'
                     }}
                   >
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

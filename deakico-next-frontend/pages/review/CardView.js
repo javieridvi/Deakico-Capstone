@@ -74,6 +74,6 @@ export function CardView(props){
 }
 
 CardView.getInitialProps = async () => {
-  const res = await fetch('http://localhost:3000/reviews')
+  
 }
 
