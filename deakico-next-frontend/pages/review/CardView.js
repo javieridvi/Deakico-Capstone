@@ -15,7 +15,6 @@ CardView.defaultProps= {
 export function CardView(props){
 // const img = 'url("Grace.png")' , name = '@grace' , r_rating= 3.0 , r_message = 'test'
 
-
     return (
     <div>
  <Box sx={{
@@ -74,4 +73,7 @@ export function CardView(props){
   )
 }
 
+CardView.getInitialProps = async () => {
+  const res = await fetch('http://localhost:3000/reviews')
+}
 

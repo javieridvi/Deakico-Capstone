@@ -4,8 +4,8 @@ import{React, useState, useRef, useEffect, useCallback} from 'react';
 import Image from 'next/image';
 
 import axios from 'axios' ;
-import {ReviewForm} from './reviewButton';
-import {CardView} from './CardView' ;
+//import {ReviewForm} from './reviewButton';
+//import {CardView} from './CardView' ;
 import { rootShouldForwardProp } from '@mui/material/styles/styled';
 // import ReactDOM from 'react-dom/client';
 
@@ -71,13 +71,13 @@ export default function Review() {
         <Container>
        
 <Button onClick={handleClickOpen}> AQUI</Button>
-<ReviewForm 
+{/* <ReviewForm 
  open = {open}
 //  handleClose={() => {setOpen(false)}} 
 handleClose= {handleClose}
  title = "-Company Name-"
 
-/>
+/> */}
 
  {/* REVIEW CARDS  */}
     <Container className="grid-reviews " >
@@ -85,18 +85,18 @@ handleClose= {handleClose}
       // m:'10px',
       display:'flex',
      flexDirection:'row',
-     justifyContent:'center',
+    //  justifyContent:'center',
     }}>
   
     {/* <Grid item xs={4}> */}
-      <CardView sx={{  m:'4rem', }}/>
+      {/* <CardView sx={{  m:'4rem', }}/> */}
       {/* </Grid> */}
 
-      <CardView/>
+      {/* <CardView/> */}
      {/* <TESTING PURPOSE> */}
-      <CardView name= '@gracie' r_rating= {3}  r_message="Cool"/> 
+      {/* <CardView name= '@gracie' r_rating= {3}  r_message="Cool"/> 
       <CardView name= '@gracie' r_rating= {5}  r_message="awesome"/> 
-      <CardView name= '@gracie' r_rating= {4}  r_message="Gr8"/> 
+      <CardView name= '@gracie' r_rating= {4}  r_message="Gr8"/>  */}
 
    </Grid>
     </Container>
