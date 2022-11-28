@@ -159,7 +159,7 @@ export default function Feed(props) {
                 category={e.pa_category}
                 src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
                 title={e.pa_companyname}
-                description={cardDesc}
+                description={e.pa_desc}
                 price={e.pa_price}
                 rating={e.pa_rating}
               />
@@ -359,30 +359,42 @@ function resultsModify(array, category, sort) {
   // pa_id
   // pa_rating
 
-  console.log('newArray');
-  console.log(newArray);
-  console.log(category);
-  console.log(category == 'None');
-  console.log('NewArray');
   if (category != 'None') {
     newArray = newArray.filter(provider => provider.pa_category == category);
-  } else {
-    return array;
   }
 
-  // if (sort != '') {
-  //   switch (sort) {
-  //     case "A to Z":
-  //       array.sort((a, b) => a.pa_companyname.localecompare(b.pa_companyname));
-  //     case "Z to A":
-  //       array.sort((a, b) => b.pa_companyname.localecompare(a.pa_companyname));
-  //     case "Best Ratings":
-  //       array.pa_rating.sort();
-  //     case "Most Followed":
-  //       array.pa_followers.sort();
-  //   }
-  // }
+  if (sort != 'None') {
+    switch (sort) {
+      case "A to Z":
+        newArray.sort((a, b) => a.pa_companyname.localeCompare(b.pa_companyname));
+        break;
+      case "Z to A":
+        newArray.sort((a, b) => b.pa_companyname.localeCompare(a.pa_companyname));
+        break;
+      case "Best Ratings":
+        console.log(newArray.pa_rating);
+        newArray.sort((a, b) => sortIntHelper(a.pa_rating, b.pa_rating));
+        break;
+      case "Most Followed":
+        newArray.pa_followers.sort();
+        break;
+    }
+  }
+
+  console.log('newArray');
+  console.log(newArray);
+  console.log('NewArray');
 
   return newArray;
 
+}
+
+function sortIntHelper(a, b) {
+    if(a > b) {
+      return 1;
+    } else if(a < b) {
+      return -1;
+    } else {
+      return 0;
+    }
 }
