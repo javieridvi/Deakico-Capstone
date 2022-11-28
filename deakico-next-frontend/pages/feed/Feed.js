@@ -20,17 +20,17 @@ const itemList = [
 const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
 
 export default function Feed(props) {
-  let providers;
+  const [initialArray, setInitialArray] = useState([]);
   const [displayedCards, setDisplayedCards] = useState([]);
   const [optionsVis, setOptionsVis] = useState(false);
-  const [filters, setfilters] = useState({
+  const [filters, setFilters] = useState({
     category: {
       index: -1,
-      name: ''
+      name: 'None'
     },
     sort: {
       index: -1,
-      name: ''
+      name: 'None'
     }
   });
 
@@ -41,7 +41,7 @@ export default function Feed(props) {
       console.log(err);
     })
     console.log(response);
-    providers = response;
+    setInitialArray(response);
     setDisplayedCards(response);
   }
 
@@ -49,18 +49,15 @@ export default function Feed(props) {
     RequestProviders();
   }, [])
 
-  // useEffect(() => {
-  //   let results = providers;
-  //   setDisplayedCards(resultsModify(results, filters.category, filters.sort))
-  // },[filters])
 
   function handleOptionsVis() {
     setOptionsVis((state) => !state);
   }
 
-  function handleFilters(filters) {
+  function handleFilters(newFilters) {
     handleOptionsVis();
-    setFilters(filters);
+    setFilters(newFilters);
+    setDisplayedCards(resultsModify(initialArray, newFilters.category.name, newFilters.sort.name));
   }
 
   function TypeSelect() {
@@ -134,7 +131,7 @@ export default function Feed(props) {
           zIndex: 1,
           top: '60px',
           width: '100%',
-          height: optionsVis ? '100%' : '0',
+          height: optionsVis ? '100vh' : '0',
           display: optionsVis ? 'block' : 'none',
           maxHeight: '100vh',
           backgroundColor: 'white',
@@ -221,7 +218,7 @@ function Options(props) {
   function saveHelper(index, array) {
     return {
       index: index,
-      name: index < 0 ? '' : array[index]
+      name: index < 0 ? 'None' : array[index]
     }
   }
 
@@ -354,16 +351,24 @@ function Options(props) {
 }
 
 function resultsModify(array, category, sort) {
-
+  let newArray = array;
   // pa_category
   // pa_companyname
   // pa_desc
   // pa_followers
   // pa_id
   // pa_rating
-  // if (category != '') {
-  //   array = array.filter(provider => provider.pa_category === category);
-  // }
+
+  console.log('newArray');
+  console.log(newArray);
+  console.log(category);
+  console.log(category == 'None');
+  console.log('NewArray');
+  if (category != 'None') {
+    newArray = newArray.filter(provider => provider.pa_category == category);
+  } else {
+    return array;
+  }
 
   // if (sort != '') {
   //   switch (sort) {
@@ -378,6 +383,6 @@ function resultsModify(array, category, sort) {
   //   }
   // }
 
-  return array;
+  return newArray;
 
 }
