@@ -1,23 +1,8 @@
-import { Box, Button, ButtonBase, CircularProgress, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, ButtonBase, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ProviderCard, ProviderTest } from "../../deakicomponents/Card";
+import { ProviderCard } from "../../deakicomponents/Card";
 import Search from "../../deakicomponents/Layout/Header/search";
-import providerService from "../../services/provider.service"
-
-
-const itemList = [
-  { title: "Provider 1", rating: 0, price: '$' + 1.50 },
-  { title: "Provider 2", rating: 0.5, price: '$' + 61.32 },
-  { title: "Provider 3", rating: 1, price: '$' + 50.00 },
-  { title: "Provider 4", rating: 1.5, price: '$' + 42.26 },
-  { title: "Provider 5", rating: 2, price: '$' + 100.00 },
-  { title: "Provider 6", rating: 2.5, price: '$' + 100.00 },
-  { title: "Provider 7", rating: 3, price: '$' + 100.00 },
-  { title: "Provider 8", rating: 3.5, price: '$' + 100.00 },
-  { title: "Provider 9", rating: 4, price: '$' + 100.00 },
-]
-
-const cardDesc = "Here goes various providers that are trending or have good reviews. Deakico will offer many products and services from a diversity of local providers";
+import providerService from "../../services/provider.service";
 
 export default function Feed(props) {
   const [initialArray, setInitialArray] = useState([]);
@@ -162,18 +147,12 @@ export default function Feed(props) {
                 description={e.pa_desc}
                 price={e.pa_price}
                 rating={e.pa_rating}
+                followers={e.pa_followers}
               />
             </Grid>
           );
         })}
       </Grid>
-      {/* <Box sx={{
-        backgroundImage: 'linear-gradient(rgba(255,0,0, 0), rgba(0,0,0, 1))',
-        position: 'fixed',
-        bottom: '0',
-        height: '100px',
-        width: '100%',
-      }} /> */}
     </Box>
   );
 }
@@ -350,14 +329,9 @@ function Options(props) {
   )
 }
 
+//Funcion para filtrar y sort el array de providers
 function resultsModify(array, category, sort) {
-  let newArray = array;
-  // pa_category
-  // pa_companyname
-  // pa_desc
-  // pa_followers
-  // pa_id
-  // pa_rating
+  let newArray = array; //Puede que sea innecesario guardarlo en variable
 
   if (category != 'None') {
     newArray = newArray.filter(provider => provider.pa_category == category);
@@ -372,27 +346,21 @@ function resultsModify(array, category, sort) {
         newArray.sort((a, b) => b.pa_companyname.localeCompare(a.pa_companyname));
         break;
       case "Best Ratings":
-        console.log(newArray.pa_rating);
         newArray.sort((a, b) => sortIntHelper(a.pa_rating, b.pa_rating));
         break;
       case "Most Followed":
-        newArray.pa_followers.sort();
+        newArray.sort((a, b) => sortIntHelper(a.pa_followers, b.pa_followers));
         break;
     }
   }
-
-  console.log('newArray');
-  console.log(newArray);
-  console.log('NewArray');
-
   return newArray;
-
 }
 
+// Ayuda a sort a ints. Default es de Mayor a menor. (pasar valores en int directo)
 function sortIntHelper(a, b) {
-    if(a > b) {
+    if(a < b) {
       return 1;
-    } else if(a < b) {
+    } else if(a > b) {
       return -1;
     } else {
       return 0;
