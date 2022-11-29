@@ -37,8 +37,9 @@ export class FollowsService {
 
   async getFollowing(userId: number): Promise<FollowEntity[]> {
     const res = await this.followRepository
-      .createQueryBuilder()
-      .select('pa_id')
+      .createQueryBuilder('follows')
+      .leftJoin('follows.follows_provider', 'provider', 'provider.pa_id = follows.pa_id')
+      .select('provider')
       .where('u_id = :u_id', { u_id: userId })
       .getRawMany();
     return res;
