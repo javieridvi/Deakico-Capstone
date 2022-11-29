@@ -139,7 +139,7 @@ export function ProviderCard(props) {
         color: 'rgb(101, 101, 101)',
       }}
     >
-      100
+      {props.followers}
     </Typography>
   );
   //uses rating, follow and follows
@@ -160,7 +160,7 @@ export function ProviderCard(props) {
           fontFamily: 'Roboto, sans-serif',
         }}
       >
-        <Stars width={'75px'} rating={props.rating} />
+        <Stars width={'75px'} rating={props.rating} textColor={'rgb(101, 101, 101)'} />
       </Typography>
     </Box>,
     <Box className={'Actions'}
@@ -271,7 +271,7 @@ export function ProductCard(props) {
 
 
   let components = {
-    top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
+    top: [<Stars key={0} width={'75px'} rating={props.rating} textColor={'rgb(225, 225, 225)'} />, infoRect(props.category, 1)],
     image: props.src,
     title: props.title,
     description: props.description,
