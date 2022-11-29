@@ -25,7 +25,6 @@ export default function Feed(props) {
     }).catch((err) => {
       console.log(err);
     })
-    console.log(response);
     setInitialArray(response);
     setDisplayedCards(response);
   }
@@ -86,7 +85,7 @@ export default function Feed(props) {
             padding: '10px .5rem 0 .5rem',
           }}
         >
-          <Search />
+          <Search list={initialArray}/>
         </Box>
         <Box className="Filters"
           sx={{
@@ -114,7 +113,7 @@ export default function Feed(props) {
         sx={{
           position: 'absolute',
           zIndex: 1,
-          top: '60px',
+          top: '110px',
           width: '100%',
           height: optionsVis ? '100vh' : '0',
           display: optionsVis ? 'block' : 'none',

@@ -1,13 +1,21 @@
-import { Box, Divider, IconButton, InputBase, Paper, TextField } from "@mui/material";
+import { Autocomplete, Box, Divider, IconButton, InputBase, Paper, TextField } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import { useState } from "react";
 
 
-export default function Search() {
+export default function Search(props) {
+
+  function handleSubmit(event, value) {
+    event.preventDefault();
+    console.log(value);
+  }
+
   return (
     <Box
       component="form"
+      onSubmit={(e) => {console.log(e)}}
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -18,12 +26,23 @@ export default function Search() {
         backgroundColor: 'rgba(255, 255, 255, 0.80)',
       }}
     >
-      <InputBase
+      <Autocomplete
+        id="free-solo-demo"
+        freeSolo
+        options={props.list.map((option) => option.pa_companyname)}
         sx={{ ml: 1, flex: 1 }}
-        placeholder="Search..."
-        inputProps={{ 'aria-label': 'search Deakico' }}
+        onChange={handleSubmit}
+        renderInput={(params) => {
+          const { InputLabelProps, InputProps, ...rest } = params;
+          return <InputBase
+            {...params.InputProps}
+            {...rest}
+            placeholder="Search..."
+            // inputProps
+          />}
+        }
       />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search button" on >
         <SearchIcon />
       </IconButton>
     </Box>
