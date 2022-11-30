@@ -36,10 +36,8 @@ let rating = 0;
 export default function Review() {
 const [reviewItem, setReview] = useState([]);
 
-
   async function fetchItems() {
   const res = await reviewService.getAllReviews().then((res) =>{
-  //  setRmesage( res.data[0].r_message) 
    return res.data;  // todos los reviews 
   }).catch((error)=> {
     console.log(error);
@@ -73,11 +71,27 @@ const [reviewItem, setReview] = useState([]);
     }
   }
 
-  const handleSubmit = (e, reason) => {
-    if (reason !== 'backdropClick') {
+
+  const handleSubmit = (event) => {
+    if (event !== 'backdropClick') {
       setOpen(false);
+
+    // var Rform =  [{
+    //  r_message: "TEEEEST" ,
+    //  r_rating: 3.5 ,
+    //  i_id: 19 ,}
+    // ];
+
+    //  console.log(Rform);
+
+    //  reviewService.insertReview(Rform)
+  
+    event.preventDefault();
+
+     
     }
   }
+
 
   return (
     <>
@@ -109,11 +123,10 @@ const [reviewItem, setReview] = useState([]);
 <Button onClick={handleClickOpen}> AQUI</Button>
 <>
 <ReviewForm 
- open = {open}
-//  handleClose={() => {setOpen(false)}} 
+open = {open}
 handleClose= {handleClose}
-title = "-Company Name-"  //to do 
-handleSubmit = {handleSubmit}
+title = "-Company Name-"  //to do: pass the company Name too 
+
 
 />
 </>
@@ -130,7 +143,7 @@ handleSubmit = {handleSubmit}
       //  product = {itemService.getItem(e.i_id).i_name} no funciona necesita cambiarse el req a product name
        rating = {parseInt(e.r_rating)}
        message = {e.r_message}
-       username = {e.u_id}      />
+       username = {e.username}      />  
       </div>
      );
     })}  

@@ -1,7 +1,7 @@
 import {React,useState, useCallback,} from 'react'
 import {Dialog,  FormControl , Slider, Rating, Stack, Button, TextField , Box, Typography} from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
-
+import reviewService from '../services/review.service';
 
 const marks = [
     {
@@ -32,8 +32,10 @@ const marks = [
 var a,b,c,d = 0;
 
 export  function ReviewForm(props) {
-    const [ratingS, setValue] = useState(0); 
+   const [ratingS, setValue] = useState(0); 
     // para guardar el overall-Rating
+   const [open, setOpen] = useState(false); //modal use states
+
 
     console.log("Value: " + ratingS);
     //Function para hacer el OverallRating 
@@ -45,7 +47,6 @@ export  function ReviewForm(props) {
   },[]);
 
     const handleSliderChange = useCallback((event,  value) => {
-      //setValue = value;
       b = value;
       // console.log("myvalue: "+b);
       ratingS = ovRating();
@@ -53,7 +54,6 @@ export  function ReviewForm(props) {
     },[]);
     
     const handleSliderChange2 = useCallback((event,  value) => {
-      //setValue = value;
       c = value;
       // console.log("value: "+c);
       ratingS = ovRating();
@@ -61,7 +61,6 @@ export  function ReviewForm(props) {
     },[]);
     
     const handleSliderChange3 = useCallback((event,  value) => {
-      //setValue = value;
       d = value;
       console.log("value: "+ d);
       ratingS = ovRating();
@@ -69,20 +68,41 @@ export  function ReviewForm(props) {
     },[]);
    
     
- const ovRating = ()=> {
+ const ovRating = ()=> {  // to get the review stars value 
   var sum = a+b+c+d ; 
   // console.log("sum: "+ sum)
   return sum;
  };
 
-    // const debounceSliderChange = debounce((val) => {   
-    //   console.log(val);
-    //   setValue = val;
-    //   },[]);
-  
-    
-       
+// function itemMessage(value){
+// console.log('message:' + value);
+// return value;
+// }
+function redirect() {
+  location.replace("/review")
+}
+const handleSubmit = (event) => {
+  if (event !== 'backdropClick') {
+    setOpen(false);  
 
+  const message = String(document.getElementById('message').value);  //message
+  // console.log("ovrating: "+ ovRating());
+  var Rform =  [{
+   r_message: message ,
+   r_rating: parseFloat(ovRating()) ,
+   i_id: 19 ,}   // TODO 
+  ];
+
+   console.log(Rform);
+   reviewService.insertReview(Rform);
+
+  redirect();
+   
+   
+
+   
+ }
+}       
     
   return (
 
@@ -174,7 +194,6 @@ export  function ReviewForm(props) {
               id='price'
         aria-label="Custom marks"
         defaultValue={2}
-        // getAriaValueText={valuetext}
         step={0.5}
         valueLabelDisplay="auto"
         marks={marks}
@@ -205,10 +224,14 @@ export  function ReviewForm(props) {
         onChange={(e,v) => handleSliderChange3(e,v*.25)}
 
       />  
-           <TextField
+           <TextField 
+          id='message'
+          name = 'message'
           placeholder="Here your comment!"
           required
-          multiline          
+          multiline   
+          type= 'string'    
+          // autoFocus   
           maxRows={3}
           sx={{ mt:'2.5rem' }}
         />
@@ -218,7 +241,7 @@ export  function ReviewForm(props) {
             <Box sx={{mb:'2rem', textAlign:'right'}}>
              <div>
           <Button sx={{mt:' 2rem'}} onClick={props.handleClose}>Cancel</Button>      
-          <Button sx={{mt:'2rem'}} onClick={props.handleSubmit}>Ok</Button>
+          <Button sx={{mt:'2rem'}} onClick={handleSubmit}>Ok</Button>
             </div>
          </Box>
       
