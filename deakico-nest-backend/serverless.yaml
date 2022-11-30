@@ -1,6 +1,4 @@
-service: deakico-backend
-
-useDotenv: true
+service: serverless-example
 
 custom:
   serverless-offline:
@@ -12,17 +10,10 @@ plugins:
 provider:
   name: aws
   runtime: nodejs14.x
-  environment:
-    POSTGRES_HOST: ${env:POSTGRES_HOST}
-    POSTGRES_PORT: ${env:POSTGRES_PORT}
-    POSTGRES_USER: ${env:POSTGRES_USER}
-    POSTGRES_PASSWORD: ${env:POSTGRES_PASSWORD}
-    POSTGRES_DATABASE: ${env:POSTGRES_DATABASE}
-    JWT_SECRET: ${env:JWT_SECRET}
 
 functions:
   main:
-    handler: dist/serverless.handler
+    handler: dist/main.handler
     events:
       - http:
           method: ANY
