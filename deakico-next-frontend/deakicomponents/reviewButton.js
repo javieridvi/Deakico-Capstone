@@ -82,12 +82,7 @@ export  function ReviewForm(props) {
   
     
        
-    const handleSubmit = (e, reason) => {
-      if (reason !== 'backdropClick') {
-        setOpen(false);
-      }
 
-    }
     
   return (
 
@@ -223,7 +218,7 @@ export  function ReviewForm(props) {
             <Box sx={{mb:'2rem', textAlign:'right'}}>
              <div>
           <Button sx={{mt:' 2rem'}} onClick={props.handleClose}>Cancel</Button>      
-          <Button sx={{mt:'2rem'}} onClick={handleSubmit}>Ok</Button>
+          <Button sx={{mt:'2rem'}} onClick={props.handleSubmit}>Ok</Button>
             </div>
          </Box>
       

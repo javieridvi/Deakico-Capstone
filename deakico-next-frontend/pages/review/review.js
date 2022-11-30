@@ -1,36 +1,70 @@
-import { Typography, Button, Grid,Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating, Stack, Input, TextField,} from '@mui/material';
+import { Typography, Button, Grid,Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating, Stack, Input, TextField, getListItemAvatarUtilityClass,} from '@mui/material';
 import { Container, Box, } from '@mui/system';
 import{React, useState, useRef, useEffect, useCallback} from 'react';
 import Image from 'next/image';
-
 import axios from 'axios' ;
-//import {ReviewForm} from './reviewButton';
-//import {CardView} from './CardView' ;
-import { rootShouldForwardProp } from '@mui/material/styles/styled';
-// import ReactDOM from 'react-dom/client';
+import {ReviewForm} from '../../deakicomponents/reviewButton';
+import {CardView} from '../../deakicomponents/CardView' ;
+import itemService from '../../services/item.service';  //en verdd no lo estoy usando
+import reviewService from '../../services/review.service';
 
-  
+let rating = 0;
+
+//Testing Funciton
+ async function pullJson(){
+   // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const rvws = await reviewService.getAllReviews();
+    const rData = await rvws.data;   //list de reviews hechos
+    const len = rData.length ;     //cantiad de reviews hechos
+      // message = rData.map((item) => item?.r_message ) // List of all the messages 
+      rating = rData.map((item) => item?.r_rating )  // List of all the ratings. 
+      // console.log("test: "+item)
+      var overallR = 0;   // overall rating calc  
+
+      rating.forEach(element => {
+        overallR += parseInt(element)
+      });
+
+      console.log(overallR/len); //overallRating de todos los ratings 4
+
+       
+    } //^Just testing Stuff
+
+
 
 export default function Review() {
+const [reviewItem, setReview] = useState([]);
 
-  // function clickHander(){
-  //   let arr = []
-  //   arr.push(
-  //     {CardView}
-  //   )
-  // }
- 
-  // const [{items}, setItems] = useState ({items : []})
-  // // const addItem = () => {
-  // //   items.push()
-  // // }
-  // const element = <CardView name= '@gracie' r_rating= {3} />;
+
+  async function fetchItems() {
+  const res = await reviewService.getAllReviews().then((res) =>{
+  //  setRmesage( res.data[0].r_message) 
+   return res.data;  // todos los reviews 
+  }).catch((error)=> {
+    console.log(error);
+  }) 
+  console.log(res); 
+  res.forEach(review => { //cada review 
+    console.log(review)
+    setReview( res ) 
+  })
+    //List todos los reviews
+
+}
+
+    useEffect(() => {
+        fetchItems();
+    }, []);
+
+
 
  const [open, setOpen] = useState(false); //modal use states
-
-  const handleClickOpen = () => {
+ 
+ const handleClickOpen = () => {
     console.log("Open") ;
     setOpen(true); // opens modal
+    pullJson();
   }
  
   const handleClose = (e, reason) => {
@@ -38,9 +72,16 @@ export default function Review() {
       setOpen(false);
     }
   }
-   
+
+  const handleSubmit = (e, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
+  }
+
   return (
     <>
+  
         <Box sx={{
             position:'inherit',
             m:'0', 
@@ -62,48 +103,46 @@ export default function Review() {
                     </Image>
                 </div>
         </Box>
-        {/* <style jsx>{`
-        .reviewPic{
-        margin-top: 36px }
-        textarea { resize: none}
-       `}</style>
-      */}
-        <Container>
+  
+        <Container sx={{justifyContent:'center'}}>
        
 <Button onClick={handleClickOpen}> AQUI</Button>
-{/* <ReviewForm 
+<>
+<ReviewForm 
  open = {open}
 //  handleClose={() => {setOpen(false)}} 
 handleClose= {handleClose}
- title = "-Company Name-"
+title = "-Company Name-"  //to do 
+handleSubmit = {handleSubmit}
 
-/> */}
+/>
+</>
+ {/* REVIEW CARDS  */}      
+    <Box className="grid-reviews" display= 'flex'   >
 
- {/* REVIEW CARDS  */}
-    <Container className="grid-reviews " >
-    <Grid container item spacing={2} sx={{
-      // m:'10px',
-      display:'flex',
-     flexDirection:'row',
-    //  justifyContent:'center',
-    }}>
+     <Grid  container rowSpacing={3} columnSpacing={{ }} sx={{
+      // m:'10px'
+      // flexDirection:'row',
+    }}> {reviewItem.map((e, index) => {
+     return (
+      <div key={index}>
+      <CardView 
+      //  product = {itemService.getItem(e.i_id).i_name} no funciona necesita cambiarse el req a product name
+       rating = {parseInt(e.r_rating)}
+       message = {e.r_message}
+       username = {e.u_id}      />
+      </div>
+     );
+    })}  
+    
+    </Grid>
+    </Box>
   
-    {/* <Grid item xs={4}> */}
-      {/* <CardView sx={{  m:'4rem', }}/> */}
-      {/* </Grid> */}
-
-      {/* <CardView/> */}
-     {/* <TESTING PURPOSE> */}
-      {/* <CardView name= '@gracie' r_rating= {3}  r_message="Cool"/> 
-      <CardView name= '@gracie' r_rating= {5}  r_message="awesome"/> 
-      <CardView name= '@gracie' r_rating= {4}  r_message="Gr8"/>  */}
-
-   </Grid>
-    </Container>
-  
-  </Container>
+  </Container >
 
   </>
   
   )
 }
+
+

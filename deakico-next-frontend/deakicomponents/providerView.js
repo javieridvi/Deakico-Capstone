@@ -19,20 +19,13 @@ const StyledRating = styled(Rating)({
 });
 
 //Test const email
-const email = 'deakicomoelcoqui@gmail.com'
+const email = 'deakicomoelcoqui@gmail.com'  // hacer el email diinamic dependiendo el profile id
+
+
 
 export default function Profile() {
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      description: data.get('description'),
-      price: data.get('price'),
-      category: data.get('category')
-    });
-  };
+ 
 
   const sendEmail = () =>{
     return window.open('mailto:'+ email)
@@ -54,8 +47,8 @@ export default function Profile() {
       elem.style.backgroundColor = '#c1efdd';
     }
 
- 
   }
+  
   return (
   
 <Container>
@@ -89,7 +82,7 @@ export default function Profile() {
         mr:'2px',
   
       
-       }} > Company Name  </Typography>
+       }} > Company Name  </Typography> 
     
        <Rating name="half-rating" defaultValue={3.5} precision={0.5}  sx={{ position: 'absolute', ml:'14rem' , mt:'10px' ,}}readOnly></Rating>  
    
@@ -104,14 +97,13 @@ export default function Profile() {
 
               }}
             >
-              Here goes a fancy text that sets you apart from other companies. 
-
+              Here goes a fancy text that sets you apart from other companies.
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" id='addProduct' onClick={handleFollow} color="secondary" startIcon={<AddIcon />} > Add </Button>
-            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-            {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
+            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="secondary" startIcon={<AddIcon />} >Follow </Button>
+            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}>Review</Button>
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact Provider</Button>
           </Stack>
         </Container>
         <Box xs={6}
@@ -166,6 +158,7 @@ export default function Profile() {
 
                     <Select
                       label="Services"
+                      // onChange={(event) => setHeight(Number(event.target.value))}
                       value={""}
                       id="select-service"
                       labelId="height-of-container-label"
