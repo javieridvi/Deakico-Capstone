@@ -22,19 +22,26 @@ const getAllLikes = async () => {
 //     return await axios.get(endpoint + "/" + l_id, {headers: authHeader});
 // };
 
+
+//it returns the list of items a provider has, and their corresponding like count.
+const getLikesOfProvider = async () => {
+    return await axios.get(endpoint + "/provider", {headers: authHeader()});
+}
+
 const getUserLiked = async () => {
-    return await axios.get(endpoint + "/user", {headers: authHeader()}); //check endpoint
+    return await axios.get(endpoint + "/user", {headers: authHeader()});
 };
 
 const getItemLikes = async (i_id) => {
-    return await axios.get(endpoint + "/item/" + i_id); //check endpoint
+    return await axios.get(endpoint + "/item/" + i_id);
 };
 
 export default {
     insertLike,
-    updateLike,
+    //updateLike,
     getAllLikes,
     //getLike,
+    getLikesOfProvider,
     getUserLiked,
     getItemLikes,
     //delete missing
