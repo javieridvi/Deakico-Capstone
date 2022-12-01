@@ -6,13 +6,14 @@ import {
   Select,
   FormControl,
   InputLabel,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from "@mui/material";
 import React from "react";
 import {LineChart, PieChart, BarChart}  from "./Chart";
 
 
-export function PieCard({ title, data }) {
+export function PieCard({ title, data, loading }) {
   const [filter, setFilter] = React.useState('');
 
   const handleChange = (event) => {
@@ -40,14 +41,21 @@ export function PieCard({ title, data }) {
             </Select>
           </FormControl>
           <Divider />
-          <PieChart chartData={data}/>
+          {loading
+          ? (
+            <CircularProgress size='100px'/>
+          )
+          : (
+            <PieChart chartData={data}/>
+          )}
+          
         </CardContent>
       </Card>
     </>
   );
 }
 
-export function LineCard({ title, data }) {
+export function LineCard({ title, data, loading }) {
   const [filter, setFilter] = React.useState('');
 
   const handleChange = (event) => {
@@ -75,14 +83,20 @@ export function LineCard({ title, data }) {
             </Select>
           </FormControl>
           <Divider />
-          <LineChart chartData={data} />
+          {loading
+          ? (
+            <CircularProgress size='100px'/>
+          )
+          : (
+            <LineChart chartData={data}/>
+          )}
         </CardContent>
       </Card>
     </>
   );
 }
 
-export function BarCard({ title, data }) {
+export function BarCard({ title, data, loading }) {
   const [filter, setFilter] = React.useState('');
 
   const handleChange = (event) => {
@@ -110,7 +124,13 @@ export function BarCard({ title, data }) {
             </Select>
           </FormControl>
           <Divider />
-          <BarChart chartData={data} />
+          {loading
+          ? (
+            <CircularProgress size='100px'/>
+          )
+          : (
+            <BarChart chartData={data}/>
+          )}
         </CardContent>
       </Card>
     </>

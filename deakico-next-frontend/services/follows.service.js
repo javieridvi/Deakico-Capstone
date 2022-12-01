@@ -41,7 +41,7 @@ const getFollowing = async () => {
 
 export default {
     insertFollow,
-    updateFollow,
+    // updateFollow,
     getAllFollows,
     //getFollow,
     getFollowersCount,

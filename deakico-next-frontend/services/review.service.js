@@ -25,6 +25,9 @@ const getItemReview = async (i_id) => {
     return await axios.get(endpoint + "/item/" + i_id);
 };
 
+const getProviderReviews = async () => {
+    return await axios.get(endpoint, "/provider", {headers: authHeader()});
+}
 
 export default {
     insertReview,
@@ -32,5 +35,6 @@ export default {
     getAllReviews,
     getReview,
     getItemReview,
+    getProviderReviews,
     //delete missing
 };

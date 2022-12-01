@@ -17,6 +17,17 @@ export class ReviewService {
     return from(this.reviewRepository.findOneBy({ r_id: r_id }));
   }
 
+  async getProviderReviews(paID: number): Promise<Review[]> {
+    const result = await this.reviewRepository
+    .createQueryBuilder('review')
+    .leftJoin('review.item', 'items', 'items.i_id = review.i_id')
+    .select('review')
+    .addSelect('items')
+    .where('items.pa_id = :pa_id', {pa_id: paID})
+    .getRawMany()
+    return result;
+  }
+
   getItemReview(itemId: number): Observable<Review[]> {
     return from(
       this.reviewRepository.find({
