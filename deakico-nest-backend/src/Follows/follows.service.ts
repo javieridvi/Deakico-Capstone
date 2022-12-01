@@ -23,7 +23,6 @@ export class FollowsService {
       .select('u_id')
       .where('pa_id = :pa_id', { pa_id: providerId })
       .getRawMany();
-    console.log(res);
     return res;
   }
 
