@@ -24,8 +24,11 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import Dashboard from '../../deakicomponents/Dashboard/dashboard';
+import Profile from './profile';
 
-import userService from '../services/user.service';
+import userService from '../../services/user.service';
+import DashboardFunc from '../dashboard';
 
 const drawerWidth = 240;
 
@@ -69,8 +72,13 @@ export default function MainSidebar() {
     setOpen(false);
   };
 
+  const [component, setComponent] = React.useState();
+  const handleClick = (text) => {
+    setComponent(text);
+  }
+
 //render switch function to display icons accordingly
-  function renderSwitch(param) {
+  function renderIcon(param) {
     switch(param) {
       case 'Dashboard':
         return <DashboardIcon/>;
@@ -90,32 +98,33 @@ export default function MainSidebar() {
   }
 
   //render switch function to display icons accordingly
-  function redirectSwitch(param) {
+  function renderSwitch(param) {
     switch(param) {
       case 'Dashboard':
-        return '/dashboard';
+        return (<Dashboard/>);
       case 'Requests':
         return '#';
       case 'Reviews':
         return '#';
       case 'Profile':
-        return '/admin';
+        return (<Profile/>);
       case 'Settings':
         return '#';
       case 'Events':
         return '#';
       default:
-        return '#';
+        return (<Profile/>);
     }
   }
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   const checkUser = () => {
     userService.getUser().then((res) => {
       setIsLoggedIn(res.data.pa_id? true : false);
     }).catch((err) => {
       console.log(err);
-      setIsLoggedIn(false);
+      setIsLoggedIn(false)
     });
   };
 
@@ -177,12 +186,14 @@ export default function MainSidebar() {
             <List>
               {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton href={redirectSwitch(text)}>
-                    <ListItemIcon>
-                      {renderSwitch(text)}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
+                      <ListItemButton onClick={() => {setComponent(text)} } > {/** onClick render option */}
+                        <ListItemIcon>
+                          {renderIcon(text)}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    
+
                 </ListItem>
               ))}
             </List> 
@@ -195,9 +206,9 @@ export default function MainSidebar() {
         <List>
           {['Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton href={redirectSwitch(text)}>
+              <ListItemButton onClick={() => {setComponent(text)} }>
                 <ListItemIcon>
-                {renderSwitch(text)}
+                {renderIcon(text)}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -205,14 +216,18 @@ export default function MainSidebar() {
           ))}
         </List>
       </Drawer>
-      {/* <Main open={open}> */}
-        <DrawerHeader />
+      <Main open={open}>
+        <DrawerHeader /> 
         {/** Whatever is inside here (Main component) will be passed through props and displayed in dashboard page
          * and it will adapt size with the sidebar's opening.
          * I (José) advice not to use any dynamic call to the api through this component yet, as we don't know what problems
          * it might cause. For now just display static data inside here.
-         */}
-      {/* </Main> */}
+         */}        
+         {renderSwitch(component)}
+      </Main>
     </Box>
+   
+
+    
   );
 }

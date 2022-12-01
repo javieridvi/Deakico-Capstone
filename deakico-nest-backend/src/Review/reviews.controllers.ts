@@ -24,6 +24,12 @@ export class ReviewController {
     return this.reviewsService.getAllReviews();
   }
 
+ @UseGuards(JwtGuard)
+  @Get('provider')
+  getProviderReviews(@Request() req: any): Promise<Review[]> {
+    return this.reviewsService.getProviderReviews(req.user.pa_id);
+  }
+
   @Get(':r_id')
   getReview(@Param('r_id') r_Id: number): Observable<Review> {
     return this.reviewsService.getReview(r_Id);
