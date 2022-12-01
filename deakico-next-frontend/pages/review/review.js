@@ -85,6 +85,7 @@ const [pagination, setPagination] = useState({
     const from = (page -1) * pageSize ;
     const to = (page - 1) * pageSize + pageSize; 
 
+
     setPagination({...pagination, from: from, to: to});
   }
 
@@ -149,7 +150,7 @@ title = "-Company Name-"  //to do: pass the company Name too
    {/* Footer  */}
 <footer>
 <Stack spacing={2} sx={{mt:'10%', alignItems:'center', mb:'5%' }}>
-<Pagination color="secondary" count= {Math.ceil(pagination.count+2)} 
+<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)} 
  onChange={handlePageChange}
 
 />
