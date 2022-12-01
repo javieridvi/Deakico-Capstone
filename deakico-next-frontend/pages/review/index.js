@@ -11,12 +11,7 @@ export default function index() {
             <Review/>
         </main>
 
-     <footer>
-       <Stack spacing={2} sx={{mt:'10%', alignItems:'center', mb:'5%'
-      }}>
-     <Pagination count={1} />
-     </Stack>
-     </footer>
+   
     </div>
   )
 }

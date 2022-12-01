@@ -35,12 +35,10 @@ export  function ReviewForm(props) {
    const [ratingS, setValue] = useState(0); 
     // para guardar el overall-Rating
    const [open, setOpen] = useState(false); //modal use states
+    // console.log("Value: " + ratingS);
 
-
-    console.log("Value: " + ratingS);
-    //Function para hacer el OverallRating 
-
-  const handleSliderChange1 = useCallback((event,  value) => {
+//Handlers para cada Slider!
+  const handleSliderChange1 = useCallback((event,  value) => {  
     a = value;
     ratingS = ovRating();
     setValue(ratingS);
@@ -55,14 +53,12 @@ export  function ReviewForm(props) {
     
     const handleSliderChange2 = useCallback((event,  value) => {
       c = value;
-      // console.log("value: "+c);
       ratingS = ovRating();
       setValue(ratingS);
     },[]);
     
     const handleSliderChange3 = useCallback((event,  value) => {
       d = value;
-      console.log("value: "+ d);
       ratingS = ovRating();
       setValue(ratingS);
     },[]);
@@ -70,36 +66,33 @@ export  function ReviewForm(props) {
     
  const ovRating = ()=> {  // to get the review stars value 
   var sum = a+b+c+d ; 
-  // console.log("sum: "+ sum)
+  console.log("sum: "+ sum)
   return sum;
  };
 
-// function itemMessage(value){
-// console.log('message:' + value);
-// return value;
-// }
+
 function redirect() {
   location.replace("/review")
-}
+} 
+//Handle para Submit el form 
 const handleSubmit = (event) => {
   if (event !== 'backdropClick') {
     setOpen(false);  
 
   const message = String(document.getElementById('message').value);  //message
   // console.log("ovrating: "+ ovRating());
-  var Rform =  [{
+  var Rform =  {
    r_message: message ,
    r_rating: parseFloat(ovRating()) ,
    i_id: 19 ,}   // TODO 
-  ];
+  ;
 
    console.log(Rform);
    reviewService.insertReview(Rform);
+   alert("Gracias por completar este Review!"); 
 
   redirect();
    
-   
-
    
  }
 }       

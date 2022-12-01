@@ -1,6 +1,6 @@
-import { Typography, Button, Grid,Dialog, DialogTitle, DialogContent, FormControl, DialogActions, Select , Slider, Rating, Stack, Input, TextField, getListItemAvatarUtilityClass,} from '@mui/material';
+import { Typography, Button, Grid, Pagination, Stack, } from '@mui/material';
 import { Container, Box, } from '@mui/system';
-import{React, useState, useRef, useEffect, useCallback} from 'react';
+import{React, useState, useRef, useEffect, } from 'react';
 import Image from 'next/image';
 import axios from 'axios' ;
 import {ReviewForm} from '../../deakicomponents/reviewButton';
@@ -15,7 +15,8 @@ let rating = 0;
    // Call an external API endpoint to get posts.
     // You can use any data fetching library
     const rvws = await reviewService.getAllReviews();
-    const rData = await rvws.data;   //list de reviews hechos
+    const rData = await rvws.data.slice(0,8);   //list de reviews hechos
+    console.log(rData);
     const len = rData.length ;     //cantiad de reviews hechos
       // message = rData.map((item) => item?.r_message ) // List of all the messages 
       rating = rData.map((item) => item?.r_rating )  // List of all the ratings. 
@@ -32,28 +33,37 @@ let rating = 0;
     } //^Just testing Stuff
 
 
+const pageSize = 8 ;
 
 export default function Review() {
+
 const [reviewItem, setReview] = useState([]);
+
+const [pagination, setPagination] = useState({
+  count: 1 ,
+  from: 0 ,
+  to: pageSize 
+});
+
 
   async function fetchItems() {
   const res = await reviewService.getAllReviews().then((res) =>{
-   return res.data;  // todos los reviews 
+   return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
   }).catch((error)=> {
     console.log(error);
   }) 
-  console.log(res); 
-  res.forEach(review => { //cada review 
-    console.log(review)
+    console.log(res); 
+  // res.forEach(review => { //cada review
+  //     })// console.log(review)
     setReview( res ) 
-  })
+ 
     //List todos los reviews
 
 }
-
     useEffect(() => {
         fetchItems();
-    }, []);
+        setPagination({...pagination, count: pagination.count });
+    }, [pagination.from, pagination.to]);
 
 
 
@@ -71,27 +81,12 @@ const [reviewItem, setReview] = useState([]);
     }
   }
 
+  const handlePageChange = (event, page) => {
+    const from = (page -1) * pageSize ;
+    const to = (page - 1) * pageSize + pageSize; 
 
-  const handleSubmit = (event) => {
-    if (event !== 'backdropClick') {
-      setOpen(false);
-
-    // var Rform =  [{
-    //  r_message: "TEEEEST" ,
-    //  r_rating: 3.5 ,
-    //  i_id: 19 ,}
-    // ];
-
-    //  console.log(Rform);
-
-    //  reviewService.insertReview(Rform)
-  
-    event.preventDefault();
-
-     
-    }
+    setPagination({...pagination, from: from, to: to});
   }
-
 
   return (
     <>
@@ -143,19 +138,30 @@ title = "-Company Name-"  //to do: pass the company Name too
       //  product = {itemService.getItem(e.i_id).i_name} no funciona necesita cambiarse el req a product name
        rating = {parseInt(e.r_rating)}
        message = {e.r_message}
-       username = {e.username}      />  
+       username = {e.u_id}  />  
       </div>
      );
     })}  
     
     </Grid>
     </Box>
-  
+
+   {/* Footer  */}
+<footer>
+<Stack spacing={2} sx={{mt:'10%', alignItems:'center', mb:'5%' }}>
+<Pagination color="secondary" count= {Math.ceil(pagination.count+2)} 
+ onChange={handlePageChange}
+
+/>
+</Stack>
+</footer>
   </Container >
 
   </>
-  
   )
+
+
+
 }
 
 
