@@ -4,20 +4,22 @@ import { ProviderCard } from "../../deakicomponents/Card";
 import Search from "../../deakicomponents/Layout/Header/search";
 import providerService from "../../services/provider.service";
 
+const noFilter = {
+  category: {
+    index: -1,
+    name: 'None'
+  },
+  sort: {
+    index: -1,
+    name: 'None'
+  }
+};
+
 export default function Feed(props) {
   const [initialArray, setInitialArray] = useState([]);
   const [displayedCards, setDisplayedCards] = useState([]);
   const [optionsVis, setOptionsVis] = useState(false);
-  const [filters, setFilters] = useState({
-    category: {
-      index: -1,
-      name: 'None'
-    },
-    sort: {
-      index: -1,
-      name: 'None'
-    }
-  });
+  const [filters, setFilters] = useState(noFilter);
 
   async function RequestProviders() {
     const response = await providerService.getAllProviders().then((res) => {
@@ -42,6 +44,14 @@ export default function Feed(props) {
     handleOptionsVis();
     setFilters(newFilters);
     setDisplayedCards(resultsModify(initialArray, newFilters.category.name, newFilters.sort.name));
+  }
+
+  function handleSearch(compName) {
+    setFilters(noFilter);
+    let newArray = initialArray.filter(provider => 
+      provider.pa_companyname.toLocaleLowerCase().includes(compName.toLocaleLowerCase()
+      ));
+    setDisplayedCards(resultsModify(newArray, noFilter.category.name, noFilter.sort.name));
   }
 
   function TypeSelect() {
@@ -85,7 +95,7 @@ export default function Feed(props) {
             padding: '10px .5rem 0 .5rem',
           }}
         >
-          <Search list={initialArray}/>
+          <Search list={initialArray} handler={handleSearch} />
         </Box>
         <Box className="Filters"
           sx={{
@@ -123,7 +133,7 @@ export default function Feed(props) {
           overflow: 'clip',
         }}
       >
-        <Options start={filters} save={handleFilters} />
+        {optionsVis? <Options start={filters} save={handleFilters} /> : ''}
       </Box>
       <Grid className="Results"
         container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}

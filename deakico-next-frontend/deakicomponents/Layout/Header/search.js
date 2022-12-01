@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Box, IconButton, InputBase } from "@mui/material";
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 
 export default function Search(props) {
@@ -9,20 +9,17 @@ export default function Search(props) {
 
 
 
-  function handleSubmit(event, value) {
-    event.preventDefault();
+  function handleSubmit(value) {
     if(value != null){
       setvalue(value);
+      props.handler(value);
     } else{
       setvalue('');
     }
-    console.log(value);
   }
 
   return (
     <Box
-      component="form"
-      onSubmit={(e) => { console.log(e) }}
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -38,9 +35,15 @@ export default function Search(props) {
         freeSolo
         sx={{ ml: 1, flex: 1 }}
         inputValue={inputValue}
-        onInputChange={(e) => setInputvalue(e.target.value)}
+        onInputChange={(e, val) => {
+          e.preventDefault()
+          setInputvalue(val)
+        }}
         value={value}
-        onChange={(e,v) => handleSubmit(e,v)}
+        onChange={(e,val) => {
+          e.preventDefault();
+          handleSubmit(val)
+        }}
         options={props.list.map((option) => option.pa_companyname)}
         renderInput={(params) => {
           const { InputLabelProps, InputProps, ...rest } = params;
@@ -53,7 +56,13 @@ export default function Search(props) {
         }
         }
       />
-      <IconButton  type="button" sx={{ p: '10px' }} aria-label="search button" onClick={(e) => handleSubmit(e, inputValue)}>
+      <IconButton  
+      sx={{ p: '10px' }} 
+      aria-label="search button" 
+      onClick={(e) => {
+        e.preventDefault()
+        handleSubmit(inputValue)
+      }}>
         <SearchIcon />
       </IconButton>
     </Box>
