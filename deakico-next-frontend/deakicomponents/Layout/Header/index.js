@@ -1,11 +1,10 @@
-import * as React from 'react';
-import { AppBar, Box, Button, Divider, Grid, IconButton, Link, Menu, MenuItem, Toolbar } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AppBar, Box, Divider, Grid, IconButton, Link, Menu, MenuItem, Toolbar } from '@mui/material';
+import * as React from 'react';
+import authService from "../../../services/auth/auth.service";
 import Account from './Account';
 import LogoName from './logo-name';
 import NavBar from './Navbar';
-import Search from './search';
-import authService from "../../../services/auth/auth.service";
 
 
 export default function Header() {

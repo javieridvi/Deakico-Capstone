@@ -1,9 +1,10 @@
 import { Box, Button, ButtonBase, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ProviderCard } from "../../deakicomponents/Card";
-import Search from "../../deakicomponents/Layout/Header/search";
+import { ProviderCard } from "../Reusable/Card";
+import Search from "./SearchBar";
 import providerService from "../../services/provider.service";
 
+// No filters
 const noFilter = {
   category: {
     index: -1,
@@ -15,12 +16,13 @@ const noFilter = {
   }
 };
 
-export default function Feed(props) {
-  const [initialArray, setInitialArray] = useState([]);
-  const [displayedCards, setDisplayedCards] = useState([]);
-  const [optionsVis, setOptionsVis] = useState(false);
-  const [filters, setFilters] = useState(noFilter);
+export default function Feed() {
+  const [initialArray, setInitialArray] = useState([]);     // Stores the response
+  const [displayedCards, setDisplayedCards] = useState([]); // Array to be displayed
+  const [optionsVis, setOptionsVis] = useState(false);      // Hides the options menu
+  const [filters, setFilters] = useState(noFilter);         // Stores the filters
 
+  // Retrives the providers
   async function RequestProviders() {
     const response = await providerService.getAllProviders().then((res) => {
       return res.data;
@@ -31,31 +33,35 @@ export default function Feed(props) {
     setDisplayedCards(response);
   }
 
+  // Send request on first render
   useEffect(() => {
     RequestProviders();
   }, [])
 
-
+  // Sets the options to oposite state
   function handleOptionsVis() {
     setOptionsVis((state) => !state);
   }
 
+  // Modifies displayed array based on given filters
   function handleFilters(newFilters) {
     handleOptionsVis();
     setFilters(newFilters);
     setDisplayedCards(resultsModify(initialArray, newFilters.category.name, newFilters.sort.name));
   }
 
+  // Filters by submited search value
   function handleSearch(compName) {
-    setFilters(noFilter);
+    setFilters(noFilter); // Reset filters
     let newArray = initialArray.filter(provider => 
       provider.pa_companyname.toLocaleLowerCase().includes(compName.toLocaleLowerCase()
       ));
     setDisplayedCards(resultsModify(newArray, noFilter.category.name, noFilter.sort.name));
   }
 
+  // Service/Provider selection component
   function TypeSelect() {
-    const [val, setVal] = useState(props.type); // int default 0 / services
+    const [val, setVal] = useState(0); // int default 0 / services
 
     const handleChange = (event) => {
       setVal(event.target.value);
@@ -133,7 +139,8 @@ export default function Feed(props) {
           overflow: 'clip',
         }}
       >
-        {optionsVis? <Options start={filters} save={handleFilters} /> : ''}
+        {/* Unmount options when not visible, required to reset filters */}
+        {optionsVis? <Options start={filters} save={handleFilters} /> : ''} 
       </Box>
       <Grid className="Results"
         container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
@@ -166,49 +173,11 @@ export default function Feed(props) {
   );
 }
 
+// Options component
 function Options(props) {
-
-  const [selectedIndexCat, setSelectedIndexCat] = useState(props.start.category.index);
-  const [selectedIndexSort, setSelectedIndexSort] = useState(props.start.sort.index);
-  const [option, setOption] = useState(true);
-
-  const handleCatClick = (event, index) => {
-    let i = index;
-    if (selectedIndexCat == i) {
-      i = -1;
-    }
-    setSelectedIndexCat(i);
-  };
-  const handleSortClick = (event, index) => {
-    let i = index;
-    if (selectedIndexCat == i) {
-      i = -1;
-    }
-    setSelectedIndexSort(index);
-  };
-
-  const handleOptionTrue = () => {
-    setOption(true)
-  }
-
-  const handleOptionFalse = () => {
-    setOption(false)
-  }
-
-  function handleSave(catI, sortI) {
-    const filter = {
-      category: saveHelper(catI, categories),
-      sort: saveHelper(sortI, sortOptions)
-    }
-    props.save(filter);
-  }
-
-  function saveHelper(index, array) {
-    return {
-      index: index,
-      name: index < 0 ? 'None' : array[index]
-    }
-  }
+  const [selectedIndexCat, setSelectedIndexCat] = useState(props.start.category.index); // Category Index
+  const [selectedIndexSort, setSelectedIndexSort] = useState(props.start.sort.index);   // Sort Index
+  const [option, setOption] = useState(true); // Used to switch between catgory or sort view
 
   const categories = [
     "hair",
@@ -219,7 +188,6 @@ function Options(props) {
     "jewelry",
     "other"
   ]
-
   const sortOptions = [
     "A to Z",
     "Z to A",
@@ -228,6 +196,51 @@ function Options(props) {
   ]
 
 
+  // Called when category is clicked
+  const handleCatClick = (event, index) => {
+    let i = index;
+    // Unselects category
+    if (selectedIndexCat == i) {
+      i = -1;
+    }
+    setSelectedIndexCat(i);
+  };
+  
+  // Called when sort is clicked
+  const handleSortClick = (event, index) => {
+    let i = index;
+    if (selectedIndexCat == i) {
+      i = -1;
+    }
+    setSelectedIndexSort(index);
+  };
+
+  // Set option to true
+  const handleOptionTrue = () => {
+    setOption(true)
+  }
+
+  // Set option to false
+  const handleOptionFalse = () => {
+    setOption(false)
+  }
+
+  // Saves the selected filter options
+  function handleSave(catI, sortI) {
+    const filter = {
+      category: saveHelper(catI, categories),
+      sort: saveHelper(sortI, sortOptions)
+    }
+    props.save(filter); // Parent save handler
+  }
+
+  // Cuts on redundant code
+  function saveHelper(index, array) {
+    return {
+      index: index,
+      name: index < 0 ? 'None' : array[index]
+    }
+  }
 
   return (
     <Box
@@ -338,7 +351,7 @@ function Options(props) {
   )
 }
 
-//Funcion para filtrar y sort el array de providers
+// Returns filtered provider array based on given parameters
 function resultsModify(array, category, sort) {
   let newArray = array; //Puede que sea innecesario guardarlo en variable
 
@@ -365,7 +378,7 @@ function resultsModify(array, category, sort) {
   return newArray;
 }
 
-// Ayuda a sort a ints. Default es de Mayor a menor. (pasar valores en int directo)
+// Sorts int in descending order as default 
 function sortIntHelper(a, b) {
     if(a < b) {
       return 1;

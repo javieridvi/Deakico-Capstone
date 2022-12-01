@@ -2,19 +2,20 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Box, IconButton, InputBase } from "@mui/material";
 import { useState } from 'react';
 
-
+// Search bar for search feed page
 export default function Search(props) {
-  const [value,setvalue] = useState(null);
-  const [inputValue,setInputvalue] = useState('');
+  const [value,setvalue] = useState(null); // Value of that is submitted 
+  const [inputValue,setInputvalue] = useState(''); // Value of text in input
 
 
-
+  // Submits input text
   function handleSubmit(value) {
+    // Submit if not empty
     if(value != null){
       setvalue(value);
-      props.handler(value);
+      props.handler(value); // Parent handler function
     } else{
-      setvalue('');
+      setvalue(''); // Sets value to empty string (Value cannot be null)
     }
   }
 
@@ -44,23 +45,24 @@ export default function Search(props) {
           e.preventDefault();
           handleSubmit(val)
         }}
-        options={props.list.map((option) => option.pa_companyname)}
+        options={props.list.map((option) => option.pa_companyname)} // Uses only the name to generate options
         renderInput={(params) => {
           const { InputLabelProps, InputProps, ...rest } = params;
           return <InputBase
             {...params.InputProps}
             {...rest}
-            id="thisinput"
             placeholder="Search..."
           />
         }
         }
       />
+      
       <IconButton  
       sx={{ p: '10px' }} 
       aria-label="search button" 
       onClick={(e) => {
         e.preventDefault()
+        // Can submit empty string which returns list to default
         handleSubmit(inputValue)
       }}>
         <SearchIcon />

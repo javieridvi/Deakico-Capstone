@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, createTheme, responsiveFontSizes, ThemeProvider, Typography } from '@mui/material';
-import Stars from './Reusable/Rating';
+import Stars from './Rating';
 
 //Default Card used to create variants
 export function DefaultTest() {
