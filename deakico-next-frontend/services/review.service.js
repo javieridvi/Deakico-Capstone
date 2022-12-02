@@ -26,7 +26,7 @@ const getItemReview = async (i_id) => {
 };
 
 const getProviderReviews = async () => {
-    return await axios.get(endpoint, "/provider", {headers: authHeader()});
+    return await axios.get(endpoint + "/provider", {headers: authHeader()});
 }
 
 export default {
