@@ -119,6 +119,7 @@ export function ProviderCard(props) {
 
   let follow = (
     <Button variant='outlined'
+    
       sx={{
         height: '20px',
         minWidth: '60px',
