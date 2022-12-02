@@ -80,7 +80,7 @@ const handleSubmit = (event) => {
     setOpen(false);  
 
   const message = String(document.getElementById('message').value);  //message
-  // console.log("ovrating: "+ ovRating());
+  console.log("messange: "+ message);
   var Rform =  {
    r_message: message ,
    r_rating: parseFloat(ovRating()) ,

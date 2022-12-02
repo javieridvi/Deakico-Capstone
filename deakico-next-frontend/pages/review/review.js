@@ -134,10 +134,14 @@ title = "-Company Name-"  //to do: pass the company Name too
      return (
       <div key={index}>
       <CardView 
-       product = {e.items_i_name} //item id funciona necesita cambiarse el req a product name
-       rating = {parseInt(e.r_rating)}
-       message = {e.r_message}
-       username = {e.i_id}  />  
+       message = {e.message}
+       rating = {parseInt(e.rating)}
+      //  date = {e.reviewDate}
+       product = {e.itemName} //item id funciona necesita cambiarse el req a product name
+        username = {e.username} 
+    
+       
+       />  
       </div>
      );
     })}  
