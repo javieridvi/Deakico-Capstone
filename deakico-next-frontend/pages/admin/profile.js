@@ -6,7 +6,9 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { ProductCard } from "../../deakicomponents/Card";
+import itemService from '../../services/item.service';
+import { useEffect, useState } from "react";
 
 
 const StyledRating = styled(Rating)({
@@ -22,6 +24,30 @@ const StyledRating = styled(Rating)({
 const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile() {
+ 
+  const [prodList, setProdList] = useState();
+  const [servList, setServList] = useState();
+
+  const getProducts = () => {
+    itemService.getItemByType('product').then((res) => {
+      setProdList(res.data);
+    }).catch((err) => {
+      //console.log(err);
+    })
+  }
+
+  const getServices = () => {
+    itemService.getItemByType('service').then((res) => {
+      setServList(res.data);
+    }).catch((err) => {
+      //console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    getProducts();
+    getServices();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -182,7 +208,7 @@ export default function Profile() {
                       mb: '4rem',
                       width:'50%'
                     }}
-                  >
+                  > 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -196,12 +222,28 @@ export default function Profile() {
             </Grid>
           </Container>
 
-          <Container className='Products' width='90%'>
+          <Box className='Products' width='90%'>
             <Stack>
-
+            
+              {prodList?.map((e,index)=> { 
+              <div>
+              <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+               <ProductCard
+                category={e.i_category}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                title={e.i_name}
+                description={e.i_description}
+                price={e.i_price}
+                rating={e.i_rating}
+              />       
+              </Grid>
+              </div>
+              
+              })}
+      
             </Stack>
+          </Box>
 
-          </Container>
         </Container>
       </main>
     </Container>

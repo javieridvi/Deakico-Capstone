@@ -47,7 +47,7 @@ const [pagination, setPagination] = useState({
 
 
   async function fetchItems() {
-  const res = await reviewService.getAllReviews().then((res) =>{
+  const res = await reviewService.getProviderReviews().then((res) =>{
    return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
   }).catch((error)=> {
     console.log(error);
@@ -129,17 +129,15 @@ title = "-Company Name-"  //to do: pass the company Name too
  {/* REVIEW CARDS  */}      
     <Box className="grid-reviews" display= 'flex'   >
 
-     <Grid  container rowSpacing={3} columnSpacing={{ }} sx={{
-      // m:'10px'
-      // flexDirection:'row',
-    }}> {reviewItem.map((e, index) => {
+     <Grid  container rowSpacing={3} > 
+    {reviewItem.map((e, index) => {
      return (
       <div key={index}>
       <CardView 
-      //  product = {itemService.getItem(e.i_id).i_name} no funciona necesita cambiarse el req a product name
+       product = {e.items_i_name} //item id funciona necesita cambiarse el req a product name
        rating = {parseInt(e.r_rating)}
        message = {e.r_message}
-       username = {e.u_id}  />  
+       username = {e.i_id}  />  
       </div>
      );
     })}  
@@ -150,7 +148,7 @@ title = "-Company Name-"  //to do: pass the company Name too
    {/* Footer  */}
 <footer>
 <Stack spacing={2} sx={{mt:'10%', alignItems:'center', mb:'5%' }}>
-<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)} 
+<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)+1} 
  onChange={handlePageChange}
 
 />

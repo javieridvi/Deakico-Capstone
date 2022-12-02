@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react'
-import {Box,  Typography,Rating, CardMedia} from '@mui/material'
+import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material'
 import reviewService from '../services/review.service'
 
 
@@ -31,6 +31,9 @@ import reviewService from '../services/review.service'
 //   }
 // }
 
+// function handleDelete(){  //Only avilable for the provider- i/id **
+
+// }
 
  export  const  CardView =(props) =>{
 
@@ -49,10 +52,10 @@ import reviewService from '../services/review.service'
           borderRadius: 2 ,
           alignItems:'center',
           textAlign:'center',
-          '&:hover': {  //test
-            backgroundColor: 'primary.main', //testing if looks cool
-            opacity: [0.9, 0.8, 0.7],
-          },
+          // '&:hover': {  //test
+          //   backgroundColor: 'primary.main', //testing if looks cool
+          //   opacity: [0.9, 0.8, 0.7],
+          // },
 
  }}>  
 
@@ -65,8 +68,12 @@ import reviewService from '../services/review.service'
   // backgroundImage:'url(./)', // no funciona :(
   backgroundRepeat:'no-repeat',
   backgroundSize: ' 250px ',
- }}
- >  <CardMedia
+ }}  >
+ {/* <Button variant="text" onClick={{handleDelete}} sx={{
+  '&:hover':{
+  color:'pink',
+ }}}> X </Button> por si se implementa delete*/} 
+  <CardMedia
 
  component="img"
  height="155"
@@ -83,7 +90,9 @@ import reviewService from '../services/review.service'
   width:'4rem',
   height:'4rem',
   borderRadius:'50%',
-  ml:'38%' ,
+  display:'inline-block',
+  
+
  }}> 
 
 
