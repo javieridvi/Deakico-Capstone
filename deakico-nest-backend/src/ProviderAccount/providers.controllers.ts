@@ -24,6 +24,12 @@ export class ProviderAccountController {
     return this.providersService.getAllProviders();
   }
 
+  // @UseGuards(JwtGuard)
+  // @Get('follows')
+  // getAllProvidersWithFollow(@Request() req: any): Promise<ProviderAccount[]> {
+  //   return this.providersService.getAllProvidersWithFollow(req.user.u_id);
+  // }
+
   /**
    * Fetches user's provider account
    * @param req token user to retrieve the id of the provider

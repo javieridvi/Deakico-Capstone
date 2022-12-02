@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { response } from 'express';
 import { from, Observable } from 'rxjs';
 import { DeleteResult, IsNull, Repository, UpdateResult } from 'typeorm';
 import { UserAccountService } from '../UserAccount/users.service';
@@ -18,7 +19,26 @@ export class ProviderAccountService {
   getAllProviders(): Observable<ProviderAccount[]> {
     return from(this.providerRepository.find({}));
   }
+
+  // async getAllProvidersWithFollow(uID: number): Promise<ProviderAccount[]> {
+  //   const response = await this.providerRepository
+  //       .createQueryBuilder('provider')
+  //       .leftJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id')
+  //       .select('provider')
+  //       .addSelect('CASE WHEN follow.u_id = :u_id THEN true ELSE false END',  {u_id: uID})
+  //       .getRawMany()
+  //   return response;
+  // }
   
+//   SELECT PA.*,
+//   Case
+//       When (F.u_id = 19)
+//       THEN true
+//       ELSE false
+//       END AS following
+// From "Provider Account" PA
+// LEFT JOIN "Follows" F on PA.pa_id = F.pa_id;
+
   getProvider(pa_id): Observable<ProviderAccount> {
     return from(this.providerRepository.findOneBy({ pa_id: pa_id }));
   }

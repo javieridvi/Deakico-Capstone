@@ -11,12 +11,15 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  backgroundColor: 'background.paper',
   borderRadius: '5px',
-  boxShadow: 24,
-  p: 4,
+  // boxShadow: 24,
+  padding: 4,
 };
+
+const bstyle = {
+  width: '80%',
+}
 
 export default function BasicModal(props) {
 
@@ -56,7 +59,13 @@ export function LogInPopUp(props) {
           sx={
             [style,
               {
-
+                width: 'min(90%, 500px)',
+                maxHeight: '489px',
+                borderRadius: '1rem',
+                // margin: '1rem'
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',  
               }]
           }
         >
@@ -64,27 +73,35 @@ export function LogInPopUp(props) {
           variant="h6" 
           component="h2"
           align='center'
-          id="modal-modal-title" 
+          id="modal-modal-title"
+          sx={{
+            fontWeight: '800',
+            fontSize: '1.625rem'
+          }}
           >
             {props.title}
           </Typography>
           <Typography 
+          variant='caption'
           align='center'
           id="modal-modal-description"
+          sx={{
+            fontSize: '1rem'
+          }}
           >
             {props.message}
           </Typography>
           <div
           align='center'
           >
-            <Button href='/login' variant='contained'>
+            <Button href='/login' variant='contained' sx={bstyle}>
               Log in
             </Button>
           </div>
           <div
           align='center'
           >
-            <Button href='/signup' variant='outlined'>
+            <Button href='/signup' variant='outlined' sx={bstyle}>
               Sign Up
             </Button>
           </div>
