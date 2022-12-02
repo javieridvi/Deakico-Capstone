@@ -48,22 +48,29 @@ const [pagination, setPagination] = useState({
 
   async function fetchItems() {
   const res = await reviewService.getProviderReviews().then((res) =>{
-   return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
-  }).catch((error)=> {
+  var sizeR = res.data.length; 
+  setPagination({...pagination, count: sizeR });
+  return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
+  }).catch((error)=> { 
     console.log(error);
   }) 
     console.log(res); 
   // res.forEach(review => { //cada review
   //     })// console.log(review)
     setReview( res ) 
- 
+    
+
+
+    console.log(pagination.count);
     //List todos los reviews
 
 }
     useEffect(() => {
         fetchItems();
-        setPagination({...pagination, count: pagination.count });
-    }, [pagination.from, pagination.to]);
+        // setPagination({...pagination, count: pagination.count });
+      
+    }, 
+    [pagination.from, pagination.to]);
 
 
 
@@ -87,6 +94,19 @@ const [pagination, setPagination] = useState({
 
 
     setPagination({...pagination, from: from, to: to});
+  }
+
+  function getToday() {
+    const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+const formattedToday = dd + '/' + mm + '/' + yyyy;
+return formattedToday
   }
 
   return (
@@ -138,9 +158,9 @@ title = "-Company Name-"  //to do: pass the company Name too
        rating = {parseInt(e.rating)}
       //  date = {e.reviewDate}
        product = {e.itemName} //item id funciona necesita cambiarse el req a product name
-        username = {e.username} 
-    
-       
+       username = {e.username} 
+       date = {getToday()}
+  
        />  
       </div>
      );
@@ -152,7 +172,7 @@ title = "-Company Name-"  //to do: pass the company Name too
    {/* Footer  */}
 <footer>
 <Stack spacing={2} sx={{mt:'10%', alignItems:'center', mb:'5%' }}>
-<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)+1} 
+<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)} 
  onChange={handlePageChange}
 
 />
