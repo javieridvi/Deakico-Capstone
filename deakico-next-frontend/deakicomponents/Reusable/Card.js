@@ -1,5 +1,7 @@
 import { useTheme } from '@emotion/react';
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, createTheme, responsiveFontSizes, ThemeProvider, Typography } from '@mui/material';
+import { useState } from 'react';
+import authService from '../../services/auth/auth.service';
 import Stars from './Rating';
 
 //Default Card used to create variants
@@ -116,6 +118,8 @@ export function DefaultTest() {
   />
 */
 export function ProviderCard(props) {
+  const [following, setFollowing] = useState(props.following);
+  // Styles
   const style = {
     height: '20px',
     minWidth: '60px',
@@ -123,6 +127,27 @@ export function ProviderCard(props) {
     fontFamily: 'Roboto, sans-serif',
     fontWeight: '500',
   }
+
+  // Functions
+  
+  function handleClick(following, title) {
+    if(following == undefined){
+      following = false;
+    }
+    if(authService.isLoggedIn()) {
+      //do nothing for now
+      console.log('logged')
+      setFollowing(true);
+    } else {
+      console.log('not logged');
+      props.LogIn(title);
+    }
+
+  }
+
+
+
+  // Components
   let isfollowing = (
     <Button variant='contained'
       sx={style}
@@ -133,7 +158,7 @@ export function ProviderCard(props) {
 
   let follow = (
     <Button variant='outlined'
-      key={'follow'}
+      onClick={() => handleClick(props.following, props.title)}
       sx={style}
     >
       Follow
@@ -185,7 +210,7 @@ export function ProviderCard(props) {
       }}
     >
       {
-      props.following ?
+      following ?
         isfollowing :
         follow
       }

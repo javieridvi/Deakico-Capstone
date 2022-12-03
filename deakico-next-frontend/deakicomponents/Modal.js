@@ -13,7 +13,8 @@ const style = {
   width: 400,
   backgroundColor: 'background.paper',
   borderRadius: '5px',
-  // boxShadow: 24,
+  outline: 0,
+  boxShadow: 24,
   padding: 4,
 };
 

@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { response } from 'express';
 import { from, Observable } from 'rxjs';
 import { DeleteResult, IsNull, Repository, UpdateResult } from 'typeorm';
 import { UserAccountService } from '../UserAccount/users.service';
@@ -32,9 +31,10 @@ export class ProviderAccountService {
   }
 
   async getAllProvidersWithFollow(uID: number): Promise<ProviderAccount[]> {
+
     const response = await this.providerRepository
         .createQueryBuilder('provider')
-        .innerJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id')
+        .leftJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id AND follow.u_id = :u_id')
         .select([
           'provider.pa_id AS id',
           'provider.pa_companyname AS companyname',
@@ -43,9 +43,8 @@ export class ProviderAccountService {
           'provider.pa_followers AS followers',
           'provider.pa_category AS category',
           ])
-        .addSelect(('CASE WHEN (follow.u_id = :u_id) THEN true ELSE false END'), 'following')
+        .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')
         .setParameter('u_id', uID)
-        
         .getRawMany()
     return response;
   }

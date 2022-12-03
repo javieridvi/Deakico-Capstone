@@ -1,9 +1,10 @@
 import { Box, Button, ButtonBase, FormControl, Grid, List, ListItemButton, ListItemText, MenuItem, Select, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProviderCard } from "../Reusable/Card";
 import Search from "./SearchBar";
 import providerService from "../../services/provider.service";
 import authService from "../../services/auth/auth.service";
+import { LogInPopUp } from '../Modal';
 
 // No filters
 const noFilter = {
@@ -23,10 +24,20 @@ export default function Feed() {
   const [optionsVis, setOptionsVis] = useState(false);      // Hides the options menu
   const [filters, setFilters] = useState(noFilter);         // Stores the filters
 
+  // Modal **
+  const [open, setOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  function handleLogInOpen(title) {
+    setModalTitle(title);
+    setOpen(true);
+  };
+  const handleLogInClose = () => setOpen(false);
+  // ** end fo modal
+
   // Retrives the providers
   async function RequestProviders() {
     let request;
-    if(authService.isLoggedIn()){
+    if (authService.isLoggedIn()) {
       request = providerService.getAllProvidersWithFollow;
     } else {
       request = providerService.getAllProviders;
@@ -61,7 +72,7 @@ export default function Feed() {
   // Filters by submited search value
   function handleSearch(compName) {
     setFilters(noFilter); // Reset filters
-    let newArray = initialArray.filter(provider => 
+    let newArray = initialArray.filter(provider =>
       provider.companyname.toLocaleLowerCase().includes(compName.toLocaleLowerCase()
       ));
     setDisplayedCards(resultsModify(newArray, noFilter.category.name, noFilter.sort.name));
@@ -91,8 +102,7 @@ export default function Feed() {
   }
 
   return (
-    <Box
-      className="FeedContainer"
+    <Box className="FeedContainer"
       sx={{
         position: 'relative',
         display: 'flex',
@@ -132,8 +142,7 @@ export default function Feed() {
           </Button>
         </Box>
       </Box>
-      <Box
-        className="options"
+      <Box className="options"
         sx={{
           position: 'absolute',
           zIndex: 1,
@@ -148,7 +157,7 @@ export default function Feed() {
         }}
       >
         {/* Unmount options when not visible, required to reset filters */}
-        {optionsVis? <Options start={filters} save={handleFilters} /> : ''} 
+        {optionsVis ? <Options start={filters} save={handleFilters} /> : ''}
       </Box>
       <Grid className="Results"
         container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
@@ -172,12 +181,23 @@ export default function Feed() {
                 price={e.price}
                 rating={e.rating}
                 following={e.following}
-                followers={e.followers}
+                LogIn={handleLogInOpen}
               />
             </Grid>
           );
         })}
       </Grid>
+      <div className="layers">
+        {open ?
+          <LogInPopUp
+            open={open}
+            handleClose={handleLogInClose}
+            title={'Follow ' + modalTitle + ' to make it easier to keep up with them on Deakico.'}
+            message={'Sign up to follow your favorite providers.'}
+          /> :
+          ''
+        }
+      </div>
     </Box>
   );
 }
@@ -214,7 +234,7 @@ function Options(props) {
     }
     setSelectedIndexCat(i);
   };
-  
+
   // Called when sort is clicked
   const handleSortClick = (event, index) => {
     let i = index;
@@ -389,11 +409,11 @@ function resultsModify(array, category, sort) {
 
 // Sorts int in descending order as default 
 function sortIntHelper(a, b) {
-    if(a < b) {
-      return 1;
-    } else if(a > b) {
-      return -1;
-    } else {
-      return 0;
-    }
+  if (a < b) {
+    return 1;
+  } else if (a > b) {
+    return -1;
+  } else {
+    return 0;
+  }
 }
