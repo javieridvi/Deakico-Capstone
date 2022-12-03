@@ -24,7 +24,14 @@ export class RequestService {
   async getProviderRequest(providerId: number) {
     const res = await this.requestRepository
       .createQueryBuilder('request')
-      .innerJoin('request.item', 'item')
+      .innerJoin('request.item', 'item', 'item.i_id = request.i_id')
+      .innerJoin('request.user', 'user', 'user.u_id = request.u_id')
+      .select('request.req_id', 'req_id')
+      .addSelect('request.req_totalprice', 'total')
+      .addSelect('request.req_date', 'date')
+      .addSelect('user.username', 'username')
+      .addSelect('user.email', 'email')
+      .addSelect('item.i_name', 'item_name')
       .where('item.pa_id = :pa_id', { pa_id: providerId })
       .getRawMany();
 

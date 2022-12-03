@@ -22,11 +22,11 @@ const getRequest = async (req_id) => {
 }
 
 const getProviderRequest = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader()});
+    return await axios.get(endpoint + "/of/provider", {headers: authHeader()});
 };
 
 const getUserRequest = async () => {
-    return await axios.get(endpoint + "/user", {headers: authHeader()});
+    return await axios.get(endpoint + "/of/user", {headers: authHeader()});
 }
 
 export default {
