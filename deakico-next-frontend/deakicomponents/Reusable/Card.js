@@ -116,33 +116,42 @@ export function DefaultTest() {
   />
 */
 export function ProviderCard(props) {
+  const style = {
+    height: '20px',
+    minWidth: '60px',
+    fontSize: '.625rem', // 14px
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: '500',
+  }
+  let isfollowing = (
+    <Button variant='contained'
+      sx={style}
+    >
+      Following
+    </Button>
+  );
 
   let follow = (
     <Button variant='outlined'
-    
-      sx={{
-        height: '20px',
-        minWidth: '60px',
-        fontSize: '.625rem', // 14px
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: '500',
-      }}
+      key={'follow'}
+      sx={style}
     >
       Follow
     </Button>
   );
-  let follows = (
-    <Typography variant={'caption'}
-      sx={{
-        width: '20px',
-        height: '20px',
-        margin: '0 0 0 7px',
-        color: 'rgb(101, 101, 101)',
-      }}
-    >
-      {props.followers}
-    </Typography>
-  );
+  // let follows = (
+  //   <Typography variant={'caption'}
+  //     key={'follows'}
+  //     sx={{
+  //       width: '20px',
+  //       height: '20px',
+  //       margin: '0 0 0 7px',
+  //       color: 'rgb(101, 101, 101)',
+  //     }}
+  //   >
+  //     {props.followers}
+  //   </Typography>
+  // );
   //uses rating, follow and follows
   let bottom = [
     <Box
@@ -175,8 +184,11 @@ export function ProviderCard(props) {
         width: '100%',
       }}
     >
-      {follow}
-      {follows}
+      {
+      props.following ?
+        isfollowing :
+        follow
+      }
     </Box>
   ];
 
@@ -282,92 +294,92 @@ export function ProductCard(props) {
 }
 
 function BaseCard(components) {
-  
+
   return (
     <Card
-        sx={{
-          position: 'relative',
-          width: 'clamp(10rem, 100%, 20rem)',
-          maxHeight: 'clamp(10rem, 100%, 20rem)',
-          transform: { xs: 'scale(0.9)', sm: 'scale(1)' }
-        }}
-      >
-        <CardActionArea>
-          <Box
-            sx={{
-              position: 'relative',
-              // borderRadius: '1rem',
-              overflow: 'clip',
-            }}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: 0,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                height: '1.875rem', //30px at full size
-                padding: '0 1rem',
-                backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
-              }}
-            >
-              {components.top}
-            </Box>
-            <CardMedia
-              component="img"
-              src={components.image}
-              alt="green iguana"
-              sx={{
-                height: '11.25rem', // 180px at full size
-              }}
-            />
-          </Box>
-        </CardActionArea>
+      sx={{
+        position: 'relative',
+        width: 'clamp(10rem, 100%, 20rem)',
+        maxHeight: 'clamp(10rem, 100%, 20rem)',
+        transform: { xs: 'scale(0.9)', sm: 'scale(1)' }
+      }}
+    >
+      <CardActionArea>
         <Box
           sx={{
-            height: '40.625%', //130px at full size
-            padding: '0 1rem'
+            position: 'relative',
+            // borderRadius: '1rem',
+            overflow: 'clip',
           }}
         >
-          <Typography variant={'h6'} className={'Card-Title'}
-            sx={{
-              height: '1.25rem', // 20px
-              overflow: 'clip',
-              marginTop: '.625rem', //10px 
-              fontWeight: '700',
-              fontSize: '1.125rem', // 18px
-              fontFamily: 'Comfortaa',
-            }}
-          >
-            {components.title}
-          </Typography>
-          <Typography variant={'body2'} className={'Card-Description'}
-            sx={{
-              height: 'fit-content',
-              maxHeight: '3.75rem', // 60px
-              fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
-              marginTop: '.4375rem', //7px 
-              color: 'text.secondary',
-              overflow: 'clip',
-              fontFamily: 'Comfortaa',
-            }}
-          >
-            {components.description}
-          </Typography>
           <Box
             sx={{
+              position: 'absolute',
+              bottom: 0,
               display: 'flex',
               justifyContent: 'space-between',
-              height: '2.5rem',
-              marginTop: '.1875rem', //3px 
+              alignItems: 'center',
+              width: '100%',
+              height: '1.875rem', //30px at full size
+              padding: '0 1rem',
+              backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
             }}
           >
-            {components.bottom}
+            {components.top}
           </Box>
+          <CardMedia
+            component="img"
+            src={components.image}
+            alt="green iguana"
+            sx={{
+              height: '11.25rem', // 180px at full size
+            }}
+          />
         </Box>
-      </Card>
+      </CardActionArea>
+      <Box
+        className='Provider Info'
+        sx={{
+          height: '40.625%', //130px at full size
+          padding: '0 1rem'
+        }}
+      >
+        <Typography variant={'h6'} className={'Card-Title'}
+          sx={{
+            height: '1.25rem', // 20px
+            overflow: 'clip',
+            marginTop: '.625rem', //10px 
+            fontWeight: '700',
+            fontSize: '1.125rem', // 18px
+            fontFamily: 'Comfortaa',
+          }}
+        >
+          {components.title}
+        </Typography>
+        <Typography variant={'body2'} className={'Card-Description'}
+          sx={{
+            height: '3.75rem', // 60px
+            fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
+            marginTop: '.4375rem', //7px 
+            color: 'text.secondary',
+            overflow: 'clip',
+            fontFamily: 'Comfortaa',
+          }}
+        >
+          {components.description}
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '2.5rem',
+            marginTop: '.1875rem', //3px 
+          }}
+        >
+          {components.bottom}
+        </Box>
+      </Box>
+    </Card>
   );
 
 }
@@ -505,3 +517,19 @@ export function FeedCard(props) {
     </Card>
   );
 };
+
+// set numbers to single letter notation 1000 = 1k
+// function NuNotation(number) {
+// If (number > 999){
+// switch (number) {
+//   case (number > 999999):
+//   number = number%999  
+//   return
+//     break;
+
+//   default:
+//     break;
+// }
+// }
+// return number
+// }

@@ -21,6 +21,10 @@ const getAllProviders = async () => {
     return await axios.get(endpoint);
 };
 
+const getAllProvidersWithFollow = async () => {
+    return await axios.get(endpoint+"/follows", {headers: authHeader()});
+};
+
 const getProvider = async (pa_id) => {
     return await axios.get(endpoint + "/" + pa_id, {headers: authHeader()})
 }
@@ -35,5 +39,6 @@ export default {
     getAllProviders,
     getProvider,
     getProviderCategory,
+    getAllProvidersWithFollow,
     //delete missing
 };

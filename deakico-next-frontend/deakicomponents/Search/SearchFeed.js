@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ProviderCard } from "../Reusable/Card";
 import Search from "./SearchBar";
 import providerService from "../../services/provider.service";
+import authService from "../../services/auth/auth.service";
 
 // No filters
 const noFilter = {
@@ -14,7 +15,7 @@ const noFilter = {
     index: -1,
     name: 'None'
   }
-};
+}
 
 export default function Feed() {
   const [initialArray, setInitialArray] = useState([]);     // Stores the response
@@ -24,7 +25,14 @@ export default function Feed() {
 
   // Retrives the providers
   async function RequestProviders() {
-    const response = await providerService.getAllProviders().then((res) => {
+    let request;
+    if(authService.isLoggedIn()){
+      request = providerService.getAllProvidersWithFollow;
+    } else {
+      request = providerService.getAllProviders;
+    }
+    const response = await request().then((res) => {
+      console.log(res.data);
       return res.data;
     }).catch((err) => {
       console.log(err);
@@ -54,7 +62,7 @@ export default function Feed() {
   function handleSearch(compName) {
     setFilters(noFilter); // Reset filters
     let newArray = initialArray.filter(provider => 
-      provider.pa_companyname.toLocaleLowerCase().includes(compName.toLocaleLowerCase()
+      provider.companyname.toLocaleLowerCase().includes(compName.toLocaleLowerCase()
       ));
     setDisplayedCards(resultsModify(newArray, noFilter.category.name, noFilter.sort.name));
   }
@@ -157,13 +165,14 @@ export default function Feed() {
             <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
               <ProviderCard
                 type={index % 2 == 0 ? 'Product' : 'Service'}
-                category={e.pa_category}
+                category={e.category}
                 src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                title={e.pa_companyname}
-                description={e.pa_desc}
-                price={e.pa_price}
-                rating={e.pa_rating}
-                followers={e.pa_followers}
+                title={e.companyname}
+                description={e.desc}
+                price={e.price}
+                rating={e.rating}
+                following={e.following}
+                followers={e.followers}
               />
             </Grid>
           );
@@ -356,22 +365,22 @@ function resultsModify(array, category, sort) {
   let newArray = array; //Puede que sea innecesario guardarlo en variable
 
   if (category != 'None') {
-    newArray = newArray.filter(provider => provider.pa_category == category);
+    newArray = newArray.filter(provider => provider.category == category);
   }
 
   if (sort != 'None') {
     switch (sort) {
       case "A to Z":
-        newArray.sort((a, b) => a.pa_companyname.localeCompare(b.pa_companyname));
+        newArray.sort((a, b) => a.companyname.localeCompare(b.companyname));
         break;
       case "Z to A":
-        newArray.sort((a, b) => b.pa_companyname.localeCompare(a.pa_companyname));
+        newArray.sort((a, b) => b.companyname.localeCompare(a.companyname));
         break;
       case "Best Ratings":
-        newArray.sort((a, b) => sortIntHelper(a.pa_rating, b.pa_rating));
+        newArray.sort((a, b) => sortIntHelper(a.rating, b.rating));
         break;
       case "Most Followed":
-        newArray.sort((a, b) => sortIntHelper(a.pa_followers, b.pa_followers));
+        newArray.sort((a, b) => sortIntHelper(a.followers, b.followers));
         break;
     }
   }

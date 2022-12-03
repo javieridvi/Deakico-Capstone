@@ -16,28 +16,39 @@ export class ProviderAccountService {
   @Inject(UserAccountService)
   private readonly userService: UserAccountService;
 
-  getAllProviders(): Observable<ProviderAccount[]> {
-    return from(this.providerRepository.find({}));
+  async getAllProviders(): Promise<ProviderAccount[]> {
+    const response = await this.providerRepository
+    .createQueryBuilder()
+    .select([
+      'pa_id AS id',
+      'pa_companyname AS companyname',
+      'pa_desc AS desc',
+      'pa_rating AS rating',
+      'pa_followers AS followers',
+      'pa_category AS category',
+      ])
+    .getRawMany()
+    return response;
   }
 
-  // async getAllProvidersWithFollow(uID: number): Promise<ProviderAccount[]> {
-  //   const response = await this.providerRepository
-  //       .createQueryBuilder('provider')
-  //       .leftJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id')
-  //       .select('provider')
-  //       .addSelect('CASE WHEN follow.u_id = :u_id THEN true ELSE false END',  {u_id: uID})
-  //       .getRawMany()
-  //   return response;
-  // }
-  
-//   SELECT PA.*,
-//   Case
-//       When (F.u_id = 19)
-//       THEN true
-//       ELSE false
-//       END AS following
-// From "Provider Account" PA
-// LEFT JOIN "Follows" F on PA.pa_id = F.pa_id;
+  async getAllProvidersWithFollow(uID: number): Promise<ProviderAccount[]> {
+    const response = await this.providerRepository
+        .createQueryBuilder('provider')
+        .innerJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id')
+        .select([
+          'provider.pa_id AS id',
+          'provider.pa_companyname AS companyname',
+          'provider.pa_desc AS desc',
+          'provider.pa_rating AS rating',
+          'provider.pa_followers AS followers',
+          'provider.pa_category AS category',
+          ])
+        .addSelect(('CASE WHEN (follow.u_id = :u_id) THEN true ELSE false END'), 'following')
+        .setParameter('u_id', uID)
+        
+        .getRawMany()
+    return response;
+  }
 
   getProvider(pa_id): Observable<ProviderAccount> {
     return from(this.providerRepository.findOneBy({ pa_id: pa_id }));

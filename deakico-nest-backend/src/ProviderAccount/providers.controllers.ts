@@ -20,15 +20,15 @@ export class ProviderAccountController {
   constructor(private readonly providersService: ProviderAccountService) {}
 
   @Get()
-  getAllProviders(): Observable<ProviderAccount[]> {
+  getAllProviders(): Promise<ProviderAccount[]> {
     return this.providersService.getAllProviders();
   }
 
-  // @UseGuards(JwtGuard)
-  // @Get('follows')
-  // getAllProvidersWithFollow(@Request() req: any): Promise<ProviderAccount[]> {
-  //   return this.providersService.getAllProvidersWithFollow(req.user.u_id);
-  // }
+  @UseGuards(JwtGuard)  
+  @Get('follows')
+  getAllProvidersWithFollow(@Request() req: any): Promise<ProviderAccount[]> {
+    return this.providersService.getAllProvidersWithFollow(req.user.u_id);
+  }
 
   /**
    * Fetches user's provider account
