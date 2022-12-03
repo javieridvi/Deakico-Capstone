@@ -40,7 +40,6 @@ export class ProviderAccountService {
           'provider.pa_companyname AS companyname',
           'provider.pa_desc AS desc',
           'provider.pa_rating AS rating',
-          'provider.pa_followers AS followers',
           'provider.pa_category AS category',
           ])
         .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')

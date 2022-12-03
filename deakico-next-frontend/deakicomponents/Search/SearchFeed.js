@@ -85,6 +85,7 @@ export default function Feed() {
     const handleChange = (event) => {
       setVal(event.target.value);
     };
+
     return (
       <FormControl>
         <Select
@@ -173,15 +174,15 @@ export default function Feed() {
           return (
             <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
               <ProviderCard
-                type={index % 2 == 0 ? 'Product' : 'Service'}
-                category={e.category}
-                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                id={e.id}
                 title={e.companyname}
                 description={e.desc}
-                price={e.price}
                 rating={e.rating}
+                category={e.category}
                 following={e.following}
                 LogIn={handleLogInOpen}
+                type={index % 2 == 0 ? 'Product' : 'Service'}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
               />
             </Grid>
           );

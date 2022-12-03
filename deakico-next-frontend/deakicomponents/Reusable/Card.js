@@ -2,6 +2,7 @@ import { useTheme } from '@emotion/react';
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, createTheme, responsiveFontSizes, ThemeProvider, Typography } from '@mui/material';
 import { useState } from 'react';
 import authService from '../../services/auth/auth.service';
+import followsService from '../../services/follows.service'
 import Stars from './Rating';
 
 //Default Card used to create variants
@@ -130,17 +131,41 @@ export function ProviderCard(props) {
 
   // Functions
   
-  function handleClick(following, title) {
+  function handleClick(following, title, id) {
+    // When following undefined user is not logged in
     if(following == undefined){
-      following = false;
-    }
-    if(authService.isLoggedIn()) {
-      //do nothing for now
-      console.log('logged')
-      setFollowing(true);
-    } else {
       console.log('not logged');
-      props.LogIn(title);
+      // following = false;
+      props.LogIn(title); // When not logged in throw log in pop up 
+    } else {
+      let request; // Request variable to be sent
+      if(following){
+        // When following then unfollow
+        request = followsService.deleteFollow; // Unfollow
+      } else {
+        // When not following then follow
+        request = followsService.insertFollow; // Follow
+      }
+
+      // Send request
+      // id = provider id
+      request(id).then((res) => {
+        // Response doesn't need to be returned
+        setFollowing(state => !state); // Set following to oposite state
+      }).catch((err) => {
+        if(err.response.status == 403) {
+          // User tryed to follow their own PA account
+          // Modal cant follow yourself
+          console.log('Think we wouldn\'t notice you trying to follow yourself?');
+        } else if(err.response.status == 401){
+          // Failed authentication
+          console.log('Reauthenticate');
+          props.LogIn(title); // Prompt to reauthenticate
+        } else {
+          console.log(err); // Log error
+        }
+      })
+    
     }
 
   }
@@ -150,6 +175,7 @@ export function ProviderCard(props) {
   // Components
   let isfollowing = (
     <Button variant='contained'
+      onClick={() => handleClick(following, props.title, props.id)}
       sx={style}
     >
       Following
@@ -158,7 +184,7 @@ export function ProviderCard(props) {
 
   let follow = (
     <Button variant='outlined'
-      onClick={() => handleClick(props.following, props.title)}
+      onClick={() => handleClick(following, props.title, props.id)}
       sx={style}
     >
       Follow

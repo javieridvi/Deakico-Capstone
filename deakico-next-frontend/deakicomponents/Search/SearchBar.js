@@ -45,7 +45,7 @@ export default function Search(props) {
           e.preventDefault();
           handleSubmit(val)
         }}
-        options={props.list.map((option) => option.pa_companyname)} // Uses only the name to generate options
+        options={props.list.map((option) => option.companyname)} // Uses only the name to generate options
         renderInput={(params) => {
           const { InputLabelProps, InputProps, ...rest } = params;
           return <InputBase

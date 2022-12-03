@@ -55,14 +55,16 @@ export class FollowsService {
   insertFollow(user: UserAccount, follow: Follow): Observable<Follow> {
     follow.u_id = user.u_id;
     if (follow.pa_id === user.pa_id) {
+      console.log(follow.pa_id);
       throw new Error("Can't follow your own provider account");
     }
     return from(this.followRepository.save(follow));
   }
 
-  deleteFollow(userId: number, providerId: number): Observable<DeleteResult> {
+  deleteFollow(userId: number, follow: Follow): Observable<DeleteResult> {
+    follow.u_id = userId;
     return from(
-      this.followRepository.delete({ u_id: userId, pa_id: providerId }),
+      this.followRepository.delete(follow),
     );
   }
 }
