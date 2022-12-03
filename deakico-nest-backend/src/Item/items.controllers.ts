@@ -74,7 +74,7 @@ export class ItemsController {
    */
   @UseGuards(JwtGuard)
   @Get('provider')
-  getItemOfProvider(@Request() req: any): Observable<Item[]> {
+  getItemOfProvider(@Request() req: any): Promise<Observable<Item[]>> {
     return this.itemsService.getItemOfProvider(req.user.pa_id);
   }
 

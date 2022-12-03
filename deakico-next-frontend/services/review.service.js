@@ -5,12 +5,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "reviews";
 const endpoint = API_URL + entity;
 
-const insertReview = async () => {
-    return await axios.post(endpoint, {headers: authHeader()}); 
+const insertReview = async (data) => {
+    return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const updateReview = async (r_id) => {
-    return await axios.put(endpoint + "/" + r_id, {headers: authHeader()});
+const updateReview = async (r_id, data) => {
+    return await axios.put(endpoint + "/" + r_id, data, {headers: authHeader()});
 };
 
 const getAllReviews = async () => {
@@ -25,6 +25,9 @@ const getItemReview = async (i_id) => {
     return await axios.get(endpoint + "/item/" + i_id);
 };
 
+const getProviderReviews = async () => {
+    return await axios.get(endpoint, "/provider", {headers: authHeader()});
+}
 
 export default {
     insertReview,
@@ -32,5 +35,6 @@ export default {
     getAllReviews,
     getReview,
     getItemReview,
+    getProviderReviews,
     //delete missing
 };
