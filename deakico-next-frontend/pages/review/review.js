@@ -1,11 +1,10 @@
 import { Typography, Button, Grid, Pagination, Stack, } from '@mui/material';
 import { Container, Box, } from '@mui/system';
-import{React, useState, useRef, useEffect, } from 'react';
+import{React, useState, useEffect, } from 'react';
 import Image from 'next/image';
 import axios from 'axios' ;
 import {ReviewForm} from '../../deakicomponents/reviewButton';
 import {CardView} from '../../deakicomponents/CardView' ;
-import itemService from '../../services/item.service';  //en verdd no lo estoy usando
 import reviewService from '../../services/review.service';
 
 let rating = 0;
@@ -44,30 +43,30 @@ const [pagination, setPagination] = useState({
   from: 0 ,
   to: pageSize 
 });
-
+const today = new Date();
+console.log(today);
 
   async function fetchItems() {
   const res = await reviewService.getProviderReviews().then((res) =>{
-  var sizeR = res.data.length; 
+  var sizeR =   res.data.length; 
   setPagination({...pagination, count: sizeR });
   return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
   }).catch((error)=> { 
     console.log(error);
   }) 
-    console.log(res); 
+    // console.log(res.data); 
   // res.forEach(review => { //cada review
   //     })// console.log(review)
     setReview( res ) 
-    
-
-
-    console.log(pagination.count);
+    // console.log(pagination.count);
     //List todos los reviews
 
 }
+
     useEffect(() => {
         fetchItems();
-        // setPagination({...pagination, count: pagination.count });
+        console.log(reviewItem)
+        setPagination({...pagination, count: pagination.count });
       
     }, 
     [pagination.from, pagination.to]);
@@ -79,7 +78,7 @@ const [pagination, setPagination] = useState({
  const handleClickOpen = () => {
     console.log("Open") ;
     setOpen(true); // opens modal
-    pullJson();
+    // pullJson();
   }
  
   const handleClose = (e, reason) => {
@@ -96,18 +95,7 @@ const [pagination, setPagination] = useState({
     setPagination({...pagination, from: from, to: to});
   }
 
-  function getToday() {
-    const today = new Date();
-const yyyy = today.getFullYear();
-let mm = today.getMonth() + 1; // Months start at 0!
-let dd = today.getDate();
 
-if (dd < 10) dd = '0' + dd;
-if (mm < 10) mm = '0' + mm;
-
-const formattedToday = dd + '/' + mm + '/' + yyyy;
-return formattedToday
-  }
 
   return (
     <>
@@ -125,11 +113,11 @@ return formattedToday
                 }}> Review It !
                 </Typography>
                 <div className='reviewPic' >
-                    <Image  
-                    src="/reviewIt.png"
+                    <Image style={{marginTop:'40%'}}
+                    src='/pngkey.png'
                      width={150}
                      height={150}
-                    >    
+                     >    
                     </Image>
                 </div>
         </Box>
@@ -143,30 +131,26 @@ open = {open}
 handleClose= {handleClose}
 title = "-Company Name-"  //to do: pass the company Name too 
 
-
 />
 </>
  {/* REVIEW CARDS  */}      
     <Box className="grid-reviews" display= 'flex'   >
-
      <Grid  container rowSpacing={3} > 
-    {reviewItem.map((e, index) => {
+ {reviewItem.map((e, index) => {
      return (
       <div key={index}>
       <CardView 
        message = {e.message}
-       rating = {parseInt(e.rating)}
-      //  date = {e.reviewDate}
-       product = {e.itemName} //item id funciona necesita cambiarse el req a product name
+       rating = {e.rating }
+       product = {e.itemName} 
        username = {e.username} 
-       date = {getToday()}
-  
+       date = {e.reviewDate} 
        />  
       </div>
      );
     })}  
     
-    </Grid>
+       </Grid>
     </Box>
 
    {/* Footer  */}
@@ -179,10 +163,9 @@ title = "-Company Name-"  //to do: pass the company Name too
 </Stack>
 </footer>
   </Container >
-
   </>
-  )
 
+  )
 
 
 }

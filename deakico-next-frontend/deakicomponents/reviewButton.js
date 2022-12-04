@@ -74,6 +74,19 @@ export  function ReviewForm(props) {
 function redirect() {
   location.replace("/review")
 } 
+
+function getToday() {
+  const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+const formattedToday = yyyy + '-' + mm + '-' + dd;
+return formattedToday
+}
 //Handle para Submit el form 
 const handleSubmit = (event) => {
   if (event !== 'backdropClick') {
@@ -83,9 +96,12 @@ const handleSubmit = (event) => {
   console.log("messange: "+ message);
   var Rform =  {
    r_message: message ,
-   r_rating: parseFloat(ovRating()) ,
-   i_id: 19 ,}   // TODO 
-  ;
+   r_rating: parseFloat(ovRating()).toFixed(2) ,
+   r_date: getToday() , 
+   i_id: 8 , // TO DOO! To Specific item
+   
+
+  } ;
 
    console.log(Rform);
    reviewService.insertReview(Rform);
@@ -93,9 +109,10 @@ const handleSubmit = (event) => {
 
   redirect();
    
-   
  }
-}       
+}  
+
+
     
   return (
 
@@ -105,10 +122,10 @@ const handleSubmit = (event) => {
          onClose={props.handleClose} 
          aria-labelledby="modal-modal-title"    
          sx={{
-          maxWidth:'xl',
+         maxWidth:'xl',
          }}    
         >
-            <Typography id = "modal-modal-title" sx={{m:'2rem', fontWeight:'bold'}}> My {props.title} Review </Typography>
+        <Typography id = "modal-modal-title" sx={{m:'2rem', fontWeight:'bold'}}> My {props.title} Review </Typography>
             <Box
       sx={{
      
@@ -228,7 +245,6 @@ const handleSubmit = (event) => {
           maxRows={3}
           sx={{ mt:'2.5rem' }}
         />
-         
                 </FormControl>
                 </Box>
             <Box sx={{mb:'2rem', textAlign:'right'}}>

@@ -8,6 +8,9 @@ import { width } from '@mui/system';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
+module.exports = {
+  basePath: '/providerview',
+}
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -101,7 +104,7 @@ export default function Profile() {
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="secondary" startIcon={<AddIcon />} >Follow </Button>
+            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="secondary" startIcon={<AddIcon />}> Follow </Button>
             <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}>Review</Button>
             <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact Provider</Button>
           </Stack>
@@ -175,7 +178,7 @@ export default function Profile() {
                       mb: '4rem',
                       width:'50%'
                     }}
-                  >
+                  > {props.description}
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

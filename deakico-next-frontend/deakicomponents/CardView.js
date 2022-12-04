@@ -1,6 +1,5 @@
 import {React, useState, useEffect} from 'react'
 import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material'
-import reviewService from '../services/review.service'
 
 
 
@@ -13,27 +12,6 @@ import reviewService from '../services/review.service'
 // }
 
 
-// const handleSubmit = (event) => {
-//   event.preventDefault();
-//   const data = new FormData(event.currentTarget);
-//   console.log({
-//     name: data.get('name'),
-//     description: data.get('description'),
-//     price: data.get('price'),
-//     category: data.get('category')
-//   });
-// };
-// export const getStaticProps = async () => {
-//   const res = await reviewService.getAllReviews()
-//   const data = await res.data ; 
-//   return {
-//     props:{reviews: data}
-//   }
-// }
-
-// function handleDelete(){  //Only avilable for the provider- i/id **
-
-// }
 
  export  const  CardView =(props) =>{
 
@@ -52,10 +30,10 @@ import reviewService from '../services/review.service'
           borderRadius: 2 ,
           alignItems:'center',
           textAlign:'center',
-          // '&:hover': {  //test
-          //   backgroundColor: 'primary.main', //testing if looks cool
-          //   opacity: [0.9, 0.8, 0.7],
-          // },
+          '&:hover': {  //test
+            backgroundColor: 'primary.main', //testing if looks cool
+            opacity: [0.9, 0.8, 0.7],
+          },
 
  }}>  
 
@@ -65,11 +43,11 @@ import reviewService from '../services/review.service'
   borderColor:'black',
   borderRadius: 1 ,
   mb:'.5rem',
-  // backgroundImage:'url(./)', // no funciona :(
   backgroundRepeat:'no-repeat',
   backgroundSize: ' 250px ',
  }}  >
- {/* <Button variant="text" onClick={{handleDelete}} sx={{
+  
+ {/* <Button variant="text" onClick={{props.handleDelete}} sx={{
   '&:hover':{
   color:'pink',
  }}}> X </Button> por si se implementa delete*/} 
@@ -102,7 +80,7 @@ import reviewService from '../services/review.service'
 </div>  
  <Rating name="read-only" value={props.rating} precision={0.5} size="small"  readOnly /> 
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}}> {props.message}  </Typography>
-
+ <Typography sx={{textAlign:'center', m:'8px', fontSize:'12px', color:'grey'}}> {props.date}  </Typography>
  </Box>  
  </div>
   )   
