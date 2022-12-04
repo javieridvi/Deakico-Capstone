@@ -5,8 +5,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "providers";
 const endpoint = API_URL + entity;
 
-const insertProvider = async () => {
-    return await axios.post(endpoint, {headers: authHeader()}); 
+const insertProvider = async (data) => {
+    return await axios.post(endpoint, data, 
+        {headers: 
+            authHeader(),
+         },
+    ); 
 };
 
 const updateProvider = async (pa_id) => {
@@ -15,6 +19,10 @@ const updateProvider = async (pa_id) => {
 
 const getAllProviders = async () => {
     return await axios.get(endpoint);
+};
+
+const getAllProvidersWithFollow = async () => {
+    return await axios.get(endpoint+"/follows", {headers: authHeader()});
 };
 
 const getProvider = async (pa_id) => {
@@ -31,5 +39,6 @@ export default {
     getAllProviders,
     getProvider,
     getProviderCategory,
+    getAllProvidersWithFollow,
     //delete missing
 };

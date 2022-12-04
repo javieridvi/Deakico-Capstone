@@ -2,7 +2,7 @@ import { Switch, ToggleButton, Box, Typography, Card } from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { useState } from "react";
 import { ThemeProvider } from "@mui/system";
-import { ToggleCard } from "../Card";
+import { ToggleCard } from "../Reusable/Card";
 
 let theme = createTheme({
   palette: {

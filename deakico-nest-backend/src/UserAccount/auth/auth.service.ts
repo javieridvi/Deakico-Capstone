@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 import { UserAccountEntity } from '../users.entity';
@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   hashPassword(password: string): Observable<string> {
-    return from(bcrypt.hash(password, 12)); //12 is the convention number for salts
+    return from(bcryptjs.hash(password, 12)); //12 is the convention number for salts
   }
 
   //check async functionality
@@ -54,7 +54,7 @@ export class AuthService {
             // throw new HttpException({ status: HttpStatus.NOT_FOUND, error: 'Invalid Credentials' }, 
             // HttpStatus.NOT_FOUND);
         }
-        return from(bcrypt.compare(password, user.password)).pipe(
+        return from(bcryptjs.compare(password, user.password)).pipe(
               map((isValidPassword: boolean) => {
                   if (isValidPassword) {
                       delete user.password;

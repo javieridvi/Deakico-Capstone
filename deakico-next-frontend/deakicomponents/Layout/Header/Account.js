@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Typography, IconButton, Menu, MenuItem, Link, Box, Divider} from "@mui/material";
+import { Button, ButtonGroup, Grid, Typography, IconButton, Menu, MenuItem, Link, Box, Divider} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect, useState } from "react";
 import authService from "../../../services/auth/auth.service";
@@ -75,17 +75,15 @@ export default function Account() {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
+              {/* <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink> */}
               <MenuLink onClick={handleLogout}>Log Out</MenuLink>  
-              <Divider />
+              {/* <Divider />
               <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
-              <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+              <MenuLink link='/about' onClick={handleClose}>About</MenuLink> */}
             </Menu>
       </>
-        
-        
       ) : (
           <ButtonGroup variant="outlined">
             <Button href='/login'>

@@ -23,7 +23,6 @@ export class FollowsService {
       .select('u_id')
       .where('pa_id = :pa_id', { pa_id: providerId })
       .getRawMany();
-    console.log(res);
     return res;
   }
 
@@ -37,8 +36,9 @@ export class FollowsService {
 
   async getFollowing(userId: number): Promise<FollowEntity[]> {
     const res = await this.followRepository
-      .createQueryBuilder()
-      .select('pa_id')
+      .createQueryBuilder('follows')
+      .leftJoin('follows.follows_provider', 'provider', 'provider.pa_id = follows.pa_id')
+      .select('provider')
       .where('u_id = :u_id', { u_id: userId })
       .getRawMany();
     return res;
@@ -55,14 +55,16 @@ export class FollowsService {
   insertFollow(user: UserAccount, follow: Follow): Observable<Follow> {
     follow.u_id = user.u_id;
     if (follow.pa_id === user.pa_id) {
+      console.log(follow.pa_id);
       throw new Error("Can't follow your own provider account");
     }
     return from(this.followRepository.save(follow));
   }
 
-  deleteFollow(userId: number, providerId: number): Observable<DeleteResult> {
+  deleteFollow(userId: number, follow: Follow): Observable<DeleteResult> {
+    follow.u_id = userId;
     return from(
-      this.followRepository.delete({ u_id: userId, pa_id: providerId }),
+      this.followRepository.delete(follow),
     );
   }
 }
