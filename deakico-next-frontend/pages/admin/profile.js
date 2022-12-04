@@ -11,6 +11,7 @@ import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
+import Stars from '../../deakicomponents/Reusable/Rating';
 
 
 const StyledRating = styled(Rating)({
@@ -125,7 +126,8 @@ export default function Profile() {
       
        }} > Company Name  </Typography>   
     
-       <Rating name="half-rating" defaultValue={1} precision={0.5} value={overallRating}  sx={{  ml:'5%' , }}readOnly></Rating>  
+       {/* <Rating name="half-rating" defaultValue={1} precision={0.5} value={overallRating}  sx={{  ml:'5%' , }}readOnly></Rating>   */}
+       <Stars rating={overallRating}/>
    
      </Box>
        <Typography  sx={{
