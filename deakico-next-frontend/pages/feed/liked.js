@@ -1,31 +1,31 @@
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { ProviderCard } from "../../deakicomponents/Card";
-import followsService from "../../services/follows.service";
+import { ProductCard, ProviderCard } from "../../deakicomponents/Card";
+import likeService from "../../services/likes.service";
 
 
-export default function Follows() {
-  const [displayedProviders, setDisplayedProviders] = useState([]);
+export default function Liked() {
+  const [likedItems, setLikedItems] = useState([]);
 
-  async function RequestFollowing() {
-    const response = await followsService.getFollowing().then((response) => {
+  async function RequestLiked() {
+    const response = await likeService.getUserLiked().then((response) => {
       return response.data;
     }).catch((error) => {
       console.log(error);
     })
     console.log(response);
-    setDisplayedProviders(response);
+    setLikedItems(response);
   }
 
   useEffect(() => {
-    RequestFollowing();
+    RequestLiked();
   }, [])
 
   return (
     <>
       <Head>
-        <title>Following</title>
+        <title>Liked</title>
       </Head>
 
       <Box
@@ -50,18 +50,16 @@ export default function Follows() {
             paddingBottom: '100px'
           }}
         >
-          {displayedProviders?.map((e, index) => {
+          {likedItems.map((e, index) => {
             return (
               <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <ProviderCard
-                  type={index % 2 == 0 ? 'Product' : 'Service'}
-                  category={e.provider_pa_category}
-                  src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                  title={e.provider_pa_companyname}
-                  description={e.provider_pa_desc}
-                  price={e.provider_pa_price}
-                  rating={e.provider_pa_rating}
-                  followers={e.provider_pa_followers}
+                <ProductCard
+                  rating={e.items_i_rating}
+                  category={e.items_i_category}
+                  src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
+                  title={e.items_i_name}
+                  description={e.items_i_description}
+                  price={e.items_i_price}
                 />
               </Grid>
             );
@@ -69,5 +67,17 @@ export default function Follows() {
         </Grid>
       </Box>
     </>
+    /**
+     * items_i_category
+     * items_i_description
+     * items_i_id
+     * items_i_name
+     * items_i_price
+     * items_i_rating
+     * items_i_type
+     * items_p_stock
+     * items_pa_id
+     * items_s_timeslot
+     */
   )
 }

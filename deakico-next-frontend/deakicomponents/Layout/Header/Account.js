@@ -49,7 +49,7 @@ export default function Account() {
   useEffect(() => {
     checkLoggedIn();    
     checkCurrUser();
-    //console.log(loggedIn);
+    console.log(loggedIn);
   }, [])
 
   return typeof (loggedIn !== 'undefined') ? (
@@ -75,13 +75,13 @@ export default function Account() {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
+              {/* <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink> */}
               <MenuLink onClick={handleLogout}>Log Out</MenuLink>  
-              <Divider />
+              {/* <Divider />
               <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
-              <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+              <MenuLink link='/about' onClick={handleClose}>About</MenuLink> */}
             </Menu>
       </>
       ) : (
