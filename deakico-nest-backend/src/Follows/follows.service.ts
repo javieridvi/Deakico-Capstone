@@ -35,6 +35,15 @@ export class FollowsService {
     return res;
   }
 
+  async getFollowersGroupByDate(providerId: number): Promise<Partial<Follow[]>> {
+    const res = await this.followRepository.manager
+    .query(`select count(*), "Follows".f_date::date from "Follows"
+    where pa_id = $1
+    group by (f_date::date);`,
+    [providerId]);
+    return res;
+  }
+
   async getFollowing(userId: number): Promise<FollowEntity[]> {
     const res = await this.followRepository
       .createQueryBuilder()

@@ -23,7 +23,7 @@ export function PieCard({ title, data, loading }) {
     <>
       <Card>
         <CardContent>
-          <Typography color='red'>
+          <Typography color='primary'>
             {title}
           </Typography> 
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -65,7 +65,7 @@ export function LineCard({ title, data, loading }) {
     <>
       <Card>
         <CardContent>
-          <Typography color='red'>
+          <Typography color='primary'>
             {title}
           </Typography> 
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -77,9 +77,10 @@ export function LineCard({ title, data, loading }) {
               label="Filter"
               onChange={handleChange}
             >        
-              <MenuItem value="request">Requests</MenuItem>
-              <MenuItem value="likes">Likes</MenuItem>
-              <MenuItem value="follows">Follows</MenuItem> 
+              <MenuItem value="week">Last Week</MenuItem>
+              <MenuItem value="month">Last Month</MenuItem>
+              <MenuItem value="year">Last Year</MenuItem> 
+              <MenuItem value="year">All-time</MenuItem> 
             </Select>
           </FormControl>
           <Divider />
@@ -106,7 +107,7 @@ export function BarCard({ title, data, loading }) {
     <>
       <Card>
         <CardContent>
-          <Typography color='red'>
+          <Typography color='primary'>
             {title}
           </Typography> 
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">

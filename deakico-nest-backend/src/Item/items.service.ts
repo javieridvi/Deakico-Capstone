@@ -49,14 +49,16 @@ export class ItemsService {
     );
   }
 
-  getItemOfProvider(itemProvider: number): Observable<Item[]> {
-    return from(
-      this.itemRepository.find({
-        where: {
-          pa_id: itemProvider,
-        },
-      }),
-    );
+  async getItemOfProvider(itemProvider: number): Promise<Observable<Item[]>> {
+      await this.itemRepository.findOneOrFail({
+        select: { pa_id: true },
+        where: { pa_id: itemProvider },
+      });
+    return from(this.itemRepository.find({
+      where: {
+        pa_id: itemProvider,
+      }
+    }));
   }
 
   insertItem(provierId: number, item: Item): Observable<Item> {
