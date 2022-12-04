@@ -23,7 +23,6 @@ export class ProviderAccountService {
       'pa_companyname AS companyname',
       'pa_desc AS desc',
       'pa_rating AS rating',
-      'pa_followers AS followers',
       'pa_category AS category',
       ])
     .getRawMany()

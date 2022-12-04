@@ -59,8 +59,8 @@ export default function Header() {
               <Box component='div' display={{ xs: 'block', lg: 'none' }}>
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
-                <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+                <MenuLink link='/feed' onClick={handleClose}>Services</MenuLink>
+                <MenuLink link='/feed' onClick={handleClose}>Products</MenuLink>
                 <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
               </Box>
             </Menu>
@@ -90,7 +90,7 @@ export default function Header() {
   }
 
   return (
-    <AppBar color='secondary' sx={{ position: 'fixed' }}>
+    <AppBar color='secondary' sx={{ position: 'sticky' }}>
       <Toolbar>
         <Grid container
           columns={{ xs: 4, sm: 8, md: 10, lg: 12 }}

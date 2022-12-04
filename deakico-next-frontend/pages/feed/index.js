@@ -13,8 +13,9 @@ export default function FeedFunc(props) {
         <title>Search</title>
       </Head>
       <Box
-        className='Container'
+        className='Feed Container'
         sx={{
+          position:'relative',
           width: '100%',
           minHeight: '100vh',
           backgroundColor: 'white',

@@ -103,7 +103,7 @@ export default function Feed() {
   }
 
   return (
-    <Box className="FeedContainer"
+    <Box className="SearchFeed"
       sx={{
         position: 'relative',
         display: 'flex',
