@@ -1,6 +1,6 @@
 import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
 import { UserAccountEntity } from '../UserAccount/users.entity';
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('Follows')
 export class FollowEntity {
@@ -17,4 +17,7 @@ export class FollowEntity {
 
   @PrimaryColumn({ type: 'int' })
   pa_id: number;
+
+  @Column({ type: 'timestamp', nullable: true})
+  f_date: Date;
 }

@@ -3,6 +3,6 @@ export interface ProviderAccount {
   pa_companyname?: string;
   pa_desc?: string;
   pa_rating?: number;
-  pa_followers?: number;
   pa_category?: string;
+  pa_type?: string;
 }

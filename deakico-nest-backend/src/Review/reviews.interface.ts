@@ -4,4 +4,5 @@ export interface Review {
   r_rating?: number;
   u_id?: number;
   i_id?: number;
+  r_date?: Date;
 }

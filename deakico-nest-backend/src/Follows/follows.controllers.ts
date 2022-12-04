@@ -49,6 +49,18 @@ export class FollowsController {
   }
 
   /**
+   * Fetches the followers of a provider, grouping them by date 
+   * and counting them
+   * @param req is user to retrieve user account and pa_id
+   * @returns a Partial Follow object
+   */
+  @UseGuards(JwtGuard)
+  @Get('followers/group-by-date')
+  getFollowersGroupByDate(@Request() req: any) {
+    return this.followsService.getFollowersGroupByDate(req.user.pa_id);
+  }
+
+  /**
    * Fetches count (int) of given user following providers
    * @param req is user to retrived user account and u_id
    * @returns all providers ids given user is following

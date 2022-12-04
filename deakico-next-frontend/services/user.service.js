@@ -5,18 +5,21 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const entity = "users";
 const endpoint = API_URL + entity;
 
-const insertUser = async () => {
-    return await axios.post(endpoint); 
+//replaced with register axios connection in auth.service.js
+const insertUser = async (data) => {
+    return await axios.post(endpoint, data); 
 };
 
-const updateUser = async () => {
-    return await axios.put(endpoint, {headers: authHeader()});
+//u_id not needed in parameter. Get u_id of logged-in.
+const updateUser = async (data) => {
+    return await axios.put(endpoint, data, {headers: authHeader()});
 };
 
 const getAllUsers = async () => {
     return await axios.get(endpoint);
 };
 
+//u_id not needed in parameter. Get u_id of logged-in.
 const getUser = async () => {
     return await axios.get(endpoint + "/user", {headers: authHeader()})
 }

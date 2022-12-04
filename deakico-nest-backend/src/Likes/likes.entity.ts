@@ -25,4 +25,7 @@ export class LikeEntity {
 
   @PrimaryColumn({ type: 'int' })
   i_id: number;
+
+  @Column({type: 'timestamp', nullable: true})
+  l_date: Date;
 }

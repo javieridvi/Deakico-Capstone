@@ -90,7 +90,7 @@ export default function Header() {
   }
 
   return (
-    <AppBar color='secondary' sx={{ position: 'relative' }}>
+    <AppBar color='secondary' sx={{ position: 'fixed' }}>
       <Toolbar>
         <Grid container
           columns={{ xs: 4, sm: 8, md: 10, lg: 12 }}
