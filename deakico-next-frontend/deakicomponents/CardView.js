@@ -1,5 +1,6 @@
-import {React, useState, useEffect} from 'react'
-import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material'
+import {React, useState, useEffect} from 'react';
+import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material';
+import Stars from './Reusable/Rating';
 
 
 
@@ -31,8 +32,8 @@ import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material'
           alignItems:'center',
           textAlign:'center',
           '&:hover': {  //test
-            backgroundColor: 'primary.main', //testing if looks cool
-            opacity: [0.9, 0.8, 0.7],
+            backgroundColor: 'main', //testing if looks cool
+            opacity: [0.8, 0.8, 0.7],
           },
 
  }}>  
@@ -69,18 +70,19 @@ import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material'
   height:'4rem',
   borderRadius:'50%',
   display:'inline-block',
-  
 
  }}> 
-
-
  </Box>
+ 
  <Typography sx={{textAlign:'center', m:'2px', fontSize:'12px', mt:'10px'}} > {props.username} </Typography><div>
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white', fontWeight:'bold'}} > {props.product} </Typography>
-</div>  
- <Rating name="read-only" value={props.rating} precision={0.5} size="small"  readOnly /> 
+</div >  
+ {/* <Rating name="read-only" value={props.rating} precision={0.5} size="small"  readOnly />  */}
+ <Box sx={{ml:'30%'}}><Stars width='75px'rating={props.rating} />  </Box>
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}}> {props.message}  </Typography>
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'12px', color:'grey'}}> {props.date}  </Typography>
+
+
  </Box>  
  </div>
   )   
