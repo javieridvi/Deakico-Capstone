@@ -16,5 +16,6 @@ import { FollowsService } from './follows.service';
   ],
   controllers: [FollowsController],
   providers: [FollowsService],
+  exports: [FollowsService],
 })
 export class FollowsModule {}

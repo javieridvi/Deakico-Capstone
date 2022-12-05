@@ -6,6 +6,9 @@ import { DeleteResult, Repository, UpdateResult, IsNull } from 'typeorm';
 import { isNull } from 'util';
 import { ProviderAccountEntity } from './providers.entity';
 import { ProviderAccount } from './providers.interface';
+import { ItemsService } from '../Item/items.service';
+import { LikesService } from 'src/Likes/likes.service';
+import { FollowsService } from 'src/Follows/follows.service';
 
 @Injectable()
 export class ProviderAccountService {
@@ -15,29 +18,38 @@ export class ProviderAccountService {
   ) {}
   @Inject(UserAccountService)
   private readonly userService: UserAccountService;
+  @Inject(ItemsService)
+  private readonly itemService: ItemsService;
+  @Inject(LikesService)
+  private readonly likesService: LikesService;
+  @Inject(FollowsService)
+  private readonly followsService: FollowsService;
 
   getAllProviders(): Observable<ProviderAccount[]> {
-    return from(this.providerRepository.find());
+    return from(this.providerRepository.find({
+      where: {
+        disabled: false,
+      }
+    }));
   }
 
   getProvider(pa_id): Observable<ProviderAccount> {
     return from(this.providerRepository.findOneBy({ pa_id: pa_id }));
   }
 
-  getProviderCategory(providerCat: string): Observable<ProviderAccount[]> {
-    if (providerCat === 'null') {
-      return from(
-        this.providerRepository.find({
-          where: {
-            pa_category: IsNull(),
-          },
-        }),
-      );
-    }
+  async getProviderCategory(providerCat: string): Promise<Observable<ProviderAccount[]>> {
+    await this.providerRepository.findOneOrFail({
+      select: {pa_id: true},
+      where: {
+        pa_category: providerCat,
+        disabled: false,
+      }
+    })
     return from(
       this.providerRepository.find({
         where: {
           pa_category: providerCat,
+          disabled: false,
         },
       }),
     );
@@ -59,7 +71,16 @@ export class ProviderAccountService {
     return from(this.providerRepository.update(pa_id, provider));
   }
 
-  deleteProvider(pa_id: number): Observable<DeleteResult> {
-    return from(this.providerRepository.delete(pa_id));
+  async deleteProvider(pa_id: number, u_id: number): Promise<UpdateResult> {
+    await this.itemService.deleteAllItems(pa_id).then(() => {  
+      this.userService.updateUser(u_id, {pa_id: null});
+      this.followsService.deleteFollowsOfProvider(pa_id);
+      this.likesService.deleteLikesOfProvider(pa_id);
+      return from(this.providerRepository.update(pa_id, {disabled: true}));
+      }
+    ).catch(() => {
+      throw new Error('Provider Deletion Unsuccessful!');
+    });
+    return;
   }
 }

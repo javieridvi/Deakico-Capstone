@@ -13,18 +13,30 @@ export class ItemsService {
   ) {}
 
   getAllItems(): Observable<Item[]> {
-    return from(this.itemRepository.find());
+    return from(this.itemRepository.find({
+      where: {
+        disabled: false,
+      }
+    }));
   }
 
   getItem(i_id): Observable<Item> {
     return from(this.itemRepository.findOneBy({ i_id: i_id }));
   }
 
-  getItemByType(itemType: string): Observable<Item[]> {
+  async getItemByType(itemType: string): Promise<Observable<Item[]>> {
+    await this.itemRepository.findOneOrFail({
+      select: {i_id: true},
+      where: {
+        i_type: itemType,
+        disabled: false,
+      }
+    })
     return from(
       this.itemRepository.find({
         where: {
           i_type: itemType,
+          disabled: false,
         },
       }),
     );
@@ -34,16 +46,25 @@ export class ItemsService {
     const categories = await this.itemRepository
       .createQueryBuilder()
       .select('i_category')
+      .where('disabled = false')
       .distinct(true)
       .getRawMany();
     return categories;
   }
 
-  getItemByCategory(itemCategory: string): Observable<Item[]> {
+  async getItemByCategory(itemCategory: string): Promise<Observable<Item[]>> {
+    await this.itemRepository.findOneOrFail({
+      select: {i_id: true},
+      where: {
+        i_category: itemCategory,
+        disabled: false,
+      }
+    });
     return from(
       this.itemRepository.find({
         where: {
           i_category: itemCategory,
+          disabled: false,
         },
       }),
     );
@@ -52,11 +73,15 @@ export class ItemsService {
   async getItemOfProvider(itemProvider: number): Promise<Observable<Item[]>> {
       await this.itemRepository.findOneOrFail({
         select: { pa_id: true },
-        where: { pa_id: itemProvider },
+        where: { 
+          pa_id: itemProvider,
+          disabled: false,
+         },
       });
     return from(this.itemRepository.find({
       where: {
         pa_id: itemProvider,
+        disabled: false,
       }
     }));
   }
@@ -74,20 +99,44 @@ export class ItemsService {
     //check if item exists and belongs to provider
     await this.itemRepository.findOneOrFail({
       select: { pa_id: true },
-      where: { i_id: itemId, pa_id: providerId },
+      where: { 
+        i_id: itemId, 
+        pa_id: providerId,
+        disabled: false,  
+      },
     });
     return from(this.itemRepository.update(itemId, item));
   }
 
   async deleteItem(
     itemId: number,
+    item: Item,
     providerId: number,
-  ): Promise<Observable<DeleteResult>> {
+  ): Promise<Observable<UpdateResult>> {
     //check if item exists and belongs to provider
     await this.itemRepository.findOneOrFail({
       select: { pa_id: true },
-      where: { i_id: itemId, pa_id: providerId },
+      where: { 
+        i_id: itemId, 
+        pa_id: providerId,
+        disabled: false,
+      },
     });
-    return from(this.itemRepository.delete(itemId));
+    return from(this.itemRepository.update(itemId, item));
   }
+
+  async deleteAllItems(
+    providerId: number,
+  ): Promise<Observable<UpdateResult>> {
+    //check if item exists and belongs to provider
+    await this.itemRepository.findOneOrFail({
+      select: { pa_id: true },
+      where: { 
+        pa_id: providerId,
+        disabled: false,
+      },
+    });
+    return from(this.itemRepository.update({pa_id: providerId}, {disabled: true}));
+  }
+
 }

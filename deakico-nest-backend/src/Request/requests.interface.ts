@@ -4,4 +4,6 @@ export interface ItemRequest {
   req_date?: Date;
   i_id?: number;
   u_id?: number;
+  status?: string;
+  disabled?: boolean;
 }
