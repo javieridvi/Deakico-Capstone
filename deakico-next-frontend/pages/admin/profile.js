@@ -6,7 +6,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography , CardMedia} from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import { ProductCard } from "../../deakicomponents/Card";
+import { ProductCard , } from "../../deakicomponents/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState } from "react";
@@ -27,12 +27,12 @@ const StyledRating = styled(Rating)({
 const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile() {
- 
-  const [prodList, setProdList] = useState([]);
+  const [selecting, setSelecting] = useState('');
+  const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
   const [serviceList, setServiceList] = useState([]);
-  // const [productList, setProductList] 
+  const [productList, setProductList] = useState([]);
 
   const profileRating = async ()=>{
     const rvws =  (await reviewService.getProviderReviews()).data;
@@ -53,7 +53,10 @@ export default function Profile() {
 
   //  return(overallRating);  // el overall rating 
   }
-
+  const handleSelect = (event)=>{
+       console.log("event : " + event.target.value)
+    setSelecting(event.target.value)
+  };
   // let testi = profileRating();  // As promise
   // console.log(testi);
   // const test =overallRating; 
@@ -62,15 +65,18 @@ export default function Profile() {
   const getProducts = () => {
     itemService.getItemOfProvider().then((res) => {
       console.log( res.data);
-      setProdList(res.data);
+      setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )
       // console.log("Services Type: "+ Services);
       res.data.forEach(element=>{
         if(element.i_type == 'service'){
           console.log("true");
           setServiceList(serviceList => [...serviceList,element])
-   
-        }      
+        }
+        else { 
+          setProductList(productList =>[...productList, element])
+        }
+              
       });
     }).catch((err) => {
       console.log(err);
@@ -193,29 +199,28 @@ export default function Profile() {
 <Container className='Items'>
     <Box className='serviceTab'  >
       
-<Grid container-spacing={1}>
-  
-        <Typography sx={{
+        {/* <Typography sx={{
             mt:'4rem',
             fontSize: '18px',
             fontWeight:'200'
         }}>
             My  Services
         </Typography>
-        
+         */}
     <>
           <FormControl sx={{width: '50%' , mt:'2rem', }}>
+            <InputLabel>Services</InputLabel>
               <Select
-                      label="Services"
-                      value={""}
+                      label="services"
+                      value={selecting}
                       id="select-service"
-                      labelId="height-of-container-label"
+                      onChange={handleSelect}
                     >
          { serviceList.map((e, index) => { 
           return ( 
             <div key={index}>
              
-                  <MenuItem value="service">{e.i_name}</MenuItem>
+                  <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
                     
             </div>
           );
@@ -238,13 +243,13 @@ export default function Profile() {
                     tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
                   </Typography>
                 </>            
-            </Grid>
+    
           </Box>
 
-          {/* <Box className='Products' width='90%'>
+          <Box className='Products' width='90%'>
             <Stack>
             
-              {prodList.map((e,index)=> { 
+              {productList.map((e,index)=> { 
               <div>
               <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                <ProductCard
@@ -254,14 +259,13 @@ export default function Profile() {
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
-             
               />       
               </Grid>
               </div>
-              
+    
               })}
             </Stack>
-          </Box> */}
+          </Box>
 
         </Container>
       </main>

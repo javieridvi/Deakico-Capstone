@@ -16,6 +16,7 @@ export enum Categories {
 export enum ItemType {
   PRODUCT = 'product',
   SERVICE = 'service',
+  BOTH = 'both' ,
 }
 
 @Entity('Provider Account')
