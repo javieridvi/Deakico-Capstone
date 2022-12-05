@@ -43,7 +43,7 @@ export class RequestEntity {
   @JoinColumn({ name: 'u_id' })
   user: UserAccountEntity[];
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int'})
   u_id: number;
 
   @Column({type:'enum', enum: Status})
