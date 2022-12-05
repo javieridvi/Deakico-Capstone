@@ -42,6 +42,16 @@ export class ProviderAccountController {
   }
 
   /**
+   * Fetches user's provider account
+   * @param pa_id id of provider to return
+   * @returns user's provider account
+   */
+  @Get('profile')
+  getProviderProfile(@Body() pa_id: Partial<ProviderAccount>): Observable<ProviderAccount> {
+    return this.providersService.getProvider(pa_id.pa_id);
+  }
+
+  /**
    * Fetches list of providers that belong to given category or are null
    * @param providerCat string of 'null' or of category of provider
    * @returns all providers that are part of given category or null

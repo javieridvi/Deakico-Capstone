@@ -47,7 +47,7 @@ export class ProviderAccountService {
     return response;
   }
 
-  getProvider(pa_id): Observable<ProviderAccount> {
+  getProvider(pa_id: number): Observable<ProviderAccount> {
     return from(this.providerRepository.findOneBy({ pa_id: pa_id }));
   }
 

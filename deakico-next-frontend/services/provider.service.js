@@ -29,6 +29,13 @@ const getProvider = async (pa_id) => {
     return await axios.get(endpoint + "/" + pa_id, {headers: authHeader()})
 }
 
+const getProviderProfile = async (pa_id) => {
+  const data ={
+    pa_id: pa_id,
+  }
+    return await axios.get(endpoint + "/profile", data)
+}
+
 const getProviderCategory = async (pa_category) => {
     return await axios.get(endpoint + "/category/" + pa_category);
 };
@@ -38,6 +45,7 @@ export default {
     updateProvider, 
     getAllProviders,
     getProvider,
+    getProviderProfile,
     getProviderCategory,
     getAllProvidersWithFollow,
     //delete missing
