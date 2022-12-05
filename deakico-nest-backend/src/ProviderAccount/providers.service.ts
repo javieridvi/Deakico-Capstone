@@ -1,9 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
+import { DeleteResult, IsNull, Repository, UpdateResult } from 'typeorm';
 import { UserAccountService } from '../UserAccount/users.service';
-import { DeleteResult, Repository, UpdateResult, IsNull } from 'typeorm';
-import { isNull } from 'util';
 import { ProviderAccountEntity } from './providers.entity';
 import { ProviderAccount } from './providers.interface';
 import { ItemsService } from '../Item/items.service';
@@ -25,12 +24,36 @@ export class ProviderAccountService {
   @Inject(FollowsService)
   private readonly followsService: FollowsService;
 
-  getAllProviders(): Observable<ProviderAccount[]> {
-    return from(this.providerRepository.find({
-      where: {
-        disabled: false,
-      }
-    }));
+  async getAllProviders(): Promise<ProviderAccount[]> {
+    const response = await this.providerRepository
+    .createQueryBuilder()
+    .select([
+      'pa_id AS id',
+      'pa_companyname AS companyname',
+      'pa_desc AS desc',
+      'pa_rating AS rating',
+      'pa_category AS category',
+      ])
+    .getRawMany()
+    return response;
+  }
+
+  async getAllProvidersWithFollow(uID: number): Promise<ProviderAccount[]> {
+
+    const response = await this.providerRepository
+        .createQueryBuilder('provider')
+        .leftJoin('provider.follows', 'follow', 'follow.pa_id = provider.pa_id AND follow.u_id = :u_id')
+        .select([
+          'provider.pa_id AS id',
+          'provider.pa_companyname AS companyname',
+          'provider.pa_desc AS desc',
+          'provider.pa_rating AS rating',
+          'provider.pa_category AS category',
+          ])
+        .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')
+        .setParameter('u_id', uID)
+        .getRawMany()
+    return response;
   }
 
   getProvider(pa_id): Observable<ProviderAccount> {

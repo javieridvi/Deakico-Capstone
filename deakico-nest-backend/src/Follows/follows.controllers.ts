@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
@@ -86,15 +88,21 @@ export class FollowsController {
     @Body() follow: Follow,
     @Request() req: any,
   ): Observable<Follow> {
-    return this.followsService.insertFollow(req.user, follow);
+    try {
+      return this.followsService.insertFollow(req.user, follow);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN, {cause: error});
+      
+    } 
   }
 
   @UseGuards(JwtGuard)
   @Delete()
-  deleteItem(
+  deleteFollow(
     @Body() follow: Follow,
     @Request() req: any,
   ): Observable<DeleteResult> {
-    return this.followsService.deleteFollow(req.user.u_id, follow.pa_id);
+    return this.followsService.deleteFollow(req.user.u_id, follow);
   }
 }
