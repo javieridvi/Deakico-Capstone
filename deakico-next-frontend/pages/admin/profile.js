@@ -3,13 +3,13 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography , CardMedia} from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, MenuItem, Rating, Stack, styled, Typography , CardMedia, TextField} from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
 import { ProductCard , } from "../../deakicomponents/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
 
@@ -27,7 +27,7 @@ const StyledRating = styled(Rating)({
 const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile() {
-  const [selecting, setSelecting] = useState('');
+  let [selecting, setSelecting] = useState("")   ;
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
@@ -39,7 +39,7 @@ export default function Profile() {
     // console.log(rvws);
     let len = rvws.length ; 
     // console.log("len: "+ len)    //cantiad de reviews hechos
-      // message = rData.map((item) => item?.r_message ) // List of all the messages 
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
      
     let overallR = 0;   // overall rating calc  
@@ -53,10 +53,8 @@ export default function Profile() {
 
   //  return(overallRating);  // el overall rating 
   }
-  const handleSelect = (event)=>{
-       console.log("event : " + event.target.value)
-    setSelecting(event.target.value)
-  };
+  
+
   // let testi = profileRating();  // As promise
   // console.log(testi);
   // const test =overallRating; 
@@ -88,16 +86,20 @@ export default function Profile() {
   }, []);
 
 
-      const handleClickOpen = () => {
+  const handleClickOpen = () => {
       console.log("Open") ;
       setOpen(true); // opens modal
       }
    
-    const handleClose = (e, reason) => {
+  const handleClose = (e, reason) => {
       setOpen(false);
     }
 
-
+  const handleSelect = (e)=> {
+    setSelecting(e.target.value)
+    console.log("value: "+ e.target.value );
+    
+  }
   return (
       
 <Container>
@@ -126,20 +128,19 @@ export default function Profile() {
       sx={{
         left: '0' ,
         top: '10' ,
-        fontWeight: '700' ,
+        fontWeight: '750' ,
         fontSize: '28px' ,
         mr:'2px',
       
        }} > Company Name  </Typography>   
     
-       {/* <Rating name="half-rating" defaultValue={1} precision={0.5} value={overallRating}  sx={{  ml:'5%' , }}readOnly></Rating>   */}
        <Stars rating={overallRating}/>
    
      </Box>
        <Typography  sx={{
         
         fontSize: '28px',
-        fontWeight:'800',
+        fontWeight:'700',
         mt:'10px',
         mb:'20px',
         direction:'column'
@@ -172,6 +173,7 @@ export default function Profile() {
               image='/Logphotos.png'
               width= 'auto'
               height="auto"
+              sx={{objectFit:'unset'}}
                />
           </div>
         </Box>
@@ -195,8 +197,6 @@ export default function Profile() {
       <main>
 
       
-
-<Container className='Items'>
     <Box className='serviceTab'  >
       
         {/* <Typography sx={{
@@ -207,67 +207,80 @@ export default function Profile() {
             My  Services
         </Typography>
          */}
-    <>
-          <FormControl sx={{width: '50%' , mt:'2rem', }}>
-            <InputLabel>Services</InputLabel>
-              <Select
+
+          <FormControl sx={{width: '50%' , mt:'3rem', }}>
+              <TextField
+                      name= 'selectingcompany'
                       label="services"
-                      value={selecting}
+                      value= {selecting}
+                      select 
                       id="select-service"
+                      type='string'
                       onChange={handleSelect}
-                    >
+                    > 
          { serviceList.map((e, index) => { 
           return ( 
-            <div key={index}>
-             
-                  <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
-                    
-            </div>
-          );
-         }  )}
-
-             </Select>      
+                  <MenuItem  key={index} id='serviceName' value={e.i_name}> {e.i_name} </MenuItem>
+                         
+          ); 
+         }  )}         
+                   </TextField>  
            </FormControl>
                   <Typography
                     sx={{
                       mt: '2rem',
+                      mb: '1rem',
+                      width:'80%'
+                    }} > 
+
+                    What about my service :  {selecting} 
+                    
+                   </Typography>
+    
+                   <Typography
+                    sx={{
+                      mt: '1rem',
                       mb: '4rem',
-                      width:'50%'
-                    }}
-                  > 
-                    What about my company : 
+                      width:'60%'
+                    }} > 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                  </Typography>
-                </>            
-    
+                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.  
+             
+        </Typography>
           </Box>
 
-          <Box className='Products' width='90%'>
-            <Stack>
-            
-              {productList.map((e,index)=> { 
-              <div>
-              <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-               <ProductCard
+          <Box className='Products' display='flex' flexWrap='wrap'>
+          
+              {productList.map((e,index)=> (
+      <Grid className="Results"
+      key={index}
+      container spacing={{ xs: 1, md: 3 ,lg:1}} columns={{ xs: 1, sm: 1, md: 3, lg: 4 }}
+      sx={{
+        paddingTop: '1rem',
+        paddingBottom: '2rem',   
+        flex: 4 , m:'2rem'
+        
+      }}
+       >  <>    <ProductCard
                 rating={e.i_rating}
                 category={e.i_category}
                 src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
-              />       
+          
+              />    
+              
+           </>  
               </Grid>
-              </div>
     
-              })}
-            </Stack>
+              ))}
+          
           </Box>
 
-        </Container>
       </main>
     </Container>
   )

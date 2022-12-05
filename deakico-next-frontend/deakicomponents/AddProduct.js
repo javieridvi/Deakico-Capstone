@@ -26,8 +26,10 @@ export  function AddProduct(props) {
   const [itemType, setItemType] = useState('');
 
   const handleType = (event) => {
-    console.log('test: '+ event.target.value)
+    const t =  event.target.value
+    console.log('test: '+ t)
     setItemType(event.target.value);  //testing
+    
   };
 
   function redirect() {
@@ -64,7 +66,7 @@ export  function AddProduct(props) {
 
 
 
-  return (
+  return ( 
     <div>
       <Dialog
          open={props.open}
@@ -125,7 +127,7 @@ export  function AddProduct(props) {
        </div>
        <Button onClick={AddingItem}> Add</Button> 
          </Box>
-        </div>
+       </div>
      
         </Box>
       </Dialog>
