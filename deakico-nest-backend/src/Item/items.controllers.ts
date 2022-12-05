@@ -37,7 +37,7 @@ export class ItemsController {
    * @returns {Observable<Likes>} an observable Promise (a promise given representation).
    */
   @Get('type/:i_type')
-  getItemByType(@Param('i_type') itemType: string): Observable<Item[]> {
+  getItemByType(@Param('i_type') itemType: string): Promise<Observable<Item[]>> {
     const types = ['product', 'service'];
     if (types.includes(itemType)) {
       return this.itemsService.getItemByType(itemType);
@@ -63,7 +63,7 @@ export class ItemsController {
   @Get('category/:i_category')
   getItemByCategory(
     @Param('i_category') itemCategory: string,
-  ): Observable<Item[]> {
+  ): Promise<Observable<Item[]>> {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
@@ -74,7 +74,7 @@ export class ItemsController {
    */
   @UseGuards(JwtGuard)
   @Get('provider')
-  getItemOfProvider(@Request() req: any): Observable<Item[]> {
+  getItemOfProvider(@Request() req: any): Promise<Observable<Item[]>> {
     return this.itemsService.getItemOfProvider(req.user.pa_id);
   }
 
@@ -114,11 +114,12 @@ export class ItemsController {
    * @returns delete confirmation
    */
   @UseGuards(JwtGuard)
-  @Delete('/id/:i_id')
+  @Put('/delete/:i_id')
   deleteItem(
     @Param('i_id') itemId: number,
+    @Body() item: Item,
     @Request() req: any,
-  ): Promise<Observable<DeleteResult>> {
-    return this.itemsService.deleteItem(itemId, req.user.pa_id);
+  ): Promise<Observable<UpdateResult>> {
+    return this.itemsService.deleteItem(itemId, item, req.user.pa_id);
   }
 }

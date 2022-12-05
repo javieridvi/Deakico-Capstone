@@ -30,6 +30,10 @@ const getFollowers = async () => {
     return await axios.get(endpoint + "/followers", {headers: authHeader()});
 };
 
+const getFollowersGroupByDate = async () => {
+    return await axios.get(endpoint + "/followers/group-by-date", {headers: authHeader()});
+}
+
 const getFollowingCount = async () => {
     return await axios.get(endpoint + "/following/count", {headers: authHeader()});
 };
@@ -41,12 +45,13 @@ const getFollowing = async () => {
 
 export default {
     insertFollow,
-    updateFollow,
+    // updateFollow,
     getAllFollows,
     //getFollow,
     getFollowersCount,
     getFollowers,
     getFollowingCount,
     getFollowing,
+    getFollowersGroupByDate,
     //delete missing
 }

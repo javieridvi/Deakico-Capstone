@@ -45,6 +45,7 @@ export class LikesService {
       .innerJoin('likes.likes_item', 'items')
       .select('items')
       .where('likes.u_id = :u_id', { u_id: userId })
+      .andWhere('items.disabled = false')
       .getRawMany();
     return res;
   }
@@ -73,5 +74,20 @@ export class LikesService {
 
   deleteLike(userId: number, itemId: number): Observable<DeleteResult> {
     return from(this.likeRepository.delete({ u_id: userId, i_id: itemId }));
+  }
+
+  async deleteLikesOfProvider(providerId: number): Promise<DeleteResult> {
+    const res = await this.likeRepository.manager
+    .query(`delete from "Likes" where "Likes".i_id in (
+      select L.i_id from "Likes" L
+      left join "Items" I on L.i_id = I.i_id
+      where I.pa_id = $1
+      );`,
+    [providerId]);
+    return res;
+  }
+
+  deleteLikesOfUser(userId: number): Observable<DeleteResult> {
+    return from(this.likeRepository.delete({u_id: userId}));
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head';
 import Profile from './profile';
+import MainSidebar from './Sidebar';
 
 
 export default function index() {
@@ -15,8 +16,8 @@ export default function index() {
      <div>
 
     <main>
-        
-        <Profile/>      
+        <MainSidebar/>
+        {/* <Profile/>       */}
 
     </main>
 

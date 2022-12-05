@@ -9,6 +9,18 @@ import {
   JoinColumn,
 } from 'typeorm';
 
+export enum Status {
+  REQUESTED = 'requested',
+  ACCEPTED = 'accepted', //by provider
+  REJECTED = 'rejected', //by provider
+  CANCELED = 'canceled', //by user. If canceled, not interactive.
+  PAID = 'paid',
+  SENT = 'sent',
+  COMPLETED = 'completed', //by user. If completed, not interactive.
+  USERNOTFOUND = 'user not found', //on user deleted. Not interactive.
+}
+
+
 @Entity('Request')
 export class RequestEntity {
   @PrimaryGeneratedColumn()
@@ -33,4 +45,10 @@ export class RequestEntity {
 
   @Column({ type: 'int', nullable: true })
   u_id: number;
+
+  @Column({type:'enum', enum: Status})
+  status: string;
+
+  @Column({type: 'boolean', default:false})
+  disabled: boolean;
 }

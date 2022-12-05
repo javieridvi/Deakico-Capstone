@@ -32,7 +32,7 @@ export class ItemRequestController {
   /**
    * Fetches list of request of logged in provider
    * @param req token user used to retrieve id of provider
-   * @returns list of requests and items
+   * @returns list of requests, items and the user that requested
    */
   @UseGuards(JwtGuard)
   @Get('of/provider')

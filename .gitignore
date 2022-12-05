@@ -10,6 +10,7 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+*.out
 
 # OS
 .DS_Store
@@ -38,8 +39,9 @@ lerna-debug.log*
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/deakico-nest-backend/node_modules
-/deakico-next-frontend/node_modules
+*node_modules
+/deakico-nest-backend/.serverless
+/deakico-nest-backend/.aws
 /.pnp
 .pnp.js
 

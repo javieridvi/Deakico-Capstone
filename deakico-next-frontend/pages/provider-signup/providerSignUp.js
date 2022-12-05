@@ -10,6 +10,11 @@ export default function ProviderSignUp() {
   const [currUser, setCurrUser] = React.useState(undefined);
   const [category, setCategory] = React.useState('');
 
+  //for confirm password validation
+  const [passwordMsg, setPasswordMsg] = React.useState("This is your regular account's password.");
+  const [error, setError] = React.useState(false);
+
+
   const checkCurrUser = () => {
     setCurrUser(userService.getUser()?.then((res) => {
       setCurrUser(res.data);
@@ -33,24 +38,53 @@ export default function ProviderSignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    //confirm that passwords are the same
+    const pass = data.get('password');
+    const confPass = data.get('confirm-password');
+    if(!validatePassword(pass, confPass)) {
+      return; //return if invalid password
+   }
     //then register, once the user is validated
     const payload = {
           pa_companyname: data.get('companyName'),
           pa_desc: data.get('description'),
           pa_category: category,
         };
-    providerService.insertProvider(payload).then(
-      () => {
-        window.location.reload(); //this reloads the page
-      }, (err) => {
-        console.log(err.response.data);
-      }
-    )
+    const email = currUser?.email;
+    const password = data.get('password');
+
+    authService.login(email, password).then(() => {
+       providerService.insertProvider(payload).then(
+        () => {
+          window.location.reload(); //this reloads the page
+        }, (err) => {
+          console.log(err.response.data);
+        }
+      )
+    }).catch((err) => {
+      console.log("Unauthorized!");
+    })
+   
   }
   
   React.useEffect(() => {   
     checkCurrUser();
   }, [])
+
+  //return true if passwords are the same, false otherwise
+  const validatePassword = (pass, confPass) => {
+    if((pass === confPass) && (pass != "" || confPass != "")) {
+      setPasswordMsg("This is your regular account's password.");
+      setError(false);
+      return true; //valid password
+    }
+    else {
+      setPasswordMsg("Password not valid!");
+      setError(true);
+      return false; //invalid password
+    }
+  }
 
   return (
     <Container 
@@ -154,11 +188,12 @@ export default function ProviderSignUp() {
               id="email"
               name="email"
               type= "email"
-              //label="Email Address"
+              label="Email"
+              defaultValue={"Login required"}
               autoComplete="email"
-              disabled={true}
               value={currUser?.email}
-              required
+              required 
+              disabled
               fullWidth
             />
           </Stack>
@@ -169,6 +204,9 @@ export default function ProviderSignUp() {
               type="password"
               label="Password"
               autoComplete="new-password"
+              error={error}
+              helperText={passwordMsg}
+              
               required
               fullWidth
             />
@@ -180,8 +218,11 @@ export default function ProviderSignUp() {
               type="password"
               label="Confirm Password"
               autoComplete="new-password"
+              error={error}
+              helperText={passwordMsg}
               required
               fullWidth
+              
             />
           </Stack>
           <Stack item>

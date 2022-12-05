@@ -16,6 +16,7 @@ export enum Categories {
 export enum ItemType {
   PRODUCT = 'product',
   SERVICE = 'service',
+  BOTH = 'both',
 }
 
 @Entity('Provider Account')
@@ -32,13 +33,10 @@ export class ProviderAccountEntity {
   @Column({ default: 0, type: 'decimal' })
   pa_rating: number;
 
-  @Column({ default: 0, type: 'int' })
-  pa_followers: number;
-
-  @Column({ nullable: true, type: 'enum', enum: Categories })
+  @Column({ nullable: false, type: 'enum', enum: Categories })
   pa_category: string;
 
-  @Column({ nullable: true, type: 'enum', enum: ItemType})
+  @Column({ nullable: false, type: 'enum', enum: ItemType})
   pa_type: string;
 
   @OneToMany((type) => ItemEntity, (item) => item.provider)
@@ -46,4 +44,7 @@ export class ProviderAccountEntity {
 
   @OneToMany((type) => FollowEntity, (follow) => follow.follows_provider)
   follows: FollowEntity[];
+
+  @Column({type: 'boolean', default:false})
+  disabled: boolean;
 }

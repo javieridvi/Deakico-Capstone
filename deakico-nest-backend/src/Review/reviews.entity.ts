@@ -32,4 +32,10 @@ export class ReviewEntity {
 
   @Column({ type: 'int', nullable: true })
   i_id: number;
+
+  @Column({ type: 'timestamp', nullable: true})
+  r_date: Date;
+
+  @Column({type: 'boolean', default:false})
+  disabled: boolean;
 }
