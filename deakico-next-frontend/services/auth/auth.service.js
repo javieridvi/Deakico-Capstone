@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 
 const register = async (u_firstname, u_lastname, email, username, password) => {
   return await axios.post(API_URL + "auth/register", {
