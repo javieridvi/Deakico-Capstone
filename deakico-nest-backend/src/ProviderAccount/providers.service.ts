@@ -34,6 +34,7 @@ export class ProviderAccountService {
       'pa_rating AS rating',
       'pa_category AS category',
       ])
+      .where('disabled = false')
     .getRawMany()
     return response;
   }
@@ -52,6 +53,7 @@ export class ProviderAccountService {
           ])
         .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')
         .setParameter('u_id', uID)
+        .where('provider.disabled = false')
         .getRawMany()
     return response;
   }
