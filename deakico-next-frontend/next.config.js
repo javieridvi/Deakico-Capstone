@@ -8,6 +8,10 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const moduleExports = {
   // Your existing module.exports
 
+  env: {
+    API_URL: process.env.API_URL,
+  },
+
   sentry: {
     // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
     // for client-side builds. (This will be the default starting in
