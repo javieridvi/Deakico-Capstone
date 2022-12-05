@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "follows";
 const endpoint = API_URL + entity;
 
