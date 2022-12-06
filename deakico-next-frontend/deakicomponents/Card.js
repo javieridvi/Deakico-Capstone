@@ -269,7 +269,6 @@ export function ProductCard(props) {
     </Box>
   ];
 
-
   let components = {
     top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
     image: props.src,
@@ -279,7 +278,54 @@ export function ProductCard(props) {
   }
   return BaseCard(components);
 }
+///View of Provider Products Card 
+export function ProviderCardproducts(props){
+//uses price, request and like
+let bottom = [
+  <Box
+    key={0}
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      // height: '100%',
+      // width: '100%',
+    }}
+  >
+    <Typography variant={'h6'} className={'Price'}
+      sx={{
+        fontSize: '1.125rem', // 18px
+        fontWeight: '700',
+        fontFamily: 'Roboto, sans-serif',
+      }}
+    >
+      {props.price}
+    </Typography>
+  </Box>,
+  <Box className={'Actions'}
+    key={1}
+    sx={{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      paddingBottom: '10px',
+      height: '100%',
+      width: '100%',
+    }}
+  >
+  </Box>
+];
 
+let components = {
+  top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
+  image: props.src,
+  title: props.title,
+  description: props.description,
+  bottom: bottom,
+}
+return BaseCard(components);
+}
+
+///
 function BaseCard(components) {
   
   return (

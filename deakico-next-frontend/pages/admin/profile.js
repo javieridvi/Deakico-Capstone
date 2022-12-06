@@ -6,12 +6,13 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, MenuItem, Rating, Stack, styled, Typography , CardMedia, TextField} from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import { ProductCard , } from "../../deakicomponents/Card";
+import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState, ChangeEvent } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
+
 
 
 const StyledRating = styled(Rating)({
@@ -255,16 +256,8 @@ export default function Profile() {
           <Box className='Products' display='flex' flexWrap='wrap'>
           
               {productList.map((e,index)=> (
-      <Grid className="Results"
-      key={index}
-      container spacing={{ xs: 1, md: 3 ,lg:1}} columns={{ xs: 1, sm: 1, md: 3, lg: 4 }}
-      sx={{
-        paddingTop: '1rem',
-        paddingBottom: '2rem',   
-        flex: 4 , m:'2rem'
-        
-      }}
-       >  <>    <ProductCard
+       <div key={index} >
+            <ProviderCardproducts
                 rating={e.i_rating}
                 category={e.i_category}
                 src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
@@ -273,10 +266,7 @@ export default function Profile() {
                 price={e.i_price}
           
               />    
-              
-           </>  
-              </Grid>
-    
+        </div>
               ))}
           
           </Box>
