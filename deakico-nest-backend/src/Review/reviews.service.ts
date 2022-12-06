@@ -24,7 +24,7 @@ export class ReviewService {
     .select('review')
     .addSelect('items')
     .where('items.pa_id = :pa_id', {pa_id: paID})
-    .andWhere('disabled = false')
+    .andWhere('review.disabled = false')
     .getRawMany()
     return result;
   }
