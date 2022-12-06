@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, Grid, Typography, IconButton, Menu, MenuItem, Link, Box, Divider } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Button, ButtonGroup, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import authService from "../../../services/auth/auth.service";
 import userService from "../../../services/user.service";
@@ -61,8 +61,8 @@ export default function Account() {
     setLoggedIn((state) => {
       let logged = authService.isLoggedIn();
       if (logged) {
-        checkCurrUser();
       }
+        checkCurrUser();
       return logged;
     })
     // checkLoggedIn();    
