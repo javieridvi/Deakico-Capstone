@@ -2,17 +2,21 @@ import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography }
 import Link from 'next/link';
 import { useState } from 'react';
 import followsService from '../../services/follows.service';
+import likesService from '../../services/likes.service';
 import Stars from './Rating';
 import { Router, useRouter } from 'next/router'
 
 /*
-  <ProductCard
-  type ={}
-  category ={}
-  src ={}
-  title ={}
-  description ={}
-  rating ={}
+  <ProviderCard
+    id={e.id}
+    title={e.companyname}
+    description={e.desc}
+    rating={e.rating}
+    category={e.category}
+    following={e.following}
+    LogIn={handleLogInOpen} - Pop up in not logged in
+    type={index % 2 == 0 ? 'Product' : 'Service'}
+    src={URL}
   />
 */
 export function ProviderCard(props) {
@@ -154,15 +158,59 @@ export function ProviderCard(props) {
 
 /*
   <ProductCard
-  rating ={}
-  category ={}
-  src ={}
-  title ={}
-  description ={}
-  price ={}
+    id={e.id}
+    title={e.name}
+    description={e.desc}
+    price={e.price}
+    category={e.category}
+    rating={e.rating}
+    provider={e.pa_id}
+    liked={e.liked}
+    LogIn={handleLogInOpen}
   />
 */
 export function ProductCard(props) {
+  const [liked,setLiked] = useState(props.liked);
+
+  function handleClick(liked, title, id) {
+    // When following undefined user is not logged in
+    if (liked == undefined) {
+      console.log('not logged');
+      // following = false;
+      props.LogIn(title); // When not logged in throw log in pop up 
+    } else {
+      let request; // Request variable to be sent
+      if (liked) {
+        // When following then unfollow
+        request = likesService.deleteLike; // Unlike
+      } else {
+        // When not following then follow
+        request = likesService.insertLike; // Like
+      }
+
+      // Send request
+      // id = item id
+      request(id).then((res) => {
+        // Response doesn't need to be returned
+        setFollowing(state => !state); // Set following to oposite state
+      }).catch((err) => {
+        if (err.response.status == 403) {
+          // User tryed to like their own item
+          // Modal cant like your items
+          console.log('Think we wouldn\'t notice you trying to like your items?');
+        } else if (err.response.status == 401) {
+          // Failed authentication
+          console.log('Reauthenticate');
+          props.LogIn(title); // Prompt to reauthenticate
+        } else {
+          console.log(err); // Log error
+        }
+      })
+
+    }
+
+  }
+
 
   let request = (
     <Button variant='outlined'

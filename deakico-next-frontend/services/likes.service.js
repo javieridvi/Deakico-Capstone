@@ -36,6 +36,13 @@ const getItemLikes = async (i_id) => {
     return await axios.get(endpoint + "/item/" + i_id);
 };
 
+const deleteLike = async (I_id) => {
+  let data = {
+    i_id: I_id
+};
+    return await axios.delete(endpoint, {headers: authHeader(), data: data});
+};
+
 export default {
     insertLike,
     //updateLike,
@@ -44,5 +51,5 @@ export default {
     getLikesOfProvider,
     getUserLiked,
     getItemLikes,
-    //delete missing
+    deleteLike,
 };
