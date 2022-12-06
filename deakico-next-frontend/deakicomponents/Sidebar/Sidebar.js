@@ -16,14 +16,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
+//Icons for Sidebar
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
 import Dashboard from './Dashboard/dashboard';
 import Profile from '../../pages/admin/profile';
 
@@ -94,6 +97,10 @@ export default function MainSidebar() {
         return <SettingsIcon/>;
       case 'Events':
         return <LocalActivityIcon/>;
+      case 'Liked Items':
+        return <FavoriteIcon/>;
+      case 'My Follows':
+        return <GroupAddIcon/>;
       default:
         return <SettingsIcon/>;
     }
@@ -108,9 +115,9 @@ export default function MainSidebar() {
         return '#';
       case 'Reviews':
           return '#';
-      case 'Liked':
+      case 'Liked Items':
         return (<Liked/>)
-      case 'Follows':
+      case 'My Follows':
         return (<Follows/>)
       case 'Profile':
         return (<Profile/>);
@@ -210,7 +217,7 @@ export default function MainSidebar() {
 
         <Divider />
         <List>
-          {['Settings', 'Events'].map((text, index) => (
+          {['Liked Items', 'My Follows', 'Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => {setComponent(text)} }>
                 <ListItemIcon>
