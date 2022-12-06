@@ -3,7 +3,7 @@ import authHeader from "./auth/auth.header";
 
 const API_URL = process.env.API_URL;
 const entity = "items";
-const endpoint = API_URL + entity;
+const endpoint = API_URL +  entity;
 
 const insertItem = async (data) => {
     return await axios.post(endpoint, data, {headers: authHeader()}); 

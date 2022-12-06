@@ -1,125 +1,27 @@
-import { useTheme } from '@emotion/react';
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, createTheme, responsiveFontSizes, ThemeProvider, Typography } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useState } from 'react';
-import authService from '../../services/auth/auth.service';
-import followsService from '../../services/follows.service'
+import followsService from '../../services/follows.service';
+import likesService from '../../services/likes.service';
 import Stars from './Rating';
-
-//Default Card used to create variants
-export function DefaultTest() {
-  let rating = (<Stars width={'75px'} rating={3.5} />);
-  let request = (
-    <Button variant='outlined'
-      sx={{
-        height: '20px',
-        minWidth: '60px',
-        fontSize: '.625rem', // 14px
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: '500',
-      }}
-    >
-      Follow
-    </Button>
-  );
-  let like = (
-    <Typography variant={'caption'}
-      sx={{
-        width: '20px',
-        height: '20px',
-        margin: '0 0 0 7px',
-        color: 'rgb(101, 101, 101)',
-      }}
-    >
-      100
-    </Typography>
-  );
-  //uses price, request and like
-  let bottom = [
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      <Typography variant={'h6'} className={'Price'}
-        sx={{
-          fontSize: '1.125rem', // 18px
-          fontWeight: '700',
-          fontFamily: 'Roboto, sans-serif',
-        }}
-      >
-        {rating}
-      </Typography>
-    </Box>,
-    <Box className={'Actions'}
-      sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        paddingBottom: '10px',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      {request}
-      {like}
-    </Box>
-  ];
-
-  let components = {
-    top: [infoRect('Type'), infoRect('Category')],
-    image: 'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000',
-    title: 'Name Here',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis dui euismod, cursus orci non, placerat nunc. Praesent id vestibulum odio, vitae venenatis mauris. Praesent id vestibulum odio, vitae venenatis mauris.',
-    bottom: bottom,
-  }
-  return (
-
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-evenly',
-        flexWrap: 'wrap',
-      }}
-    >
-
-      <ProviderCard
-        type={'Type'}
-        category={'Category'}
-        src={'/Test-Provider.png'}
-        title={'Provider Card'}
-        description={components.description}
-        rating={4.5}
-      />
-
-      <ProductCard
-        rating={4}
-        category={'Category'}
-        src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-        title={'Product Card'}
-        description={components.description}
-        price={'$29.99'}
-      />
-    </Box>
-  )
-}
+import { Router, useRouter } from 'next/router'
 
 /*
-  <ProductCard
-  type ={}
-  category ={}
-  src ={}
-  title ={}
-  description ={}
-  rating ={}
+  <ProviderCard
+    id={e.id}
+    title={e.companyname}
+    description={e.desc}
+    rating={e.rating}
+    category={e.category}
+    following={e.following}
+    LogIn={handleLogInOpen} - Pop up in not logged in
+    type={index % 2 == 0 ? 'Product' : 'Service'}
+    src={URL}
   />
 */
 export function ProviderCard(props) {
   const [following, setFollowing] = useState(props.following);
+  const router = useRouter();
   // Styles
   const style = {
     height: '20px',
@@ -130,16 +32,16 @@ export function ProviderCard(props) {
   }
 
   // Functions
-  
+
   function handleClick(following, title, id) {
     // When following undefined user is not logged in
-    if(following == undefined){
+    if (following == undefined) {
       console.log('not logged');
       // following = false;
       props.LogIn(title); // When not logged in throw log in pop up 
     } else {
       let request; // Request variable to be sent
-      if(following){
+      if (following) {
         // When following then unfollow
         request = followsService.deleteFollow; // Unfollow
       } else {
@@ -153,11 +55,11 @@ export function ProviderCard(props) {
         // Response doesn't need to be returned
         setFollowing(state => !state); // Set following to oposite state
       }).catch((err) => {
-        if(err.response.status == 403) {
+        if (err.response.status == 403) {
           // User tryed to follow their own PA account
           // Modal cant follow yourself
           console.log('Think we wouldn\'t notice you trying to follow yourself?');
-        } else if(err.response.status == 401){
+        } else if (err.response.status == 401) {
           // Failed authentication
           console.log('Reauthenticate');
           props.LogIn(title); // Prompt to reauthenticate
@@ -165,12 +67,26 @@ export function ProviderCard(props) {
           console.log(err); // Log error
         }
       })
-    
+
     }
 
   }
 
-
+  let Area = (
+    <CardActionArea
+      onClick={() => {
+        router.push({
+          pathname: '/profile',
+          query: { id: props.id }
+        })
+      }}
+    >
+      <ActionArea
+        top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+        image={props.src}
+      />
+    </CardActionArea>
+  )
 
   // Components
   let isfollowing = (
@@ -190,20 +106,8 @@ export function ProviderCard(props) {
       Follow
     </Button>
   );
-  // let follows = (
-  //   <Typography variant={'caption'}
-  //     key={'follows'}
-  //     sx={{
-  //       width: '20px',
-  //       height: '20px',
-  //       margin: '0 0 0 7px',
-  //       color: 'rgb(101, 101, 101)',
-  //     }}
-  //   >
-  //     {props.followers}
-  //   </Typography>
-  // );
-  //uses rating, follow and follows
+
+  //uses rating, follow
   let bottom = [
     <Box
       key={0}
@@ -236,35 +140,77 @@ export function ProviderCard(props) {
       }}
     >
       {
-      following ?
-        isfollowing :
-        follow
+        following ?
+          isfollowing :
+          follow
       }
     </Box>
   ];
 
-  let components = {
-    top: [infoRect(props.type, 0), infoRect(props.category, 1)],
-    image: props.src,
-    title: props.title,
-    description: props.description,
-    bottom: bottom,
-  }
-  return BaseCard(components);
+  return <BaseCard
+    area={Area}
+    title={props.title}
+    description={props.description}
+    bottom={bottom}
+  />;;
 
 }
 
 /*
   <ProductCard
-  rating ={}
-  category ={}
-  src ={}
-  title ={}
-  description ={}
-  price ={}
+    id={e.id}
+    title={e.name}
+    description={e.desc}
+    price={e.price}
+    category={e.category}
+    rating={e.rating}
+    provider={e.pa_id}
+    liked={e.liked}
+    LogIn={handleLogInOpen}
   />
 */
 export function ProductCard(props) {
+  const [liked,setLiked] = useState(props.liked);
+
+  function handleClick(liked, title, id) {
+    // When following undefined user is not logged in
+    if (liked == undefined) {
+      console.log('not logged');
+      // following = false;
+      props.LogIn(title); // When not logged in throw log in pop up 
+    } else {
+      let request; // Request variable to be sent
+      if (liked) {
+        // When following then unfollow
+        request = likesService.deleteLike; // Unlike
+      } else {
+        // When not following then follow
+        request = likesService.insertLike; // Like
+      }
+
+      // Send request
+      // id = item id
+      request(id).then((res) => {
+        // Response doesn't need to be returned
+        setFollowing(state => !state); // Set following to oposite state
+      }).catch((err) => {
+        if (err.response.status == 403) {
+          // User tryed to like their own item
+          // Modal cant like your items
+          console.log('Think we wouldn\'t notice you trying to like your items?');
+        } else if (err.response.status == 401) {
+          // Failed authentication
+          console.log('Reauthenticate');
+          props.LogIn(title); // Prompt to reauthenticate
+        } else {
+          console.log(err); // Log error
+        }
+      })
+
+    }
+
+  }
+
 
   let request = (
     <Button variant='outlined'
@@ -333,18 +279,22 @@ export function ProductCard(props) {
     </Box>
   ];
 
+  let Area = (
+    <ActionArea
+      top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+      image={props.src}
+    />
+  )
 
-  let components = {
-    top: [<Stars key={0} width={'75px'} rating={props.rating} textColor={'rgb(225, 225, 225)'} />, infoRect(props.category, 1)],
-    image: props.src,
-    title: props.title,
-    description: props.description,
-    bottom: bottom,
-  }
-  return BaseCard(components);
+  return <BaseCard
+    area={Area}
+    title={props.title}
+    description={props.description}
+    bottom={bottom}
+  />;
 }
 
-function BaseCard(components) {
+function BaseCard(props) {
 
   return (
     <Card
@@ -355,39 +305,7 @@ function BaseCard(components) {
         transform: { xs: 'scale(0.9)', sm: 'scale(1)' }
       }}
     >
-      <CardActionArea>
-        <Box
-          sx={{
-            position: 'relative',
-            // borderRadius: '1rem',
-            overflow: 'clip',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-              height: '1.875rem', //30px at full size
-              padding: '0 1rem',
-              backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
-            }}
-          >
-            {components.top}
-          </Box>
-          <CardMedia
-            component="img"
-            src={components.image}
-            alt="green iguana"
-            sx={{
-              height: '11.25rem', // 180px at full size
-            }}
-          />
-        </Box>
-      </CardActionArea>
+      {props.area}
       <Box
         className='Provider Info'
         sx={{
@@ -405,7 +323,7 @@ function BaseCard(components) {
             fontFamily: 'Comfortaa',
           }}
         >
-          {components.title}
+          {props.title}
         </Typography>
         <Typography variant={'body2'} className={'Card-Description'}
           sx={{
@@ -417,7 +335,7 @@ function BaseCard(components) {
             fontFamily: 'Comfortaa',
           }}
         >
-          {components.description}
+          {props.description}
         </Typography>
         <Box
           sx={{
@@ -427,7 +345,7 @@ function BaseCard(components) {
             marginTop: '.1875rem', //3px 
           }}
         >
-          {components.bottom}
+          {props.bottom}
         </Box>
       </Box>
     </Card>
@@ -465,7 +383,41 @@ function infoRect(text, key) {
   )
 }
 
-
+function ActionArea(props) {
+  return (
+    <Box className='ActionArea'
+      sx={{
+        position: 'relative',
+        // borderRadius: '1rem',
+        overflow: 'clip',
+      }}
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          height: '1.875rem', //30px at full size
+          padding: '0 1rem',
+          backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
+        }}
+      >
+        {props.top}
+      </Box>
+      <CardMedia
+        component="img"
+        src={props.image}
+        alt="green iguana"
+        sx={{
+          height: '11.25rem', // 180px at full size
+        }}
+      />
+    </Box>
+  )
+}
 
 
 
@@ -475,6 +427,7 @@ function infoRect(text, key) {
 export function ProviderTest() {
   return (
     <ProviderCard
+      id={0}
       type={'Type'}
       category={'Category'}
       src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
