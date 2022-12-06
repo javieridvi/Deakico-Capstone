@@ -1,13 +1,13 @@
 import { Box, Typography, Stack, Divider, Container, Grid } from '@mui/material';
-import DashboardSidebar from '../../pages/admin/Sidebar'
-import DashboardTable from '../Table';
+import DashboardSidebar from '../Sidebar'
+import DashboardTable from '../../Table';
 import { useEffect, useState } from 'react';
 import LineChart from './Chart';
 import PieChart from './Chart';
 import { PieCard, LineCard, BarCard } from './ChartCard';
-import itemService from '../../services/item.service'
-import likesService from '../../services/likes.service';
-import followsService from '../../services/follows.service'
+import itemService from '../../../services/item.service'
+import likesService from '../../../services/likes.service';
+import followsService from '../../../services/follows.service'
 import {CircularProgress} from '@mui/material';
 
 export function formatDate(date) {
