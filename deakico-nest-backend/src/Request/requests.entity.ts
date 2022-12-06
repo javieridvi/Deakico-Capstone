@@ -46,7 +46,7 @@ export class RequestEntity {
   @Column({ type: 'int'})
   u_id: number;
 
-  @Column({type:'enum', enum: Status})
+  @Column({type:'enum', enum: Status, default: Status.REQUESTED})
   status: string;
 
   @Column({type: 'boolean', default:false})

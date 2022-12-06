@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
-import { UserAccount } from 'src/UserAccount/users.interface';
+import { UserAccount } from '../UserAccount/users.interface';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ReviewEntity } from './reviews.entity';
 import { Review } from './reviews.interface';
@@ -14,7 +14,7 @@ export class ReviewService {
   ) {}
 
   getReview(r_id): Observable<Review> {
-    return from(this.reviewRepository.findOneBy({ r_id: r_id }));
+    return from(this.reviewRepository.findOneBy({ r_id: r_id, disabled: false}));
   }
 
   async getProviderReviews(paID: number): Promise<Review[]> {
@@ -24,6 +24,7 @@ export class ReviewService {
     .select('review')
     .addSelect('items')
     .where('items.pa_id = :pa_id', {pa_id: paID})
+    .andWhere('disabled = false')
     .getRawMany()
     return result;
   }
@@ -33,6 +34,7 @@ export class ReviewService {
       this.reviewRepository.find({
         where: {
           i_id: itemId,
+          disabled: false,
         },
       }),
     );
@@ -54,12 +56,12 @@ export class ReviewService {
   async deleteReview(
     reviewId: number,
     userId: number,
-  ): Promise<Observable<DeleteResult>> {
+  ): Promise<Observable<UpdateResult>> {
     //check if request exists and belongs to user
     await this.reviewRepository.findOneOrFail({
       select: { r_id: true },
       where: { r_id: reviewId, u_id: userId },
     });
-    return from(this.reviewRepository.delete(reviewId));
+    return from(this.reviewRepository.update(reviewId, {disabled: true}));
   }
 }

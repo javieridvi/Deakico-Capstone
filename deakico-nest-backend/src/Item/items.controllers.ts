@@ -114,7 +114,7 @@ export class ItemsController {
    * @returns delete confirmation
    */
   @UseGuards(JwtGuard)
-  @Put('/delete/:i_id')
+  @Delete('/delete/:i_id')
   deleteItem(
     @Param('i_id') itemId: number,
     @Body() item: Item,

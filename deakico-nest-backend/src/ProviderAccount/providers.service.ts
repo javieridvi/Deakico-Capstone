@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { DeleteResult, IsNull, Repository, UpdateResult } from 'typeorm';
@@ -6,17 +6,18 @@ import { UserAccountService } from '../UserAccount/users.service';
 import { ProviderAccountEntity } from './providers.entity';
 import { ProviderAccount } from './providers.interface';
 import { ItemsService } from '../Item/items.service';
-import { LikesService } from 'src/Likes/likes.service';
-import { FollowsService } from 'src/Follows/follows.service';
+import { LikesService } from '../Likes/likes.service';
+import { FollowsService } from '../Follows/follows.service';
 
 @Injectable()
 export class ProviderAccountService {
   constructor(
     @InjectRepository(ProviderAccountEntity)
-    private readonly providerRepository: Repository<ProviderAccountEntity>,
+    private readonly providerRepository: Repository<ProviderAccountEntity>,   
+    @Inject(forwardRef(() => UserAccountService))
+   private readonly userService: UserAccountService,
   ) {}
-  @Inject(UserAccountService)
-  private readonly userService: UserAccountService;
+
   @Inject(ItemsService)
   private readonly itemService: ItemsService;
   @Inject(LikesService)
@@ -59,7 +60,7 @@ export class ProviderAccountService {
   }
 
   getProvider(pa_id): Observable<ProviderAccount> {
-    return from(this.providerRepository.findOneBy({ pa_id: pa_id }));
+    return from(this.providerRepository.findOneBy({ pa_id: pa_id, disabled: false }));
   }
 
   async getProviderCategory(providerCat: string): Promise<Observable<ProviderAccount[]>> {

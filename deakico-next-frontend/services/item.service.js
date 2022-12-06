@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "items";
 const endpoint = API_URL + entity;
 
@@ -10,7 +10,11 @@ const insertItem = async (data) => {
 };
 
 const updateItem = async (i_id, data) => {
-    return await axios.put(endpoint + "/id/" + i_id, data, {headers: authHeader()})
+    return await axios.put(endpoint + "/id/" + i_id, data, {headers: authHeader()});
+}
+
+const deleteItem = async (i_id) => {
+    return await axios.delete(endpoint + "/delete/" + i_id, {headers: authHeader()});
 }
 
 const getAllItems = async () => {
@@ -40,11 +44,12 @@ const getItemOfProvider = async () => {
 export default {
 insertItem,
 updateItem,
+deleteItem,
 getItem,
 getAllItems,
 getItemByCategory,
 getItemByType,
 getItemCategories,
-getItemOfProvider
-//delete missing
+getItemOfProvider,
+
 }

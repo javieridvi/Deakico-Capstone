@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FollowsModule } from 'src/Follows/follows.module';
-import { FollowsService } from 'src/Follows/follows.service';
-import { ItemsModule } from 'src/Item/items.module';
-import { ItemsService } from 'src/Item/items.service';
-import { LikesModule } from 'src/Likes/likes.module';
-import { LikesService } from 'src/Likes/likes.service';
+import { UserAccountService } from 'src/UserAccount/users.service';
+import { FollowsModule } from '../Follows/follows.module';
+import { FollowsService } from '../Follows/follows.service';
+import { ItemsModule } from '../Item/items.module';
+import { ItemsService } from '../Item/items.service';
+import { LikesModule } from '../Likes/likes.module';
+import { LikesService } from '../Likes/likes.service';
 import { UserAccountModule } from '../UserAccount/users.module';
 import { ProviderAccountController } from './providers.controllers';
 import { ProviderAccountEntity } from './providers.entity';
@@ -22,9 +23,10 @@ import { ProviderAccountService } from './providers.service';
     ItemsModule,
     LikesModule,
     FollowsModule,
-    UserAccountModule,
+    forwardRef(() => UserAccountModule),
   ],
   controllers: [ProviderAccountController],
   providers: [ProviderAccountService],
+  exports: [ProviderAccountService],
 })
 export class ProviderAccountModule {}
