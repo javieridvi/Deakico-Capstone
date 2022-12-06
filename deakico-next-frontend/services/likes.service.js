@@ -9,13 +9,6 @@ const insertLike = async (data) => {
     return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const deleteLike = async (iId) => {
-    let data = {
-        i_id: iId
-    };
-    return await axios.delete(endpoint, {headers: authHeader()}, data=data);
-}
-
 //most likely unnecessary
 // const updateLike = async (l_id, data) => {
 //     return await axios.put(endpoint + "/" + l_id, data, {headers: authHeader()});
@@ -43,14 +36,21 @@ const getItemLikes = async (i_id) => {
     return await axios.get(endpoint + "/item/" + i_id);
 };
 
+const deleteLike = async (I_id) => {
+  let data = {
+    i_id: I_id
+};
+    return await axios.delete(endpoint, {headers: authHeader(), data: data});
+};
+
 export default {
     insertLike,
     //updateLike,
-    deleteLike,
     getAllLikes,
     //getLike,
     getLikesOfProvider,
     getUserLiked,
     getItemLikes,
+    deleteLike,
    
 };
