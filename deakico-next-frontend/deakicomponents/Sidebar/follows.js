@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { ProviderCard } from "../../deakicomponents/Card";
+import { ProviderCard } from "../Reusable/Card";
 import followsService from "../../services/follows.service";
 
 
