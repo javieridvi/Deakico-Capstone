@@ -22,7 +22,7 @@ export default function About() {
           }}
         >
           <div className='aboutPic'>
-            <img src='/Coqui.svg' width={"100%"} />
+            <img src='/Coqui.svg' width={"90%"} />
           </div>
           <Typography variant='h3'
             sx={{
