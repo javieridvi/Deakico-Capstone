@@ -5,4 +5,5 @@ export interface ProviderAccount {
   pa_rating?: number;
   pa_category?: string;
   pa_type?: string;
+  disabled?: boolean;
 }

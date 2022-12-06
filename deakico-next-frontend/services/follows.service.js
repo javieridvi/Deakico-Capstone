@@ -57,4 +57,5 @@ export default {
     getFollowers,
     getFollowingCount,
     getFollowing,
+    getFollowersGroupByDate,
 }

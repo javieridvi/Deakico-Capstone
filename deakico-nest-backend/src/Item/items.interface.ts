@@ -10,4 +10,5 @@ export interface Item {
   s_timeslot?: number; //for services only
   pa_id?: number;
   req_id?: number;
+  disabled?: boolean;
 }

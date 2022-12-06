@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { UserAccount } from '../UserAccount/users.interface';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { RequestEntity } from './requests.entity';
 import { ItemRequest } from './requests.interface';
 
@@ -14,11 +14,11 @@ export class RequestService {
   ) {}
 
   getAllRequests(): Observable<ItemRequest[]> {
-    return from(this.requestRepository.find());
+    return from(this.requestRepository.find({where: {disabled: false}}));
   }
 
   getRequest(req_id): Observable<ItemRequest> {
-    return from(this.requestRepository.findOneBy({ req_id: req_id }));
+    return from(this.requestRepository.findOneBy({ req_id: req_id, disabled: false }));
   }
 
   async getProviderRequest(providerId: number) {
@@ -33,6 +33,7 @@ export class RequestService {
       .addSelect('user.email', 'email')
       .addSelect('item.i_name', 'item_name')
       .where('item.pa_id = :pa_id', { pa_id: providerId })
+      .andWhere('request.disabled = false')
       .getRawMany();
 
     return res;
@@ -43,6 +44,7 @@ export class RequestService {
       .createQueryBuilder('request')
       .innerJoin('request.item', 'item')
       .where('item.u_id = :u_id', { u_id: userId })
+      .andWhere('request.disabled = false')
       .getRawMany();
 
     return res;
@@ -64,7 +66,7 @@ export class RequestService {
     //check if request exists and belongs to user
     await this.requestRepository.findOneOrFail({
       select: { req_id: true },
-      where: { req_id: requestId, u_id: userId },
+      where: { req_id: requestId, u_id: userId, disabled: false },
     });
     return from(this.requestRepository.update(requestId, request));
   }
@@ -72,12 +74,27 @@ export class RequestService {
   async deleteRequest(
     requestId: number,
     userId: number,
-  ): Promise<Observable<DeleteResult>> {
+  ): Promise<Observable<UpdateResult>> {
     //check if request exists and belongs to user
     await this.requestRepository.findOneOrFail({
       select: { req_id: true },
-      where: { req_id: requestId, u_id: userId },
+      where: { req_id: requestId, u_id: userId, disabled: false },
     });
-    return from(this.requestRepository.delete(requestId));
+    return from(this.requestRepository.update(requestId, {disabled: true}));
   }
+
+  async unableUserRequests(userId: number): Promise<UpdateResult> {
+    await this.requestRepository.findOneOrFail({
+      select: {req_id: true},
+      where: {u_id: userId}, //disabled check might not be necessary here
+    });
+    this.requestRepository
+    .createQueryBuilder()
+    .update(RequestEntity)
+    .set({status: 'user not found'})
+    .where('u_id = :u_id', {u_id: userId})
+    .execute();
+    return;
+  }
+
 }

@@ -81,4 +81,7 @@ export class ItemEntity {
 
   @OneToMany((type) => LikeEntity, (like) => like.likes_item)
   likes: LikeEntity[];
+
+  @Column({type: 'boolean', default:false})
+  disabled: boolean;
 }

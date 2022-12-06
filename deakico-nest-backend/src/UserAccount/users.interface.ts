@@ -6,4 +6,5 @@ export interface UserAccount {
   username?: string;
   password?: string;
   pa_id?: number;
+  disabled?: boolean;
 }

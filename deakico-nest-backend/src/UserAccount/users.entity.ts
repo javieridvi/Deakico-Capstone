@@ -52,4 +52,7 @@ export class UserAccountEntity {
 
   @OneToMany((type) => RequestEntity, (req) => req.user)
   requests: RequestEntity[];
+
+  @Column({type: 'boolean', default:false})
+  disabled: boolean;
 }
