@@ -1,6 +1,6 @@
 import { Box, ThemeProvider, Typography, createTheme, responsiveFontSizes} from "@mui/material";
 import { Stack } from "@mui/system";
-import { DefaultTest, ProductTest, ProviderTest } from "../Card";
+import { DefaultTest, ProductTest, ProviderTest } from "../Reusable/Card";
 
 
 

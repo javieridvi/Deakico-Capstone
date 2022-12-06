@@ -57,7 +57,7 @@ export default function Stars(props) {
           transform: 'translate(30%, 5%)',
           width: props.width === undefined ? "20px" : (props.width / 5),
           height: props.height === undefined ? "20px" : props.height,
-          color: 'rgb(101, 101, 101)',
+          color: props.textColor === undefined ? 'white' : props.textColor,
         }}>
         {props.rating}
       </Typography>

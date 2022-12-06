@@ -1,109 +1,9 @@
-import { useTheme } from '@emotion/react';
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, createTheme, responsiveFontSizes, ThemeProvider, Typography } from '@mui/material';
-import Stars from './Reusable/Rating';
-
-//Default Card used to create variants
-export function DefaultTest() {
-  let rating = (<Stars width={'75px'} rating={3.5} />);
-  let request = (
-    <Button variant='outlined'
-      sx={{
-        height: '20px',
-        minWidth: '60px',
-        fontSize: '.625rem', // 14px
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: '500',
-      }}
-    >
-      Follow
-    </Button>
-  );
-  let like = (
-    <Typography variant={'caption'}
-      sx={{
-        width: '20px',
-        height: '20px',
-        margin: '0 0 0 7px',
-        color: 'rgb(101, 101, 101)',
-      }}
-    >
-      100
-    </Typography>
-  );
-  //uses price, request and like
-  let bottom = [
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      <Typography variant={'h6'} className={'Price'}
-        sx={{
-          fontSize: '1.125rem', // 18px
-          fontWeight: '700',
-          fontFamily: 'Roboto, sans-serif',
-        }}
-      >
-        {rating}
-      </Typography>
-    </Box>,
-    <Box className={'Actions'}
-      sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        paddingBottom: '10px',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      {request}
-      {like}
-    </Box>
-  ];
-
-  let components = {
-    top: [infoRect('Type'), infoRect('Category')],
-    image: 'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000',
-    title: 'Name Here',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis dui euismod, cursus orci non, placerat nunc. Praesent id vestibulum odio, vitae venenatis mauris. Praesent id vestibulum odio, vitae venenatis mauris.',
-    bottom: bottom,
-  }
-  return (
-
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-evenly',
-        flexWrap: 'wrap',
-      }}
-    >
-
-      <ProviderCard
-        type={'Type'}
-        category={'Category'}
-        src={'/Test-Provider.png'}
-        title={'Provider Card'}
-        description={components.description}
-        rating={4.5}
-      />
-
-      <ProductCard
-        rating={4}
-        category={'Category'}
-        src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-        title={'Product Card'}
-        description={components.description}
-        price={'$29.99'}
-      />
-    </Box>
-  )
-}
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import Link from 'next/link';
+import { useState } from 'react';
+import followsService from '../../services/follows.service';
+import Stars from './Rating';
+import { Router, useRouter } from 'next/router'
 
 /*
   <ProductCard
@@ -116,33 +16,94 @@ export function DefaultTest() {
   />
 */
 export function ProviderCard(props) {
+  const [following, setFollowing] = useState(props.following);
+  const router = useRouter();
+  // Styles
+  const style = {
+    height: '20px',
+    minWidth: '60px',
+    fontSize: '.625rem', // 14px
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: '500',
+  }
+
+  // Functions
+
+  function handleClick(following, title, id) {
+    // When following undefined user is not logged in
+    if (following == undefined) {
+      console.log('not logged');
+      // following = false;
+      props.LogIn(title); // When not logged in throw log in pop up 
+    } else {
+      let request; // Request variable to be sent
+      if (following) {
+        // When following then unfollow
+        request = followsService.deleteFollow; // Unfollow
+      } else {
+        // When not following then follow
+        request = followsService.insertFollow; // Follow
+      }
+
+      // Send request
+      // id = provider id
+      request(id).then((res) => {
+        // Response doesn't need to be returned
+        setFollowing(state => !state); // Set following to oposite state
+      }).catch((err) => {
+        if (err.response.status == 403) {
+          // User tryed to follow their own PA account
+          // Modal cant follow yourself
+          console.log('Think we wouldn\'t notice you trying to follow yourself?');
+        } else if (err.response.status == 401) {
+          // Failed authentication
+          console.log('Reauthenticate');
+          props.LogIn(title); // Prompt to reauthenticate
+        } else {
+          console.log(err); // Log error
+        }
+      })
+
+    }
+
+  }
+
+  let Area = (
+    <CardActionArea
+      onClick={() => {
+        router.push({
+          pathname: '/profile',
+          query: { id: props.id }
+        })
+      }}
+    >
+      <ActionArea
+        top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+        image={props.src}
+      />
+    </CardActionArea>
+  )
+
+  // Components
+  let isfollowing = (
+    <Button variant='contained'
+      onClick={() => handleClick(following, props.title, props.id)}
+      sx={style}
+    >
+      Following
+    </Button>
+  );
 
   let follow = (
     <Button variant='outlined'
-      sx={{
-        height: '20px',
-        minWidth: '60px',
-        fontSize: '.625rem', // 14px
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: '500',
-      }}
+      onClick={() => handleClick(following, props.title, props.id)}
+      sx={style}
     >
       Follow
     </Button>
   );
-  let follows = (
-    <Typography variant={'caption'}
-      sx={{
-        width: '20px',
-        height: '20px',
-        margin: '0 0 0 7px',
-        color: 'rgb(101, 101, 101)',
-      }}
-    >
-      100
-    </Typography>
-  );
-  //uses rating, follow and follows
+
+  //uses rating, follow
   let bottom = [
     <Box
       key={0}
@@ -160,7 +121,7 @@ export function ProviderCard(props) {
           fontFamily: 'Roboto, sans-serif',
         }}
       >
-        <Stars width={'75px'} rating={props.rating} />
+        <Stars width={'75px'} rating={props.rating} textColor={'rgb(101, 101, 101)'} />
       </Typography>
     </Box>,
     <Box className={'Actions'}
@@ -174,19 +135,20 @@ export function ProviderCard(props) {
         width: '100%',
       }}
     >
-      {follow}
-      {follows}
+      {
+        following ?
+          isfollowing :
+          follow
+      }
     </Box>
   ];
 
-  let components = {
-    top: [infoRect(props.type, 0), infoRect(props.category, 1)],
-    image: props.src,
-    title: props.title,
-    description: props.description,
-    bottom: bottom,
-  }
-  return BaseCard(components);
+  return <BaseCard
+    area={Area}
+    title={props.title}
+    description={props.description}
+    bottom={bottom}
+  />;;
 
 }
 
@@ -269,14 +231,19 @@ export function ProductCard(props) {
     </Box>
   ];
 
-  let components = {
-    top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
-    image: props.src,
-    title: props.title,
-    description: props.description,
-    bottom: bottom,
-  }
-  return BaseCard(components);
+  let Area = (
+    <ActionArea
+      top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+      image={props.src}
+    />
+  )
+
+  return <BaseCard
+    area={Area}
+    title={props.title}
+    description={props.description}
+    bottom={bottom}
+  />;
 }
 ///View of Provider Products Card 
 export function ProviderCardproducts(props){
@@ -325,94 +292,61 @@ let components = {
 return BaseCard(components);
 }
 
-///
-function BaseCard(components) {
-  
+function BaseCard(props) {
+
   return (
     <Card
+      sx={{
+        position: 'relative',
+        width: 'clamp(10rem, 100%, 20rem)',
+        maxHeight: 'clamp(10rem, 100%, 20rem)',
+        transform: { xs: 'scale(0.9)', sm: 'scale(1)' }
+      }}
+    >
+      {props.area}
+      <Box
+        className='Provider Info'
         sx={{
-          position: 'relative',
-          width: 'clamp(10rem, 100%, 20rem)',
-          maxHeight: 'clamp(10rem, 100%, 20rem)',
-          transform: { xs: 'scale(0.9)', sm: 'scale(1)' }
+          height: '40.625%', //130px at full size
+          padding: '0 1rem'
         }}
       >
-        <CardActionArea>
-          <Box
-            sx={{
-              position: 'relative',
-              // borderRadius: '1rem',
-              overflow: 'clip',
-            }}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: 0,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                height: '1.875rem', //30px at full size
-                padding: '0 1rem',
-                backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
-              }}
-            >
-              {components.top}
-            </Box>
-            <CardMedia
-              component="img"
-              src={components.image}
-              alt="green iguana"
-              sx={{
-                height: '11.25rem', // 180px at full size
-              }}
-            />
-          </Box>
-        </CardActionArea>
-        <Box
+        <Typography variant={'h6'} className={'Card-Title'}
           sx={{
-            height: '40.625%', //130px at full size
-            padding: '0 1rem'
+            height: '1.25rem', // 20px
+            overflow: 'clip',
+            marginTop: '.625rem', //10px 
+            fontWeight: '700',
+            fontSize: '1.125rem', // 18px
+            fontFamily: 'Comfortaa',
           }}
         >
-          <Typography variant={'h6'} className={'Card-Title'}
-            sx={{
-              height: '1.25rem', // 20px
-              overflow: 'clip',
-              marginTop: '.625rem', //10px 
-              fontWeight: '700',
-              fontSize: '1.125rem', // 18px
-              fontFamily: 'Comfortaa',
-            }}
-          >
-            {components.title}
-          </Typography>
-          <Typography variant={'body2'} className={'Card-Description'}
-            sx={{
-              height: 'fit-content',
-              maxHeight: '3.75rem', // 60px
-              fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
-              marginTop: '.4375rem', //7px 
-              color: 'text.secondary',
-              overflow: 'clip',
-              fontFamily: 'Comfortaa',
-            }}
-          >
-            {components.description}
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              height: '2.5rem',
-              marginTop: '.1875rem', //3px 
-            }}
-          >
-            {components.bottom}
-          </Box>
+          {props.title}
+        </Typography>
+        <Typography variant={'body2'} className={'Card-Description'}
+          sx={{
+            height: '3.75rem', // 60px
+            fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
+            marginTop: '.4375rem', //7px 
+            color: 'text.secondary',
+            overflow: 'clip',
+            fontFamily: 'Comfortaa',
+          }}
+        >
+          {props.description}
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '2.5rem',
+            marginTop: '.1875rem', //3px 
+          }}
+        >
+          {props.bottom}
         </Box>
-      </Card>
+      </Box>
+    </Card>
   );
 
 }
@@ -447,7 +381,41 @@ function infoRect(text, key) {
   )
 }
 
-
+function ActionArea(props) {
+  return (
+    <Box className='ActionArea'
+      sx={{
+        position: 'relative',
+        // borderRadius: '1rem',
+        overflow: 'clip',
+      }}
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          height: '1.875rem', //30px at full size
+          padding: '0 1rem',
+          backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
+        }}
+      >
+        {props.top}
+      </Box>
+      <CardMedia
+        component="img"
+        src={props.image}
+        alt="green iguana"
+        sx={{
+          height: '11.25rem', // 180px at full size
+        }}
+      />
+    </Box>
+  )
+}
 
 
 
@@ -457,6 +425,7 @@ function infoRect(text, key) {
 export function ProviderTest() {
   return (
     <ProviderCard
+      id={0}
       type={'Type'}
       category={'Category'}
       src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
@@ -550,3 +519,19 @@ export function FeedCard(props) {
     </Card>
   );
 };
+
+// set numbers to single letter notation 1000 = 1k
+// function NuNotation(number) {
+// If (number > 999){
+// switch (number) {
+//   case (number > 999999):
+//   number = number%999  
+//   return
+//     break;
+
+//   default:
+//     break;
+// }
+// }
+// return number
+// }

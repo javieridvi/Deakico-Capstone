@@ -2,9 +2,9 @@ import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Layout from '../deakicomponents/Layout/Layout';
 
-export function reportWebVitals(metric) {
-  console.log(metric)
-}
+// export function reportWebVitals(metric) {
+//   console.log(metric)
+// }
 
 function MyApp({ Component, pageProps }) {
 
@@ -17,6 +17,8 @@ function MyApp({ Component, pageProps }) {
       },
       secondary: {
         main: '#BCEFDD',
+        // 55efba
+        // BCEFDD
       },
     },
   })

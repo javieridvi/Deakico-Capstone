@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "providers";
 const endpoint = API_URL + entity;
 
@@ -21,8 +21,19 @@ const getAllProviders = async () => {
     return await axios.get(endpoint);
 };
 
+const getAllProvidersWithFollow = async () => {
+    return await axios.get(endpoint+"/follows", {headers: authHeader()});
+};
+
 const getProvider = async (pa_id) => {
     return await axios.get(endpoint + "/" + pa_id, {headers: authHeader()})
+}
+
+const getProviderProfile = async (pa_id) => {
+  const data ={
+    pa_id: pa_id,
+  }
+    return await axios.get(endpoint + "/profile", data)
 }
 
 const getProviderCategory = async (pa_category) => {
@@ -34,6 +45,8 @@ export default {
     updateProvider, 
     getAllProviders,
     getProvider,
+    getProviderProfile,
     getProviderCategory,
+    getAllProvidersWithFollow,
     //delete missing
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "requests";
 const endpoint = API_URL + entity;
 
@@ -22,11 +22,11 @@ const getRequest = async (req_id) => {
 }
 
 const getProviderRequest = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader()});
+    return await axios.get(endpoint + "/of/provider", {headers: authHeader()});
 };
 
 const getUserRequest = async () => {
-    return await axios.get(endpoint + "/user", {headers: authHeader()});
+    return await axios.get(endpoint + "/of/user", {headers: authHeader()});
 }
 
 export default {

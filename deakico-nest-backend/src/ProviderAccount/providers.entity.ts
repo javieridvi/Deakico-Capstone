@@ -16,7 +16,7 @@ export enum Categories {
 export enum ItemType {
   PRODUCT = 'product',
   SERVICE = 'service',
-  BOTH = 'both' ,
+  BOTH = 'both',
 }
 
 @Entity('Provider Account')
@@ -32,9 +32,6 @@ export class ProviderAccountEntity {
 
   @Column({ default: 0, type: 'decimal' })
   pa_rating: number;
-
-  @Column({ default: 0, type: 'int' })
-  pa_followers: number;
 
   @Column({ nullable: true, type: 'enum', enum: Categories })
   pa_category: string;
