@@ -24,11 +24,13 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import Dashboard from '../../deakicomponents/Dashboard/dashboard';
-import Profile from './profile';
+import Dashboard from './Dashboard/dashboard';
+import Profile from '../../pages/admin/profile';
 
 import userService from '../../services/user.service';
-import DashboardFunc from '../dashboard';
+import DashboardFunc from './Dashboard/dashboard';
+import Follows from './follows';
+import Liked from './liked';
 
 const drawerWidth = 240;
 
@@ -105,7 +107,11 @@ export default function MainSidebar() {
       case 'Requests':
         return '#';
       case 'Reviews':
-        return '#';
+          return '#';
+      case 'Liked':
+        return (<Liked/>)
+      case 'Follows':
+        return (<Follows/>)
       case 'Profile':
         return (<Profile/>);
       case 'Settings':
