@@ -1,9 +1,12 @@
 import React from 'react'
 import Head from 'next/head';
 import Profile from '../../deakicomponents/Reusable/profile';
+import { useRouter } from 'next/router';
 
 
 export default function index() {
+  const id = parseFloat(useRouter().query.id).toFixed(1);
+console.log(id);
   return (
     <>
    
@@ -15,7 +18,7 @@ export default function index() {
      <div>
 
     <main>
-        <Profile/>      
+        {Profile(id)}      
     </main>
 
     </div>

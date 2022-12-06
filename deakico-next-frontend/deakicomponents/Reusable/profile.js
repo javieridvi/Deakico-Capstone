@@ -5,8 +5,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import providerService from '../../services/provider.service';
+import Stars from './Rating';
+
 
 
 const StyledRating = styled(Rating)({
@@ -18,8 +20,22 @@ const StyledRating = styled(Rating)({
   },
 });
 
-export default function Profile(props) {
+export default function Profile(id) {
   // const provider = await providerService.getProviderProfile(10)
+  const [provider, setProvider] = useState(undefined);
+
+  function RequestProfile(ID) {
+    providerService.getProviderProfile(ID).then((res) => {
+      setProvider(res.data);
+      console.log(res);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    RequestProfile(id);
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -67,25 +83,16 @@ export default function Profile(props) {
                   mr: '3px'
                 }}
               >
-                Company Name
+                {provider?.pa_companyname}
               </Typography>
-              <Rating
-                name="half-rating"
-                defaultValue={3.5}
+              {/* <Rating
+                name="rating"
+                value={provider?.pa_rating}
                 precision={0.5}
                 sx={{ left: '2px', }}
                 readOnly
-              />
-              <StyledRating
-                sx={{
-                  left: '10px',
-                }}
-                name="likes"
-                max={1}
-                precision={1}
-                emptyIcon={<FavoriteBorderIcon color="RED" />}
-                icon={<FavoriteIcon fontSize="inherit" />}
-              />
+              /> */}
+              <Stars width={'100px'} rating={provider?.pa_rating} />
             </Box>
             <Typography
               sx={{
@@ -97,7 +104,7 @@ export default function Profile(props) {
 
               }}
             >
-              Here goes a fancy text that sets you apart from other companies.
+              {provider?.pa_desc}
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
@@ -137,19 +144,6 @@ export default function Profile(props) {
       `}
       </style>
       <main>
-        <Container className='secondLayer'>
-          <Container>
-            <Box className='subNavigation' sx={{ mt: '4rem', fontWeight: 'bold', }}>
-              <Button variant="text">Products/Services </Button>
-              <Button variant="text">Projects </Button>
-              <Button variant="text">Collections </Button>
-              <Button variant="text">Likes </Button>
-              <Button variant="text">Reviews </Button>
-              <Button variant="text">Settings </Button>
-            </Box>
-          </Container>
-        </Container>
-
         <Container className='servicesReq'>
           <Container className='serviceTab'>
             <Grid container spacing={2}>
