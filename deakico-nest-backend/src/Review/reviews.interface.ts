@@ -5,4 +5,5 @@ export interface Review {
   u_id?: number;
   i_id?: number;
   r_date?: Date;
+  disabled?: boolean;
 }

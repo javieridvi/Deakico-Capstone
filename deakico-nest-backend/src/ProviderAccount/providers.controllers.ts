@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -98,7 +100,12 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Delete()
-  deleteProvider(@Request() req: any): Observable<DeleteResult> {
-    return this.providersService.deleteProvider(req.user.pa_id);
+  deleteProvider(@Request() req: any): Promise<UpdateResult> {
+    try {
+      return this.providersService.deleteProvider(req.user.pa_id, req.user.u_id);
+    }
+    catch(error) {
+      throw new HttpException('Provider Deletion Unsuccessful!', HttpStatus.BAD_REQUEST, {cause: error});
+    }
   }
 }

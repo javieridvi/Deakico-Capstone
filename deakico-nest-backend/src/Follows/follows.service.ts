@@ -76,4 +76,17 @@ export class FollowsService {
       this.followRepository.delete(follow),
     );
   }
+
+  deleteFollowsOfProvider(providerId: number): Observable<DeleteResult> {
+    return from(
+      this.followRepository.delete({ pa_id: providerId }),
+    );
+  }
+
+  deleteFollowsOfUser(userId: number): Observable<DeleteResult> {
+    return from(
+      this.followRepository.delete({ u_id: userId }),
+    );
+  }
+
 }

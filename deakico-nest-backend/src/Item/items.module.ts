@@ -18,5 +18,6 @@ import { ReviewEntity } from '../Review/reviews.entity';
   ],
   controllers: [ItemsController],
   providers: [ItemsService],
+  exports: [ItemsService],
 })
 export class ItemsModule {}
