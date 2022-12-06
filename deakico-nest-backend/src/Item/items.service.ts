@@ -21,7 +21,7 @@ export class ItemsService {
   }
 
   getItem(i_id): Observable<Item> {
-    return from(this.itemRepository.findOneBy({ i_id: i_id }));
+    return from(this.itemRepository.findOneBy({ i_id: i_id, disabled: false }));
   }
 
   async getItemByType(itemType: string): Promise<Observable<Item[]>> {
@@ -131,10 +131,10 @@ export class ItemsService {
     //check if item exists and belongs to provider
     await this.itemRepository.findOneOrFail({
       select: { pa_id: true },
-      where: { 
-        pa_id: providerId,
-        disabled: false,
-      },
+      // where: { 
+      //   pa_id: providerId,
+      //   disabled: false,
+      // },
     });
     return from(this.itemRepository.update({pa_id: providerId}, {disabled: true}));
   }

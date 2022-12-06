@@ -26,6 +26,6 @@ export class LikeEntity {
   @PrimaryColumn({ type: 'int' })
   i_id: number;
 
-  @Column({type: 'timestamp', nullable: true})
+  @Column({type: 'timestamp', default: new Date()})
   l_date: Date;
 }

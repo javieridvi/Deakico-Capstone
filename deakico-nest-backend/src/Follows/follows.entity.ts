@@ -18,6 +18,6 @@ export class FollowEntity {
   @PrimaryColumn({ type: 'int' })
   pa_id: number;
 
-  @Column({ type: 'timestamp', nullable: true})
+  @Column({ type: 'timestamp', default: new Date()})
   f_date: Date;
 }

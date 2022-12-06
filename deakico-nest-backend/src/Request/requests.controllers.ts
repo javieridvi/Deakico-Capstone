@@ -92,7 +92,7 @@ export class ItemRequestController {
   deleteRequest(
     @Param('req_id') req_Id: number,
     @Request() req: any,
-  ): Promise<Observable<DeleteResult>> {
+  ): Promise<Observable<UpdateResult>> {
     return this.requestsService.deleteRequest(req_Id, req.user.u_id);
   }
 }

@@ -70,7 +70,7 @@ export class ReviewController {
   deleteReview(
     @Param('r_id') r_Id: number,
     @Request() req: any,
-  ): Promise<Observable<DeleteResult>> {
+  ): Promise<Observable<UpdateResult>> {
     return this.reviewsService.deleteReview(r_Id, req.user.u_id);
   }
 }

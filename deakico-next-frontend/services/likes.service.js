@@ -1,13 +1,20 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "likes";
 const endpoint = API_URL + entity;
 
 const insertLike = async (data) => {
     return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
+
+const deleteLike = async (iId) => {
+    let data = {
+        i_id: iId
+    };
+    return await axios.delete(endpoint, {headers: authHeader()}, data=data);
+}
 
 //most likely unnecessary
 // const updateLike = async (l_id, data) => {
@@ -39,10 +46,11 @@ const getItemLikes = async (i_id) => {
 export default {
     insertLike,
     //updateLike,
+    deleteLike,
     getAllLikes,
     //getLike,
     getLikesOfProvider,
     getUserLiked,
     getItemLikes,
-    //delete missing
+   
 };
