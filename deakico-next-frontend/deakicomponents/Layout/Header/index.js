@@ -59,8 +59,7 @@ export default function Header() {
               <Box component='div' display={{ xs: 'block', lg: 'none' }}>
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/feed' onClick={handleClose}>Services</MenuLink>
-                <MenuLink link='/feed' onClick={handleClose}>Products</MenuLink>
+                <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
                 <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
               </Box>
             </Menu>
