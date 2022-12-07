@@ -50,7 +50,7 @@ export default function Liked() {
             paddingBottom: '100px'
           }}
         >
-          {likedItems.map((e, index) => {
+          {likedItems?.map((e, index) => {
             return (
               <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ProductCard
