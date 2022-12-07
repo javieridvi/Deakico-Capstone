@@ -58,7 +58,7 @@ export class LikesController {
 
   @UseGuards(JwtGuard)
   @Delete()
-  deleteItem(
+  deleteLike(
     @Body() like: Likes,
     @Request() req: any,
   ): Observable<DeleteResult> {

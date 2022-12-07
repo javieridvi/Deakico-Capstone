@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, IconButton, SvgIcon, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import followsService from '../../services/follows.service';
@@ -171,7 +171,7 @@ export function ProviderCard(props) {
   />
 */
 export function ProductCard(props) {
-  const [liked,setLiked] = useState(props.liked);
+  const [liked, setLiked] = useState(props.liked);
 
   function handleClick(liked, title, id) {
     // When following undefined user is not logged in
@@ -191,9 +191,10 @@ export function ProductCard(props) {
 
       // Send request
       // id = item id
+      console.log(id);
       request(id).then((res) => {
         // Response doesn't need to be returned
-        setFollowing(state => !state); // Set following to oposite state
+        setLiked(state => !state); // Set following to oposite state
       }).catch((err) => {
         if (err.response.status == 403) {
           // User tryed to like their own item
@@ -228,17 +229,25 @@ export function ProductCard(props) {
   );
   let like = (
     <Box
+      onClick={() => handleClick(liked, 'product', props.id)}
       sx={{
         display: 'flex',
-        width: '20px',
-        height: '20px',
+        width: '25px',
+        height: '25px',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        margin: '0 0 0 7px',
+        margin: '0 0 -2px 7px',
+        padding: '2px',
+        borderRadius: '50%',
+        transition: 'all .2s ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.2)',
+          backgroundColor: liked? '' : 'rgba(255, 0, 80, 0.16)'
+        }
       }}
     >
-      <svg width="22" height="20" viewBox="-1 -2 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.6706 8.50513L9.0074 15L2.34419 8.50513C1.90469 8.08422 1.5585 7.5783 1.32743 7.01925C1.09635 6.46019 0.985392 5.8601 1.00154 5.25676C1.01769 4.65343 1.16059 4.05992 1.42125 3.51361C1.68191 2.9673 2.05468 2.48002 2.51609 2.08247C2.97749 1.68491 3.51754 1.38568 4.10222 1.20363C4.6869 1.02158 5.30355 0.960645 5.91333 1.02467C6.52312 1.08868 7.11283 1.27627 7.64533 1.57561C8.17783 1.87496 8.64159 2.27957 9.0074 2.76397C9.3748 2.28309 9.83909 1.88201 10.3712 1.58584C10.9034 1.28968 11.4919 1.1048 12.1 1.04278C12.708 0.980762 13.3226 1.04294 13.9051 1.22541C14.4876 1.40789 15.0256 1.70674 15.4854 2.10326C15.9452 2.49978 16.3169 2.98544 16.5772 3.52983C16.8375 4.07423 16.9808 4.66564 16.9982 5.26706C17.0156 5.86848 16.9067 6.46695 16.6782 7.02503C16.4498 7.58311 16.1068 8.08877 15.6706 8.51038" stroke="#939393" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="22" height="20" viewBox="-1 -2 20 20" fill={liked ? "red" : "none"} xmlns="http://www.w3.org/2000/svg">
+        <path stroke="red" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M15.6706 8.50513L9.0074 15L2.34419 8.50513C1.90469 8.08422 1.5585 7.5783 1.32743 7.01925C1.09635 6.46019 0.985392 5.8601 1.00154 5.25676C1.01769 4.65343 1.16059 4.05992 1.42125 3.51361C1.68191 2.9673 2.05468 2.48002 2.51609 2.08247C2.97749 1.68491 3.51754 1.38568 4.10222 1.20363C4.6869 1.02158 5.30355 0.960645 5.91333 1.02467C6.52312 1.08868 7.11283 1.27627 7.64533 1.57561C8.17783 1.87496 8.64159 2.27957 9.0074 2.76397C9.3748 2.28309 9.83909 1.88201 10.3712 1.58584C10.9034 1.28968 11.4919 1.1048 12.1 1.04278C12.708 0.980762 13.3226 1.04294 13.9051 1.22541C14.4876 1.40789 15.0256 1.70674 15.4854 2.10326C15.9452 2.49978 16.3169 2.98544 16.5772 3.52983C16.8375 4.07423 16.9808 4.66564 16.9982 5.26706C17.0156 5.86848 16.9067 6.46695 16.6782 7.02503C16.4498 7.58311 16.1068 8.08877 15.6706 8.51038" />
       </svg>
     </Box>
   );
@@ -282,7 +291,10 @@ export function ProductCard(props) {
 
   let Area = (
     <ActionArea
-      top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+      top={[
+        <Stars width={'75px'} rating={props.rating} />
+        , infoRect(props.category, 1)
+      ]}
       image={props.src}
     />
   )
