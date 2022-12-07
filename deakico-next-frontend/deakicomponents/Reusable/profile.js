@@ -100,10 +100,9 @@ export default function Profile(id) {
         else {
           setProductList(productList => [...productList, element])
         }
-        
+
       });
     }).catch((err) => {
-      console.log('Get Products');
       console.log(err);
     })
   }
@@ -186,7 +185,7 @@ export default function Profile(id) {
           }}
         >
           <div className='profilePic'>
-          <CardMedia
+            <CardMedia
               component="img"
               image='/Logphotos.png'
               width='auto'
@@ -211,7 +210,7 @@ export default function Profile(id) {
       `}
       </style>
       <main>
-      <Container className='Items'>
+        <Container className='Items'>
           <Box className='serviceTab'  >
             {/* <Typography 
             sx={{
@@ -262,24 +261,34 @@ export default function Profile(id) {
           </Box>
 
           <Box className='Products' width='90%'>
-            <Stack>
-
-              {productList.map((e, index) => {
-                <div>
-                  <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid className="Results"
+              container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+              sx={{
+                position: 'relative',
+                height: '100%',
+                maxWidth: '100rem',
+                paddingTop: '1rem',
+                paddingBottom: '100px'
+              }}
+            >
+              {productList.map((e, index) => (
+                <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  {console.log(e)}
                     <ProductCard
-                      rating={e.i_rating}
-                      category={e.i_category}
+                      id={7}
+                      title={"Dozen Glazed Donut"}
+                      description={"12 glazed donut box."}
+                      price={"$12.00"}
+                      category={"pastry"}
+                      rating={"4.4"}
+                      provider={1}
+                      liked={true}
+                      // LogIn={handleLogInOpen}
                       src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                      title={e.i_name}
-                      description={e.i_description}
-                      price={e.i_price}
                     />
                   </Grid>
-                </div>
-
-              })}
-            </Stack>
+              ))}
+            </Grid>
           </Box>
 
         </Container>

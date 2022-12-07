@@ -38,7 +38,7 @@ const getItemByCategory = async (i_category) => {
 };
 
 const getItemOfProvider = async (pa_id) => {
-    data ={
+    const data ={
         pa_id: pa_id,
     }
     console.log('at service');
