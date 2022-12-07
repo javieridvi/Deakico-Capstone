@@ -3,14 +3,14 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography , CardMedia} from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia } from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import { ProductCard , } from "../../deakicomponents/Card";
+import { ProductCard, } from "../../deakicomponents/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState } from "react";
-import {AddProduct} from '../../deakicomponents/AddProduct';
+import { AddProduct } from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
 
 
@@ -30,31 +30,31 @@ export default function Profile() {
   const [selecting, setSelecting] = useState('');
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
-  const [overallRating, setOverallRating ] = useState(0);
+  const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
 
-  const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews()).data;
+  const profileRating = async () => {
+    const rvws = (await reviewService.getProviderReviews()).data;
     // console.log(rvws);
-    let len = rvws.length ; 
+    let len = rvws.length;
     // console.log("len: "+ len)    //cantiad de reviews hechos
-      // message = rData.map((item) => item?.r_message ) // List of all the messages 
-    const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
-     
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
+    const rating = rvws.map((item) => item?.rating)  // List of all the ratings. 
+
     let overallR = 0;   // overall rating calc  
 
     rating.forEach(element => {
-    overallR += parseFloat(element)
-       
-      });
+      overallR += parseFloat(element)
 
-    setOverallRating (parseFloat(overallR/len).toFixed(2)) ;  
+    });
 
-  //  return(overallRating);  // el overall rating 
+    setOverallRating(parseFloat(overallR / len).toFixed(2));
+
+    //  return(overallRating);  // el overall rating 
   }
-  const handleSelect = (event)=>{
-       console.log("event : " + event.target.value)
+  const handleSelect = (event) => {
+    console.log("event : " + event.target.value)
     setSelecting(event.target.value)
   };
   // let testi = profileRating();  // As promise
@@ -64,99 +64,98 @@ export default function Profile() {
 
   const getProducts = () => {
     itemService.getItemOfProvider().then((res) => {
-      console.log( res.data);
+      console.log(res.data);
       setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )
       // console.log("Services Type: "+ Services);
-      res.data.forEach(element=>{
-        if(element.i_type == 'service'){
+      res.data.forEach(element => {
+        if (element.i_type == 'service') {
           console.log("true");
-          setServiceList(serviceList => [...serviceList,element])
+          setServiceList(serviceList => [...serviceList, element])
         }
-        else { 
-          setProductList(productList =>[...productList, element])
+        else {
+          setProductList(productList => [...productList, element])
         }
-              
+
       });
     }).catch((err) => {
       console.log(err);
     })
   }
   useEffect(() => {
-    getProducts(); 
+    getProducts();
     profileRating();
   }, []);
 
 
-      const handleClickOpen = () => {
-      console.log("Open") ;
-      setOpen(true); // opens modal
-      }
-   
-    const handleClose = (e, reason) => {
-      setOpen(false);
-    }
+  const handleClickOpen = () => {
+    console.log("Open");
+    setOpen(true); // opens modal
+  }
+
+  const handleClose = (e, reason) => {
+    setOpen(false);
+  }
 
 
   return (
-      
-<Container>
-  <div className="topProfile"    > 
-  <Container 
-     sx={{
-        mt: 20 ,
-        width:'100%'
-    }}  > 
-    
-    <Box  xs={6} sx={{
-        maxWidth:'80%' ,
-        flexDirection:'column',
-    }} className="presentation-u"    >
 
-         <Box xs={4} sx={{
-        width:'100%' ,
-        display:'flex' ,
-        flexDirection: 'row' ,
-        flexWrap: 'wrap' ,
-      
-     
-            }} > 
-      
-        <Typography 
-      sx={{
-        left: '0' ,
-        top: '10' ,
-        fontWeight: '700' ,
-        fontSize: '28px' ,
-        mr:'2px',
-      
-       }} > Company Name  </Typography>   
-    
-       {/* <Rating name="half-rating" defaultValue={1} precision={0.5} value={overallRating}  sx={{  ml:'5%' , }}readOnly></Rating>   */}
-       <Stars rating={overallRating}/>
-   
-     </Box>
-       <Typography  sx={{
-        
-        fontSize: '28px',
-        fontWeight:'800',
-        mt:'10px',
-        mb:'20px',
-        direction:'column'
-
-              }}
+    <Container>
+      <div className="topProfile">
+        <Container
+          sx={{
+            mt: 20,
+            width: '100%'
+          }} 
+          >
+          <Box xs={6} 
+            className="presentation-u"    
+          sx={{
+            maxWidth: '80%',
+            flexDirection: 'column',
+          }}
+           >
+            <Box xs={4} 
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+            }} 
             >
-              Here goes a fancy text that sets you apart from other companies. 
+              <Typography
+                sx={{
+                  left: '0',
+                  top: '10',
+                  fontWeight: '700',
+                  fontSize: '28px',
+                  mr: '2px',
+                }} 
+                > 
+                {provider?.pa_companyname}
+                </Typography>
+              <Stars rating={overallRating} />
+            </Box>
+            <Typography 
+            sx={{
+              fontSize: '28px',
+              fontWeight: '800',
+              mt: '10px',
+              mb: '20px',
+              direction: 'column'
 
+            }}
+            >
+              {provider?.pa_desc}
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
             <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
             <AddProduct
-            open = {open}
-            handleClose= {handleClose}
+              open={open}
+              handleClose={handleClose}
             />
-            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
             {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
         </Container>
@@ -167,12 +166,12 @@ export default function Profile() {
           }}
         >
           <div className='profilePic'>
-             <CardMedia  
+            <CardMedia
               component="img"
               image='/Logphotos.png'
-              width= 'auto'
+              width='auto'
               height="auto"
-               />
+            />
           </div>
         </Box>
       </div>
@@ -185,7 +184,6 @@ export default function Profile() {
       
         .profilePic{
             margin-top: 10rem;
-            
         }
         .presentation-u{
             grid-row: 1 / 3;
@@ -193,76 +191,73 @@ export default function Profile() {
       `}
       </style>
       <main>
-
-      
-
-<Container className='Items'>
-    <Box className='serviceTab'  >
-      
-        {/* <Typography sx={{
-            mt:'4rem',
+        <Container className='Items'>
+          <Box className='serviceTab'  >
+            {/* <Typography 
+            sx={{
+            mt: '4rem',
             fontSize: '18px',
-            fontWeight:'200'
-        }}>
+            fontWeight: '200'
+        }}
+        >
             My  Services
-        </Typography>
-         */}
-    <>
-          <FormControl sx={{width: '50%' , mt:'2rem', }}>
-            <InputLabel>Services</InputLabel>
-              <Select
-                      label="services"
-                      value={selecting}
-                      id="select-service"
-                      onChange={handleSelect}
-                    >
-         { serviceList.map((e, index) => { 
-          return ( 
-            <div key={index}>
-             
-                  <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
-                    
-            </div>
-          );
-         }  )}
+        </Typography> */}
+            <>
+              <FormControl sx={{ width: '50%', mt: '2rem', }}>
+                <InputLabel>Services</InputLabel>
+                <Select
+                  label="services"
+                  value={selecting}
+                  id="select-service"
+                  onChange={handleSelect}
+                >
+                  {serviceList.map((e, index) => {
+                    return (
+                      <div key={index}>
 
-             </Select>      
-           </FormControl>
-                  <Typography
-                    sx={{
-                      mt: '2rem',
-                      mb: '4rem',
-                      width:'50%'
-                    }}
-                  > 
-                    What about my company : 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                  </Typography>
-                </>            
-    
+                        <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
+
+                      </div>
+                    );
+                  })}
+
+                </Select>
+              </FormControl>
+              <Typography
+                sx={{
+                  mt: '2rem',
+                  mb: '4rem',
+                  width: '50%'
+                }}
+              >
+                What about my company :
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+              </Typography>
+            </>
+
           </Box>
 
           <Box className='Products' width='90%'>
             <Stack>
-            
-              {productList.map((e,index)=> { 
-              <div>
-              <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-               <ProductCard
-                rating={e.i_rating}
-                category={e.i_category}
-                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                title={e.i_name}
-                description={e.i_description}
-                price={e.i_price}
-              />       
-              </Grid>
-              </div>
-    
+
+              {productList.map((e, index) => {
+                <div>
+                  <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <ProductCard
+                      rating={e.i_rating}
+                      category={e.i_category}
+                      src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                      title={e.i_name}
+                      description={e.i_description}
+                      price={e.i_price}
+                    />
+                  </Grid>
+                </div>
+
               })}
             </Stack>
           </Box>
