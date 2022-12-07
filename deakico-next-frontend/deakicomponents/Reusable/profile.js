@@ -29,7 +29,7 @@ const StyledRating = styled(Rating)({
 //Test const email CAMBIARLO POR EL USER ADMIN EMAIL
 const email = 'deakicomoelcoqui@gmail.com'
 
-export default function Profile(id) {
+export default function Profile(ProviderID) {
   const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -42,15 +42,17 @@ export default function Profile(id) {
   const [provider, setProvider] = useState(undefined);
 
   useEffect(() => {
-    RequestProfile(id);
-    getProducts(id);
+    console.log(ProviderID)
+    RequestProfile(ProviderID);
+    // getProducts(id);
     // profileRating();
   }, [])
 
   function RequestProfile(paID) {
+    console.log('provider is: '+paID)
     providerService.getProviderProfile(paID).then((res) => {
       setProvider(res.data);
-      console.log(res);
+      console.log(res.data);
     }).catch((err) => {
       console.log(err);
     })
@@ -87,7 +89,7 @@ export default function Profile(id) {
   // console.log("profileRating: "+ test)
 
   const getProducts = (paID) => {
-    itemService.getItemOfProvider().then((res) => {
+    itemService.getItemOfProvider(paID).then((res) => {
       console.log(res.data);
       setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )

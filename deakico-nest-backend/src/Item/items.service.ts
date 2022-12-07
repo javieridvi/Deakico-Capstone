@@ -70,13 +70,20 @@ export class ItemsService {
     );
   }
 
-  getItemOfProvider(paID: number): Observable<Item[]> {
-    return from(this.itemRepository.find({
-      where: {
-        pa_id: paID,
-        disabled: false,
-      }
-    }));
+  async getItemOfProvider(paID: number): Promise<Item[]> {
+    return await this.itemRepository
+    .createQueryBuilder()
+    .select('i_id', 'id')
+    .addSelect('i_name', 'name')
+    .addSelect('i_description', '')
+    .addSelect('i_price', 'price')
+    .addSelect('i_category', 'category')
+    .addSelect('i_rating', 'itemRating')
+    .addSelect('i_type', 'type')
+    .addSelect('s_timeslot', 'timeslot')
+    .addSelect('pa_id', 'providerId')
+    .where('disabled = false')
+    .getRawMany()
   }
 
   insertItem(provierId: number, item: Item): Observable<Item> {
