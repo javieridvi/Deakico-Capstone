@@ -6,7 +6,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia } from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import { ProductCard, } from "../../deakicomponents/Card";
+import { ProductCard, } from "../../deakicomponents/Reusable/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState } from "react";

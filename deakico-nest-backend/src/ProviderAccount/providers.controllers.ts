@@ -49,8 +49,9 @@ export class ProviderAccountController {
    * @returns user's provider account
    */
   @Get('profile')
-  getProviderProfile(@Body() pa_id: Partial<ProviderAccount>): Observable<ProviderAccount> {
-    return this.providersService.getProvider(pa_id.pa_id);
+  getProviderProfile(@Body() data: any): Observable<ProviderAccount> {
+    console.log(data);
+    return this.providersService.getProvider(data.pa_id);
   }
 
   /**

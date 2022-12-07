@@ -74,7 +74,7 @@ export class ItemsController {
    * @returns {Observable<Item[]>} an observable promise
    */
   @Get('provider')
-  getItemOfProvider(@Body() data: ProviderAccountEntity): Observable<Item[]> {
+  getItemOfProvider(@Body() data: ProviderAccountEntity): Promise<Item[]> {
     return this.itemsService.getItemOfProvider(data.pa_id);
   }
 

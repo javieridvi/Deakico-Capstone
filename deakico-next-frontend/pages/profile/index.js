@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 
 
 export default function index() {
-  const id = parseFloat(useRouter().query.id).toFixed(1);
-console.log(id);
+  const id = parseInt(useRouter().query.id);
+// console.log(id);
   return (
     <>
    
