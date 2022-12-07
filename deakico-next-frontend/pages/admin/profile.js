@@ -98,8 +98,12 @@ export default function Profile() {
 
   const handleSelect = (e)=> {
     setSelecting(e.target.value)
-    console.log("value: "+ e.target.value );
-    
+    console.log("value: "+ e.target.value ); 
+  }
+
+  const getMinutes=(e) => {
+
+  
   }
   return (
       
@@ -235,9 +239,16 @@ export default function Profile() {
                     }} > 
 
                     What about my service :  {selecting} 
-                    
                    </Typography>
-    
+
+                  {serviceList.map((e,index)=> (
+                    <div key={index}>
+                      <Typography>
+                        {/* price: {e.i_price} */}
+                      </Typography>
+                    </div>
+
+                  ))}
                    <Typography
                     sx={{
                       mt: '1rem',
@@ -258,9 +269,9 @@ export default function Profile() {
               {productList.map((e,index)=> (
        <div key={index} >
             <ProviderCardproducts
-                rating={e.i_rating}
+          src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
+          rating={e.i_rating}
                 category={e.i_category}
-                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
