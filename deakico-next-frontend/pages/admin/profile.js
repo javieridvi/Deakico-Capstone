@@ -3,9 +3,16 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, MenuItem, Rating, Stack, styled, Typography , CardMedia, TextField} from '@mui/material';
+import { width } from '@mui/system';
 import Image from 'next/image';
-import React from 'react';
+import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
+import itemService from '../../services/item.service';
+import reviewService from '../../services/review.service';
+import { useEffect, useState, ChangeEvent } from "react";
+import {AddProduct} from '../../deakicomponents/AddProduct';
+import Stars from '../../deakicomponents/Reusable/Rating';
+
 
 
 const StyledRating = styled(Rating)({
@@ -17,91 +24,142 @@ const StyledRating = styled(Rating)({
   },
 });
 
+//Test const email CAMBIARLO POR EL USER ADMIN EMAIL
+const email = 'deakicomoelcoqui@gmail.com'
+
 export default function Profile() {
+  let [selecting, setSelecting] = useState("")   ;
+  const [itemList, setItemList] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [overallRating, setOverallRating ] = useState(0);
+  const [serviceList, setServiceList] = useState([]);
+  const [productList, setProductList] = useState([]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      description: data.get('description'),
-      price: data.get('price'),
-      category: data.get('category')
-    });
-  };
+  const profileRating = async ()=>{
+    const rvws =  (await reviewService.getProviderReviews()).data;
+    // console.log(rvws);
+    let len = rvws.length ; 
+    // console.log("len: "+ len)    //cantiad de reviews hechos
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
+    const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
+     
+    let overallR = 0;   // overall rating calc  
 
+    rating.forEach(element => {
+    overallR += parseFloat(element)
+       
+      });
+
+    setOverallRating (parseFloat(overallR/len).toFixed(2)) ;  
+
+  //  return(overallRating);  // el overall rating 
+  }
+  
+
+  // let testi = profileRating();  // As promise
+  // console.log(testi);
+  // const test =overallRating; 
+  // console.log("profileRating: "+ test)
+
+  const getProducts = () => {
+    itemService.getItemOfProvider().then((res) => {
+      console.log( res.data);
+      setItemList(res.data);
+      // const Services = res.data.map((item) => item?.i_type )
+      // console.log("Services Type: "+ Services);
+      res.data.forEach(element=>{
+        if(element.i_type == 'service'){
+          console.log("true");
+          setServiceList(serviceList => [...serviceList,element])
+        }
+        else { 
+          setProductList(productList =>[...productList, element])
+        }
+              
+      });
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+  useEffect(() => {
+    getProducts(); 
+    profileRating();
+  }, []);
+
+
+  const handleClickOpen = () => {
+      console.log("Open") ;
+      setOpen(true); // opens modal
+      }
+   
+  const handleClose = (e, reason) => {
+      setOpen(false);
+    }
+
+  const handleSelect = (e)=> {
+    setSelecting(e.target.value)
+    console.log("value: "+ e.target.value );
+    
+  }
   return (
+      
+<Container>
+  <div className="topProfile"    > 
+  <Container 
+     sx={{
+        mt: 20 ,
+        width:'100%'
+    }}  > 
+    
+    <Box  xs={6} sx={{
+        maxWidth:'80%' ,
+        flexDirection:'column',
+    }} className="presentation-u"    >
 
-    <Container>
-      <div className="topProfile">
-        <Container
-          sx={{
-            mt: 20,
-            width: '100%'
-          }}
-        >
-          <Box xs={6}
-            sx={{
-              maxWidth: '60%',
-              flexDirection: 'column',
-            }}
-            className="presentation-u"
-          >
-            <Box xs={4}
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexWrap: 'wrap',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                sx={{
-                  left: '0',
-                  top: '10',
-                  fontWeight: 'bold',
-                  fontSize: '28px',
-                  mr: '3px'
-                }}
-              >
-                Company Name
-              </Typography>
-              <Rating
-                name="half-rating"
-                defaultValue={3.5}
-                precision={0.5}
-                sx={{ left: '2px', }}
-                readOnly
-              />
-              <StyledRating
-                sx={{
-                  left: '10px',
-                }}
-                name="likes"
-                max={1}
-                precision={1}
-                emptyIcon={<FavoriteBorderIcon color="RED" />}
-                icon={<FavoriteIcon fontSize="inherit" />}
-              />
-            </Box>
-            <Typography
-              sx={{
-                fontSize: '28px',
-                fontWeight: '800',
-                mt: '10px',
-                mb: '20px',
-                direction: 'column'
+         <Box xs={4} sx={{
+        width:'100%' ,
+        display:'flex' ,
+        flexDirection: 'row' ,
+        flexWrap: 'wrap' ,
+      
+     
+            }} > 
+      
+        <Typography 
+      sx={{
+        left: '0' ,
+        top: '10' ,
+        fontWeight: '750' ,
+        fontSize: '28px' ,
+        mr:'2px',
+      
+       }} > Company Name  </Typography>   
+    
+       <Stars rating={overallRating}/>
+   
+     </Box>
+       <Typography  sx={{
+        
+        fontSize: '28px',
+        fontWeight:'700',
+        mt:'10px',
+        mb:'20px',
+        direction:'column'
 
               }}
             >
-              Here goes a fancy text that sets you apart from other companies.
+              Here goes a fancy text that sets you apart from other companies. 
+
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />} >Follow </Button>
-            <Button variant="contained" startIcon={<StarOutlineIcon />}>Review</Button>
-            <Button variant="contained" startIcon={<EmailIcon />}>Contact Provider</Button>
+            <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
+            <AddProduct
+            open = {open}
+            handleClose= {handleClose}
+            />
+            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
         </Container>
         <Box xs={6}
@@ -111,10 +169,13 @@ export default function Profile() {
           }}
         >
           <div className='profilePic'>
-            <Image src="/Logphotos.png"
-              width={850}
-              height={474}
-              top={40} />
+             <CardMedia  
+              component="img"
+              image='/Logphotos.png'
+              width= 'auto'
+              height="auto"
+              sx={{objectFit:'unset'}}
+               />
           </div>
         </Box>
       </div>
@@ -127,7 +188,7 @@ export default function Profile() {
       
         .profilePic{
             margin-top: 10rem;
-            margin-left: 20px;
+            
         }
         .presentation-u{
             grid-row: 1 / 3;
@@ -135,77 +196,81 @@ export default function Profile() {
       `}
       </style>
       <main>
-        <Container className='secondLayer'>
-          <Container>
-            <Box className='subNavigation' sx={{ mt: '4rem', fontWeight: 'bold', }}>
-              <Button variant="text">Products/Services </Button>
-              <Button variant="text">Projects </Button>
-              <Button variant="text">Collections </Button>
-              <Button variant="text">Likes </Button>
-              <Button variant="text">Reviews </Button>
-              <Button variant="text">Settings </Button>
-            </Box>
-          </Container>
-        </Container>
 
-        <Container className='servicesReq'>
-          <Container className='serviceTab'>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography
-                  sx={{
-                    mt: '4rem',
-                    fontSize: '18px',
-                    fontWeight: '200'
-                  }}
-                >
-                  Provided Services
-                </Typography>
-                <>
-                  <FormControl sx={{ width: '100%', mt: '2rem' }}>
-                    <InputLabel >
-                      Select Service
-                    </InputLabel>
+      
+    <Box className='serviceTab'  >
+      
+        {/* <Typography sx={{
+            mt:'4rem',
+            fontSize: '18px',
+            fontWeight:'200'
+        }}>
+            My  Services
+        </Typography>
+         */}
 
-                    <Select
-                      label="Services"
-                      // onChange={(event) => setHeight(Number(event.target.value))}
-                      value={""}
+          <FormControl sx={{width: '50%' , mt:'3rem', }}>
+              <TextField
+                      name= 'selectingcompany'
+                      label="services"
+                      value= {selecting}
+                      select 
                       id="select-service"
-                      labelId="height-of-container-label"
-                    >
-                      <MenuItem value="service">Reselling</MenuItem>
-                      <MenuItem value="service">Classes</MenuItem>
-                      <MenuItem value="service">Video Conference</MenuItem>
-                      <MenuItem value="service"></MenuItem>
-                    </Select>
-                  </FormControl>
+                      type='string'
+                      onChange={handleSelect}
+                    > 
+         { serviceList.map((e, index) => { 
+          return ( 
+                  <MenuItem  key={index} id='serviceName' value={e.i_name}> {e.i_name} </MenuItem>
+                         
+          ); 
+         }  )}         
+                   </TextField>  
+           </FormControl>
                   <Typography
                     sx={{
                       mt: '2rem',
-                      mb: '4rem'
-                    }}
-                  >
+                      mb: '1rem',
+                      width:'80%'
+                    }} > 
+
+                    What about my service :  {selecting} 
+                    
+                   </Typography>
+    
+                   <Typography
+                    sx={{
+                      mt: '1rem',
+                      mb: '4rem',
+                      width:'60%'
+                    }} > 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                  </Typography>
-                </>
-              </Grid>
-              <Grid item xs={6} className="Feature">
-              </Grid>
-            </Grid>
-          </Container>
+                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.  
+             
+        </Typography>
+          </Box>
 
-          <Container className='Products' width='90%'>
-            <Stack>
+          <Box className='Products' display='flex' flexWrap='wrap'>
+          
+              {productList.map((e,index)=> (
+       <div key={index} >
+            <ProviderCardproducts
+                rating={e.i_rating}
+                category={e.i_category}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                title={e.i_name}
+                description={e.i_description}
+                price={e.i_price}
+          
+              />    
+        </div>
+              ))}
+          
+          </Box>
 
-            </Stack>
-
-          </Container>
-        </Container>
       </main>
     </Container>
   )

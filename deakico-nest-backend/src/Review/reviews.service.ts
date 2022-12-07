@@ -21,13 +21,17 @@ export class ReviewService {
     const result = await this.reviewRepository
     .createQueryBuilder('review')
     .leftJoin('review.item', 'items', 'items.i_id = review.i_id')
-    .select('review')
-    .addSelect('items')
+    .leftJoin('review.user', 'user', 'user.u_id = review.u_id')
+    .select('review.r_message', 'message')
+    .addSelect('review.r_rating', 'rating')
+    .addSelect('items.i_name', 'itemName')
+    .addSelect('user.username', 'username')
+    .addSelect('review.r_date', 'reviewDate')
     .where('items.pa_id = :pa_id', {pa_id: paID})
     .andWhere('review.disabled = false')
     .getRawMany()
-    return result;
-  }
+    return result;
+  }
 
   getItemReview(itemId: number): Observable<Review[]> {
     return from(
