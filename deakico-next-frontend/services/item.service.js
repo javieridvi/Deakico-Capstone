@@ -37,8 +37,12 @@ const getItemByCategory = async (i_category) => {
     return await axios.get(endpoint+ "/category/" + i_category); //check endpoint
 };
 
-const getItemOfProvider = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader()}); //check endpoint
+const getItemOfProvider = async (pa_id) => {
+    data ={
+        pa_id: pa_id,
+    }
+    console.log('at service');
+    return await axios.get(endpoint + "/provider", data); //check endpoint
 }
 
 export default {

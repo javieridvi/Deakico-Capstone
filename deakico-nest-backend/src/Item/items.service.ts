@@ -70,17 +70,10 @@ export class ItemsService {
     );
   }
 
-  async getItemOfProvider(itemProvider: number): Promise<Observable<Item[]>> {
-      await this.itemRepository.findOneOrFail({
-        select: { pa_id: true },
-        where: { 
-          pa_id: itemProvider,
-          disabled: false,
-         },
-      });
+  getItemOfProvider(paID: number): Observable<Item[]> {
     return from(this.itemRepository.find({
       where: {
-        pa_id: itemProvider,
+        pa_id: paID,
         disabled: false,
       }
     }));
