@@ -62,13 +62,12 @@ export  function AddProduct(props) {
   if(newValue != null){
     setValue(newValue)
     var time = String(newValue.format('HH:mm'))
-    console.log("new Value here: "+ time );
     var hour = parseInt(time.substring(0, time.indexOf(":")))
     var m = parseInt(time.substring(time.indexOf(":")+1))
     console.log("hour in minutes: " + hour*60);
     console.log("minutes: "+ m);
     time = m + hour*60;
-    
+    console.log("Final time:"+time)
     setMinute(time)            
 
   }}
@@ -83,12 +82,12 @@ export  function AddProduct(props) {
     const workDuration = minute;
     console.log("Time Picker: "+ workDuration); 
     
-  //  if( catego || name || price || type == null ){
+   if( catego == "" || name == "" || type == null ){
       
-  //     console.log('error Item not added');
-  //     alert('Item not added, missing information here!');
-  //  }
-   
+      console.log('error Item not added');
+      alert('Item not added, missing information here!');
+   }
+   else {
     var newItem = {
      i_name : name , 
      i_description: desc, 
@@ -97,6 +96,7 @@ export  function AddProduct(props) {
      i_type: type, 
      p_stock: stock, 
      s_timeslot: workDuration,
+     
     } ;
     console.log(newItem); 
     try {
@@ -108,7 +108,7 @@ export  function AddProduct(props) {
       alert("Error Item not added");
       redirect();
     }
-
+}
 }
   
   const [value, setValue] = useState();

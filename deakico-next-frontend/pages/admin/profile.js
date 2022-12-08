@@ -3,15 +3,15 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, MenuItem, Rating, Stack, styled, Typography , CardMedia, TextField} from '@mui/material';
-import { width } from '@mui/system';
-import Image from 'next/image';
+import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia,FormControl, TextField, MenuItem, AccordionDetails,AccordionSummary, Accordion ,Pagination, Dialog} from '@mui/material';
 import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
 import { useEffect, useState, ChangeEvent } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
+import Deletebutton from '../../deakicomponents/Reusable/Deletebutton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 
@@ -27,20 +27,24 @@ const StyledRating = styled(Rating)({
 //Test const email CAMBIARLO POR EL USER ADMIN EMAIL
 const email = 'deakicomoelcoqui@gmail.com'
 
+const pageSize = 6 ;
+
+
+
 export default function Profile() {
-  let [selecting, setSelecting] = useState("")   ;
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
-
+  const [pagination, setPagination] = useState({
+  count: 1 ,
+  from: 0 ,
+  to: pageSize 
+});
   const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews()).data;
-    // console.log(rvws);
-    let len = rvws.length ; 
-    // console.log("len: "+ len)    //cantiad de reviews hechos
-    // message = rData.map((item) => item?.r_message ) // List of all the messages 
+    const rvws =  (await reviewService.getProviderReviews()).data; //todos los reviews de ese provider
+    let len = rvws.length ; //Cantidad de reviews hechos 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
      
     let overallR = 0;   // overall rating calc  
@@ -51,22 +55,17 @@ export default function Profile() {
       });
 
     setOverallRating (parseFloat(overallR/len).toFixed(2)) ;  
-
-  //  return(overallRating);  // el overall rating 
+  //  return(overallRating);  // el overall rating del profile
   }
   
-
-  // let testi = profileRating();  // As promise
-  // console.log(testi);
-  // const test =overallRating; 
-  // console.log("profileRating: "+ test)
-
+//Para encontrar todos los items de ese provider
   const getProducts = () => {
     itemService.getItemOfProvider().then((res) => {
       console.log( res.data);
       setItemList(res.data);
-      // const Services = res.data.map((item) => item?.i_type )
-      // console.log("Services Type: "+ Services);
+      var sizeR =   res.data.length; 
+      setPagination({...pagination, count: sizeR });
+     
       res.data.forEach(element=>{
         if(element.i_type == 'service'){
           console.log("true");
@@ -96,37 +95,33 @@ export default function Profile() {
       setOpen(false);
     }
 
-  const handleSelect = (e)=> {
-    setSelecting(e.target.value)
-    console.log("value: "+ e.target.value ); 
+    //Services Handling
+  const [expanded, setExpanded] = useState('"panel1"');
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
+  const handlePageChange = (event, page) => {
+    const from = (page -1) * pageSize ;
+    const to = (page - 1) * pageSize + pageSize; 
+    setPagination({...pagination, from: from, to: to});
   }
 
-  const getMinutes=(e) => {
 
-  
-  }
   return (
       
-<Container>
-  <div className="topProfile"    > 
-  <Container 
-     sx={{
-        mt: 20 ,
+<Container  sx={{
+        mt: 15 ,
         width:'100%'
-    }}  > 
-    
-    <Box  xs={6} sx={{
-        maxWidth:'80%' ,
-        flexDirection:'column',
-    }} className="presentation-u"    >
-
+    }}  >
+  <div className="topProfile"     > 
+  <Container  > 
          <Box xs={4} sx={{
         width:'100%' ,
         display:'flex' ,
         flexDirection: 'row' ,
         flexWrap: 'wrap' ,
-      
-     
             }} > 
       
         <Typography 
@@ -139,15 +134,16 @@ export default function Profile() {
       
        }} > Company Name  </Typography>   
     
-       <Stars rating={overallRating}/>
+       <Stars 
+        rating={overallRating}/>
    
-     </Box>
+     {/* </Box> */}
        <Typography  sx={{
         
         fontSize: '28px',
         fontWeight:'700',
-        mt:'10px',
-        mb:'20px',
+        mt:'.6rem',
+        mb:'1.2rem',
         direction:'column'
 
               }}
@@ -156,6 +152,7 @@ export default function Profile() {
 
             </Typography>
           </Box >
+          <Box id='provider-Buttons'>
           <Stack className='topButtons' direction="row" spacing={2}>
             <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
             <AddProduct
@@ -165,23 +162,19 @@ export default function Profile() {
             <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
             {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
+        </Box>
         </Container>
-        <Box xs={6}
-          sx={{
-            justifyContent: 'flex',
-            position: 'left'
-          }}
-        >
-          <div className='profilePic'>
+
+        <div className='profilePic'>
              <CardMedia  
               component="img"
               image='/Logphotos.png'
               width= 'auto'
               height="auto"
-              sx={{objectFit:'unset'}}
+              sx={{mb:"2rem"}}
                />
           </div>
-        </Box>
+      
       </div>
       <style jsx>{`
         .topProfile {
@@ -190,99 +183,76 @@ export default function Profile() {
             margin-top:1.5rem;
         }
       
-        .profilePic{
-            margin-top: 10rem;
-            
-        }
-        .presentation-u{
-            grid-row: 1 / 3;
-        }
+    
+       
       `}
       </style>
       <main>
 
       
-    <Box className='serviceTab'  >
-      
-        {/* <Typography sx={{
-            mt:'4rem',
-            fontSize: '18px',
-            fontWeight:'200'
-        }}>
-            My  Services
-        </Typography>
-         */}
+     <Box className='serviceTab' sx={{mb:"4rem", width:'34rem'}} >
+  
 
-          <FormControl sx={{width: '50%' , mt:'3rem', }}>
-              <TextField
-                      name= 'selectingcompany'
-                      label="services"
-                      value= {selecting}
-                      select 
-                      id="select-service"
-                      type='string'
-                      onChange={handleSelect}
-                    > 
-         { serviceList.map((e, index) => { 
-          return ( 
-                  <MenuItem  key={index} id='serviceName' value={e.i_name}> {e.i_name} </MenuItem>
-                         
-          ); 
-         }  )}         
-                   </TextField>  
-           </FormControl>
-                  <Typography
+             <Typography
                     sx={{
                       mt: '2rem',
                       mb: '1rem',
-                      width:'80%'
+                      width:'80%', fontWeight:'700'
                     }} > 
 
-                    What about my service :  {selecting} 
-                   </Typography>
+                    What about my services :  
+                   </Typography> 
+ { serviceList.map((e, index) => { 
 
-                  {serviceList.map((e,index)=> (
-                    <div key={index}>
-                      <Typography>
-                        {/* price: {e.i_price} */}
-                      </Typography>
-                    </div>
 
-                  ))}
-                   <Typography
-                    sx={{
-                      mt: '1rem',
-                      mb: '4rem',
-                      width:'60%'
-                    }} > 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.  
-             
-        </Typography>
-          </Box>
+          return (   
+            <div>
+          <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
+        <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
+          <Typography  sx={{ width: '33%', flexShrink: 0 }}> {e.i_name} </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{e.i_category}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography> Description:  {e.i_description} </Typography>
+          <Typography>  Price: {e.i_price} </Typography>
+          <Typography>  Time: {e.s_timeslot} minutes </Typography>
+
+          
+        </AccordionDetails>
+     </Accordion> </div> 
+     ); 
+      }  )} 
+
+          </Box >
 
           <Box className='Products' display='flex' flexWrap='wrap'>
           
-              {productList.map((e,index)=> (
+              {productList.slice(pagination.from, pagination.to).map((e,index)=> (
        <div key={index} >
             <ProviderCardproducts
-          src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
+          image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
           rating={e.i_rating}
                 category={e.i_category}
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
-          
+                // delete= {Deletebutton }  To DO: 
               />    
         </div>
               ))}
+              
           
           </Box>
+     
+      </main>    
+       <footer>
+<Stack spacing={2} sx={{mt:'5%', alignItems:'center', mb:'12%' }}>
+<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)} 
+ onChange={handlePageChange}
 
-      </main>
+/>
+</Stack>
+</footer>
     </Container>
   )
 }

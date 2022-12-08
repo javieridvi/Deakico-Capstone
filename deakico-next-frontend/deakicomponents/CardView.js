@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {Box,  Typography,Rating, CardMedia, Button} from '@mui/material';
+import {Box,  Typography,Rating, CardMedia, Button, Avatar} from '@mui/material';
 import Stars from './Reusable/Rating';
 
 
@@ -62,7 +62,7 @@ import Stars from './Reusable/Rating';
  />
 
  </Box>
- <Box id='user-img' sx={{
+ {/* <Box id='user-img' sx={{
   backgroundSize: ' 80px ',
   backgroundRepeat:'no-repeat',
   backgroundColor:'pink',
@@ -71,16 +71,18 @@ import Stars from './Reusable/Rating';
   borderRadius:'50%',
   display:'inline-block',
 
- }}> 
- </Box>
+ }}>  </Box> */}
+ <Avatar sx={{width:'4rem', height:'4rem', display:'inline-block', mb:'1rem', ml:'2%'}}  />
+{/* 
+ 
  
  <Typography sx={{textAlign:'center', m:'2px', fontSize:'12px', mt:'10px'}} > {props.username} </Typography><div>
  <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white', fontWeight:'bold'}} > {props.product} </Typography>
 </div >  
  {/* <Rating name="read-only" value={props.rating} precision={0.5} size="small"  readOnly />  */}
  <Box sx={{ml:'30%'}}><Stars width='75px'rating={props.rating} />  </Box>
- <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white'}}> {props.message}  </Typography>
- <Typography sx={{textAlign:'center', m:'8px', fontSize:'12px', color:'grey'}}> {props.date}  </Typography>
+ <Typography sx={{textAlign:'center', m:'8px', fontSize:'14px', color:'white', mt:'2rem',}}> {props.message}  </Typography>
+ <Typography sx={{textAlign:'center', m:'8px', fontSize:'12px', color:'grey',mt:'2rem'}}> {props.date}  </Typography>
 
 
  </Box>  

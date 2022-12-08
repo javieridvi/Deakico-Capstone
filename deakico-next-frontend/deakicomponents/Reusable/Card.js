@@ -245,51 +245,88 @@ export function ProductCard(props) {
     bottom={bottom}
   />;
 }
+
 ///View of Provider Products Card 
 export function ProviderCardproducts(props){
-//uses price, request and like
-let bottom = [
-  <Box
-    key={0}
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      // height: '100%',
-      // width: '100%',
-    }}
-  >
-    <Typography variant={'h6'} className={'Price'}
-      sx={{
-        fontSize: '1.125rem', // 18px
-        fontWeight: '700',
-        fontFamily: 'Roboto, sans-serif',
-      }}
-    >
-      {props.price}
-    </Typography>
-  </Box>,
-  <Box className={'Actions'}
-    key={1}
-    sx={{
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-      paddingBottom: '10px',
-      height: '100%',
-      width: '100%',
-    }}
-  >
-  </Box>
-];
+  const [isHovering, setIsHovering] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovering(true);
+  };
+  const handleMouseOut = () => {
+   setIsHovering(false);
+  };
 
-let components = {
-  top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
-  image: props.src,
-  title: props.title,
-  description: props.description,
-  bottom: bottom,
-}
-return BaseCard(components);
+return (
+   <Card sx={{m: '2rem', backgroundColor:'#e5e5e5', width:'20rem'}} >
+    {/* <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
+      {isHovering && (
+     
+     <Button variant="text" sx={{
+   display:'flex',
+   justifyContent:'space-evenly', ml:'40%', 
+  '&:hover':{
+  color:'pink', 
+ }}}onClick={props.delete}> X </Button>
+
+  )} </div> */}
+
+  <CardMedia
+  component="img"
+  image = {props.image}
+  sx={{
+    maxHeight:'14rem',
+    aspectRatio:'16/9',
+    color: 'whitesmoke' ,
+
+  }}
+    /> 
+  <Typography variant={'h6'} className={'Card-Title'}
+          sx={{
+            height: '1.25rem', // 20px
+            overflow: 'clip',
+            marginTop: '.625rem', //10px 
+            fontWeight: '700',
+            fontSize: '1.125rem', // 18px
+            fontFamily: 'Comfortaa',
+            ml:'1rem'
+          }}
+        >
+          {props.title}
+  
+    </Typography>
+
+    <Typography variant={'body2'} className={'Card-Description'}
+          sx={{
+            height: '3.75rem', // 60px
+            fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
+            marginTop: '.4375rem', //7px 
+            color: 'black',
+            overflow: 'clip',
+            fontFamily: 'Comfortaa',
+            ml: "1rem"
+          }}
+        >
+          {props.description}
+        </Typography>
+        <Typography variant={'h6'} className={'Price'}
+        sx={{
+          fontSize: '1.125rem', // 18px
+          fontWeight: '700',
+          fontFamily: 'Roboto, sans-serif',
+          display:'flex' ,
+          justifyContent:'flex-end' ,
+          mr:'1.5rem',
+          mb:'1rem'
+        }}
+      >
+        {props.price}
+      </Typography>
+
+
+  </Card>
+);
+
+
 }
 
 function BaseCard(props) {
