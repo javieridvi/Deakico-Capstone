@@ -48,9 +48,8 @@ export class ProviderAccountController {
    * @param pa_id id of provider to return
    * @returns user's provider account
    */
-  @Get('profile')
-  getProviderProfile(@Body() data: any): Observable<ProviderAccount> {
-    console.log(data);
+  @Post('profile')
+  getProviderProfile(@Body() data: Partial<ProviderAccount>): Observable<ProviderAccount> {
     return this.providersService.getProvider(data.pa_id);
   }
 
