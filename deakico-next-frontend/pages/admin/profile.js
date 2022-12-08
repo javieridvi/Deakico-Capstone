@@ -43,8 +43,11 @@ export default function Profile() {
   to: pageSize 
 });
   const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews()).data; //todos los reviews de ese provider
-    let len = rvws.length ; //Cantidad de reviews hechos 
+    const rvws =  (await reviewService.getProviderReviews()).data;
+    // console.log(rvws);
+    let len = rvws.length ; 
+    // console.log("len: "+ len)    //cantiad de reviews hechos
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
      
     let overallR = 0;   // overall rating calc  

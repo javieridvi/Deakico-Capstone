@@ -12,6 +12,13 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    //confirm that passwords are the same
+    const pass = data.get('password');
+    const confPass = data.get('confirm-password');
+    if(!validatePassword(pass, confPass)) {
+      return; //return if invalid password
+    }
     
     //register api endpoint 
     authService.register(
@@ -35,6 +42,36 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
+
+    //for confirm password validation
+    const [passwordMsg, setPasswordMsg] = React.useState("");
+    const [error, setError] = React.useState(false);
+
+    //Arbitrary black list of password users should not use
+    const passBlacklist = [
+      'password',
+      'PASSWORD',
+      'password123',
+      'password321',
+      '123password',
+      '321password'
+    ]
+
+    //return true if passwords are the same, false otherwise
+    //add logical conditions to make passwords stronger
+    const validatePassword = (pass, confPass) => {
+      if((pass === confPass) 
+      && (pass != "" || confPass != "") 
+      && (!passBlacklist.includes(pass))) {
+        setError(false);
+        return true; //valid password
+      }
+      else {
+        setPasswordMsg("Password not valid!");
+        setError(true);
+        return false; //invalid password
+      }
+    }
 
   return (
     <Container 
@@ -96,7 +133,7 @@ export default function SignUp() {
             }}
           >Enter your info down below</Typography>
         </Stack>
-        <Stack component="form" noValidate container spacing={2} onSubmit={handleSubmit}
+        <Stack component="form" container spacing={2} onSubmit={handleSubmit}
           sx={{
             mt: 3,
             minWidth: '100%'
@@ -150,6 +187,8 @@ export default function SignUp() {
               type="password"
               label="Password"
               autoComplete="new-password"
+              error={error}
+              helperText={passwordMsg}
               required
               fullWidth
             />
@@ -161,6 +200,8 @@ export default function SignUp() {
               type="password"
               label="Confirm Password"
               autoComplete="new-password"
+              error={error}
+              helperText={passwordMsg}
               required
               fullWidth
             />

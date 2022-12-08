@@ -1,7 +1,8 @@
 import {React,useState, useCallback,} from 'react'
 import {Dialog,  FormControl , Slider, Rating, Stack, Button, TextField , Box, Typography} from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
-import reviewService from '../services/review.service';
+import reviewService from '../../../services/review.service';
+import { useRouter } from 'next/router';
 
 const marks = [
     {
@@ -32,6 +33,7 @@ const marks = [
 var a,b,c,d = 0;
 
 export  function ReviewForm(props) {
+  const router = useRouter();
    const [ratingS, setValue] = useState(0); 
     // para guardar el overall-Rating
    const [open, setOpen] = useState(false); //modal use states
@@ -40,27 +42,31 @@ export  function ReviewForm(props) {
 //Handlers para cada Slider!
   const handleSliderChange1 = useCallback((event,  value) => {  
     a = value;
-    ratingS = ovRating();
-    setValue(ratingS);
+    // ratingS = ovRating();
+    // setValue(ratingS);
+    setValue(ovRating());
   },[]);
 
     const handleSliderChange = useCallback((event,  value) => {
       b = value;
       // console.log("myvalue: "+b);
-      ratingS = ovRating();
-      setValue(ratingS);
+      // ratingS = ovRating();
+      // setValue(ratingS);
+      setValue(ovRating());
     },[]);
     
     const handleSliderChange2 = useCallback((event,  value) => {
       c = value;
-      ratingS = ovRating();
-      setValue(ratingS);
+      // ratingS = ovRating();
+      // setValue(ratingS);
+      setValue(ovRating());
     },[]);
     
     const handleSliderChange3 = useCallback((event,  value) => {
       d = value;
-      ratingS = ovRating();
-      setValue(ratingS);
+      // ratingS = ovRating();
+      // setValue(ratingS);
+      setValue(ovRating());
     },[]);
    
     
@@ -71,8 +77,9 @@ export  function ReviewForm(props) {
  };
 
 
-function redirect() {
-  location.replace("/review")
+ function redirect() {
+   router.push('/admin') //this might not be needed
+   
 } 
 
 function getToday() {

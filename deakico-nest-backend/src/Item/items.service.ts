@@ -125,17 +125,23 @@ export class ItemsService {
     return from(this.itemRepository.update(itemId, item));
   }
 
+  /**This is a helper service that deletes (disables) all items
+   * of a single provider. This is useful for provider deletion.
+   * 
+   * @param providerId 
+   * @returns an Update Result
+   */
   async deleteAllItems(
     providerId: number,
   ): Promise<Observable<UpdateResult>> {
     //check if item exists and belongs to provider
-    await this.itemRepository.findOneOrFail({
-      select: { pa_id: true },
-      // where: { 
-      //   pa_id: providerId,
-      //   disabled: false,
-      // },
-    });
+    // await this.itemRepository.findOneOrFail({
+    //   select: { pa_id: true },
+    //   where: { 
+    //     pa_id: providerId,
+    //   //   disabled: false,
+    //   },
+    // });
     return from(this.itemRepository.update({pa_id: providerId}, {disabled: true}));
   }
 
