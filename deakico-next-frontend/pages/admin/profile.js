@@ -206,7 +206,7 @@ export default function Profile() {
 
 
           return (   
-            <div>
+            <div  key={index}>
           <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
         <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
           <Typography  sx={{ width: '33%', flexShrink: 0 }}> {e.i_name} </Typography>
