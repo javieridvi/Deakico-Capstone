@@ -73,9 +73,20 @@ export class ItemsController {
    * @param req token used to retrieve the id of the provider
    * @returns {Observable<Item[]>} an observable promise
    */
-  @Get('provider')
-  getItemOfProvider(@Body() data: ProviderAccountEntity): Promise<Item[]> {
+  @Post('provider')
+  getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
     return this.itemsService.getItemOfProvider(data.pa_id);
+  }
+
+  // /**
+  //  * Fetches all items from given itemProvider
+  //  * @param req token used to retrieve the id of the provider
+  //  * @returns {Observable<Item[]>} an observable promise
+  //  */
+  @UseGuards(JwtGuard)
+  @Post('provider/liked')
+  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>,  @Request() req: any): Promise<Item[]> {
+    return this.itemsService.getItemOfProviderLiked(data.pa_id, req.user.u_id);
   }
 
   /**

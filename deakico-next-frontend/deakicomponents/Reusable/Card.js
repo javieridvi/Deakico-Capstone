@@ -74,12 +74,9 @@ export function ProviderCard(props) {
 
   let Area = (
     <CardActionArea
-      onClick={() => {
-        router.push({
-          pathname: '/profile',
-          query: { id: props.id }
-        })
-      }}
+      onClick={() => 
+        router.push('/profile/'+props.id)
+      }
     >
       <ActionArea
         top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
@@ -177,7 +174,7 @@ export function ProductCard(props) {
     if (liked == undefined) {
       console.log('not logged');
       // following = false;
-      props.LogIn(title); // When not logged in throw log in pop up 
+      props.LogIn('like'); // When not logged in throw log in pop up 
     } else {
       let request; // Request variable to be sent
       if (liked) {
@@ -291,7 +288,7 @@ export function ProductCard(props) {
   let Area = (
     <ActionArea
       top={[
-        <Stars width={'75px'} rating={props.rating} />
+        <Stars width={'75px'} rating={props.rating} key={0}/>
         , infoRect(props.category, 1)
       ]}
       image={props.src}

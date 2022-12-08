@@ -56,6 +56,7 @@ export function LogInPopUp(props) {
         aria-describedby="modal-modal-description"
       >
         <Stack
+        className='LogInPopUp'
         spacing={2}
           sx={
             [style,

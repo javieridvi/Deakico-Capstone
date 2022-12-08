@@ -35,10 +35,10 @@ const getProvider = async (pa_id) => {
 
 const getProviderProfile = async (pa_id) => {
   const data ={
-    "pa_id": pa_id,
+    pa_id: pa_id,
   }
   console.log(data);
-    return await axios.get(endpoint + "/profile", {data})
+    return await axios.post(endpoint + "/profile", data)
 }
 
 const getProviderCategory = async (pa_category) => {

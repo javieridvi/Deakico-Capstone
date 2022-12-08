@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import { AddProduct } from '../../deakicomponents/AddProduct';
 import Stars from './Rating';
 import providerService from '../../services/provider.service';
+import authService from '../../services/auth/auth.service';
+import { LogInPopUp } from '../Modal';
 
 
 
@@ -29,7 +31,8 @@ const StyledRating = styled(Rating)({
 //Test const email CAMBIARLO POR EL USER ADMIN EMAIL
 const email = 'deakicomoelcoqui@gmail.com'
 
-export default function Profile(ProviderID) {
+export default function Profile(props) {
+  const providerId = props.paId;
   const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -37,14 +40,30 @@ export default function Profile(ProviderID) {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
 
+// Modal**
+const [openModal, setOpenModal] = useState(false);
+const [modalTxt, setModalTxt] = useState({ttl: '', msg: ''});
+function handleLogInOpen(title) {
+  setModalTxt({
+    ttl: 'Title',
+    msg: 'message'
+  });
+  setOpenModal(true);
+};
+const handleLogInClose = () => setOpenModal(false);
+
+// **Modal
+
+
   //Profile info **
   // const provider = await providerService.getProviderProfile(10)
   const [provider, setProvider] = useState(undefined);
 
   useEffect(() => {
-    console.log(ProviderID)
-    RequestProfile(ProviderID);
-    // getProducts(id);
+    
+    console.log(props)
+    RequestProfile(providerId);
+    getProducts(providerId);
     // profileRating();
   }, [])
 
@@ -58,6 +77,36 @@ export default function Profile(ProviderID) {
     })
   }
 
+  const getProducts = (paID) => {
+    console.log('provider for items is: '+paID)
+
+    let request;
+    if (authService.isLoggedIn()) {
+      request = itemService.getItemOfProviderLiked;
+    } else {
+      request = itemService.getItemOfProvider;
+    }
+
+    request(paID).then((res) => {
+      console.log('items >');
+      console.log(res.data);
+      setItemList(res.data);
+      // const Services = res.data.map((item) => item?.i_type )
+      // console.log("Services Type: "+ Services);
+      res.data.forEach(element => {
+        if (element.i_type == 'service') {
+          console.log("true");
+          setServiceList(serviceList => [...serviceList, element])
+        }
+        else {
+          setProductList(productList => [...productList, element])
+        }
+
+      });
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   //**Profile info
 
@@ -88,26 +137,6 @@ export default function Profile(ProviderID) {
   // const test =overallRating; 
   // console.log("profileRating: "+ test)
 
-  const getProducts = (paID) => {
-    itemService.getItemOfProvider(paID).then((res) => {
-      console.log(res.data);
-      setItemList(res.data);
-      // const Services = res.data.map((item) => item?.i_type )
-      // console.log("Services Type: "+ Services);
-      res.data.forEach(element => {
-        if (element.i_type == 'service') {
-          console.log("true");
-          setServiceList(serviceList => [...serviceList, element])
-        }
-        else {
-          setProductList(productList => [...productList, element])
-        }
-
-      });
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
 
   const handleClickOpen = () => {
     console.log("Open");
@@ -170,15 +199,15 @@ export default function Profile(ProviderID) {
               {provider?.pa_desc}
             </Typography>
           </Box >
-          <Stack className='topButtons' direction="row" spacing={2}>
+          {/* <Stack className='topButtons' direction="row" spacing={2}>
             <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
             <AddProduct
               open={open}
               handleClose={handleClose}
             />
             <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-            {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
-          </Stack>
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button>
+          </Stack> */}
         </Container>
         <Box xs={6}
           sx={{
@@ -273,25 +302,32 @@ export default function Profile(ProviderID) {
                 paddingBottom: '100px'
               }}
             >
-              {productList.map((e, index) => (
-                <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  {console.log(e)}
+              {productList.map((item) => (
+                <Grid item key={item.id} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <ProductCard
-                      id={7}
-                      title={"Dozen Glazed Donut"}
-                      description={"12 glazed donut box."}
-                      price={"$12.00"}
-                      category={"pastry"}
-                      rating={"4.4"}
-                      provider={1}
-                      liked={true}
-                      // LogIn={handleLogInOpen}
+                      id={item.id}
+                      title={item.name}
+                      description={item.description}
+                      price={item.price}
+                      category={item.category}
+                      rating={item.rating}
+                      liked={item.liked}
+                      LogIn={handleLogInOpen}
                       src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
                     />
                   </Grid>
               ))}
             </Grid>
           </Box>
+          {openModal ?
+          <LogInPopUp
+            open={openModal}
+            handleClose={handleLogInClose}
+            title={modalTxt.ttl}
+            message={modalTxt.msg}
+          /> :
+          null
+        }
 
         </Container>
       </main>
