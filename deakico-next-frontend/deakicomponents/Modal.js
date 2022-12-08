@@ -111,3 +111,70 @@ export function LogInPopUp(props) {
     </div>
   );
 }
+
+export function ConfirmationPopup(props) {
+
+  return (
+    <div>
+      <Modal
+        open={props.open}
+        onClose={props.handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Stack
+        spacing={2}
+          sx={
+            [style,
+              {
+                width: 'min(90%, 500px)',
+                maxHeight: '489px',
+                borderRadius: '1rem',
+                // margin: '1rem'
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',  
+              }]
+          }
+        >
+          <Typography 
+          variant="h6" 
+          component="h2"
+          align='center'
+          id="modal-modal-title"
+          sx={{
+            fontWeight: '800',
+            fontSize: '1.625rem'
+          }}
+          >
+            {props.title}
+          </Typography>
+          <Typography 
+          variant='caption'
+          align='center'
+          id="modal-modal-description"
+          sx={{
+            fontSize: '1rem'
+          }}
+          >
+            {props.message}
+          </Typography>
+          <div
+          align='center'
+          >
+            <Button id='confirm' color='error' onClick={props.handleClick}  variant='contained' sx={{width: '50%'}}>
+              Yes, Delete
+            </Button>
+          </div>
+          <div
+          align='center'
+          >
+            <Button id='deny' color='success' onClick={props.handleClick} variant='outlined' sx={{width: '50%'}}>
+              Not yet!
+            </Button>
+          </div>
+        </Stack>
+      </Modal>
+    </div>
+  );
+}

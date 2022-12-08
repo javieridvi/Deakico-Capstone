@@ -24,6 +24,8 @@ function Home(){
     "Pastry",
     "Food",
     "Clothing",
+    "Cleaning",
+    "Jewelery",
     "Other"
   ];
 

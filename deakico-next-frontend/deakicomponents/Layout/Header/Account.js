@@ -45,7 +45,7 @@ export default function Account() {
 
   const handleLogout = () => {
     authService.logout();
-    location.reload();
+    location.assign('/');
   }
 
   function MenuLink(props) {
@@ -73,7 +73,7 @@ export default function Account() {
   return typeof (loggedIn !== 'undefined') ? (
     loggedIn ? (
       <>
-        <Typography>Welcome, {currUser.username}</Typography>
+        <Typography>{currUser.username}</Typography>
         <IconButton
           id="basic-button"
           color='primary'

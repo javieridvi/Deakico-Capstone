@@ -36,7 +36,7 @@ export default function Profile() {
   const [productList, setProductList] = useState([]);
 
   const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews()).data;
+    const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
     // console.log(rvws);
     let len = rvws.length ; 
     // console.log("len: "+ len)    //cantiad de reviews hechos

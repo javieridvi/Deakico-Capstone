@@ -3,10 +3,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,9 +28,10 @@ import Dashboard from './Dashboard/dashboard';
 import Profile from '../../pages/admin/profile';
 
 import userService from '../../services/user.service';
-import DashboardFunc from './Dashboard/dashboard';
 import Follows from './follows';
 import Liked from './liked';
+import Review from './Review/review';
+import Settings from './settings';
 
 const drawerWidth = 240;
 
@@ -114,7 +112,7 @@ export default function MainSidebar() {
       case 'Requests':
         return '#';
       case 'Reviews':
-          return '#';
+          return (<Review/>);
       case 'Liked Items':
         return (<Liked/>)
       case 'My Follows':
@@ -122,7 +120,7 @@ export default function MainSidebar() {
       case 'Profile':
         return (<Profile/>);
       case 'Settings':
-        return '#';
+        return <Settings/>;
       case 'Events':
         return '#';
       default:
