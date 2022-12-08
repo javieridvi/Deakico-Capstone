@@ -1,4 +1,4 @@
-import { Box, Fab, Typography } from "@mui/material";
+import { Box, Button, ButtonBase, Fab, Typography } from "@mui/material";
 import { useState } from "react";
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -11,6 +11,7 @@ export default function Cart(props) {
   const [drawer, setDrawer] = useState(false);
   const List = props.list;
 
+
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -20,6 +21,12 @@ export default function Cart(props) {
 
   function ListProduct(props) {
     const [quantity, setQuantity] = useState(1);
+    const buttonStyle = {
+      width: '40px',
+      height: '40px',
+      border: 'solid 2px rgba(0, 0, 0, 0.2)',
+      borderRadius: '4px',
+    }
     console.log('item added');
     return (
       <Box
@@ -36,7 +43,26 @@ export default function Cart(props) {
       >
         < Typography variant="h6" >{props.name}</Typography>
         <Typography variant="button">{props.price}</Typography>
-        <Typography variant="caption">{quantity}</Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <ButtonBase
+            sx={{
+
+            }}
+          >-</ButtonBase>
+          <div>
+            <Typography variant="caption">{quantity}</Typography>
+          </div>
+          <ButtonBase
+            sx={{
+
+            }}
+          >+</ButtonBase>
+        </Box>
         <Divider />
       </Box>
     )
@@ -59,7 +85,7 @@ export default function Cart(props) {
     console.log('cart.js Cart has item');
     return (
       <Box
-      className="Cart"
+        className="Cart"
         sx={{
           position: "absolute",
           width: '100px',
@@ -76,7 +102,7 @@ export default function Cart(props) {
           onClick={toggleDrawer(true)}
           sx={{
             position: 'fixed',
-            right: 0,
+            right: { xs: 0, lg: 'calc(50% - 576px)' },
             bottom: 0,
             margin: '1rem',
           }}
@@ -91,8 +117,8 @@ export default function Cart(props) {
           <Box
             sx={{ width: '200px' }}
             role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+          // onClick={toggleDrawer(false)}
+          // onKeyDown={toggleDrawer(false)}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               {List.map((ele) => (
@@ -103,6 +129,17 @@ export default function Cart(props) {
                   />
                 </Box>
               ))}
+            </Box>
+            <Divider />
+            <Box className="Total"
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '0 1rem',
+              }}
+            >
+              <Typography variant="h6" >Total</Typography>
+              <Typography variant="h6" >Total</Typography>
             </Box>
             <Divider />
           </Box>
