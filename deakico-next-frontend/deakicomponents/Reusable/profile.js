@@ -37,38 +37,38 @@ export default function Profile(props) {
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [selecting, setSelecting] = useState('');
-  const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
 
-// Modal**
-const [openModal, setOpenModal] = useState(false);
-const [modalTxt, setModalTxt] = useState({ttl: '', msg: ''});
-function handleLogInOpen(title) {
-  setModalTxt({
-    ttl: 'Title',
-    msg: 'message'
-  });
-  setOpenModal(true);
-};
-const handleLogInClose = () => setOpenModal(false);
+  // Modal**
+  const [openModal, setOpenModal] = useState(false);
+  const [modalTxt, setModalTxt] = useState({ ttl: '', msg: '' });
+  function handleLogInOpen(title) {
+    setModalTxt({
+      ttl: 'Title',
+      msg: 'message'
+    });
+    setOpenModal(true);
+  };
+  const handleLogInClose = () => setOpenModal(false);
 
-// **Modal
+  // ** Modal
 
 
-  //Profile info **
+  // Profile info **
   // const provider = await providerService.getProviderProfile(10)
   const [provider, setProvider] = useState(undefined);
 
   useEffect(() => {
-    
+
     console.log(props)
     RequestProfile(providerId);
     getProducts(providerId);
     // profileRating();
   }, [])
 
+  // Returns profile info of current provider
   function RequestProfile(paID) {
-    console.log('provider is: '+paID)
+    console.log('provider is: ' + paID)
     providerService.getProviderProfile(paID).then((res) => {
       setProvider(res.data);
       console.log(res.data);
@@ -77,8 +77,9 @@ const handleLogInClose = () => setOpenModal(false);
     })
   }
 
+  // Returns the products of current provider based on user being logged in
   const getProducts = (paID) => {
-    console.log('provider for items is: '+paID)
+    console.log('provider for items is: ' + paID)
 
     let request;
     if (authService.isLoggedIn()) {
@@ -88,9 +89,9 @@ const handleLogInClose = () => setOpenModal(false);
     }
 
     request(paID).then((res) => {
-      console.log('items >');
-      console.log(res.data);
-      setItemList(res.data);
+      // console.log('items >');
+      // console.log(res.data);
+      // setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )
       // console.log("Services Type: "+ Services);
       res.data.forEach(element => {
@@ -107,8 +108,7 @@ const handleLogInClose = () => setOpenModal(false);
       console.log(err);
     })
   }
-
-  //**Profile info
+  // ** Profile info
 
   const profileRating = async () => {
     const rvws = (await reviewService.getProviderReviews()).data;
@@ -304,30 +304,31 @@ const handleLogInClose = () => setOpenModal(false);
             >
               {productList.map((item) => (
                 <Grid item key={item.id} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <ProductCard
-                      id={item.id}
-                      title={item.name}
-                      description={item.description}
-                      price={item.price}
-                      category={item.category}
-                      rating={item.rating}
-                      liked={item.liked}
-                      LogIn={handleLogInOpen}
-                      src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                    />
-                  </Grid>
+                  <ProductCard
+                    id={item.id}
+                    title={item.name}
+                    description={item.description}
+                    price={item.price}
+                    category={item.category}
+                    rating={item.rating}
+                    liked={item.liked}
+                    LogIn={handleLogInOpen}
+                    request={props.request}
+                    src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                  />
+                </Grid>
               ))}
             </Grid>
           </Box>
           {openModal ?
-          <LogInPopUp
-            open={openModal}
-            handleClose={handleLogInClose}
-            title={modalTxt.ttl}
-            message={modalTxt.msg}
-          /> :
-          null
-        }
+            <LogInPopUp
+              open={openModal}
+              handleClose={handleLogInClose}
+              title={modalTxt.ttl}
+              message={modalTxt.msg}
+            /> :
+            null
+          }
 
         </Container>
       </main>

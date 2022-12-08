@@ -1,24 +1,14 @@
-import { Box, Fab, Paper, Typography } from "@mui/material";
+import { Box, Fab, Typography } from "@mui/material";
 import { useState } from "react";
-import { LogInPopUp } from "../deakicomponents/Modal";
-import { ProductCard } from "../deakicomponents/Reusable/Card";
 
-import * as React from 'react';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import Drawer from '@mui/material/Drawer';
+import * as React from 'react';
 
 export default function Cart(props) {
 
   const [drawer, setDrawer] = useState(false);
-  const [drawerList, setDrawerList] = useState(['item']);
   const List = props.list;
 
   const toggleDrawer = (open) => (event) => {
@@ -28,12 +18,9 @@ export default function Cart(props) {
     setDrawer(open);
   }
 
-  function addItem() {
-    setDrawerList(state => [...state, 'item'])
-  }
-
-  function listProduct(props) {
-    console.log('item');
+  function ListProduct(props) {
+    const [quantity, setQuantity] = useState(1);
+    console.log('item added');
     return (
       <Box
         sx={{
@@ -49,7 +36,7 @@ export default function Cart(props) {
       >
         < Typography variant="h6" >{props.name}</Typography>
         <Typography variant="button">{props.price}</Typography>
-        <Typography variant="caption">{props.quantity}</Typography>
+        <Typography variant="caption">{quantity}</Typography>
         <Divider />
       </Box>
     )
@@ -65,44 +52,62 @@ export default function Cart(props) {
   req_date
   */
 
-  return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Fab color="primary" aria-label="add" onClick={toggleDrawer(true)} >
-        <InboxIcon />
-      </Fab>
-      <Fab color="primary" aria-label="add" onClick={addItem} >
-        <MailIcon />
-      </Fab>
-
-      <Drawer
-        anchor={"right"}
-        open={drawer}
-        onClose={toggleDrawer(false)}
+  // Doesn't render until first item is added
+  if (List.length < 1) {
+    return null;
+  } else {
+    console.log('cart.js Cart has item');
+    return (
+      <Box
+      className="Cart"
+        sx={{
+          position: "absolute",
+          width: '100px',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 2,
+        }}
       >
-        <Box
-          sx={{ width: '200px' }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={toggleDrawer(true)}
+          sx={{
+            position: 'fixed',
+            right: 0,
+            bottom: 0,
+            margin: '1rem',
+          }}
         >
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {drawerList.map((ele, index) => (
-              <Box key={ele.name} disablePadding>
-                <listProduct/>
-              </Box>
-            ))}
+          <ShoppingCartIcon />
+        </Fab>
+        <Drawer
+          anchor={"right"}
+          open={drawer}
+          onClose={toggleDrawer(false)}
+        >
+          <Box
+            sx={{ width: '200px' }}
+            role="presentation"
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {List.map((ele) => (
+                <Box key={ele.name} disablePadding>
+                  <ListProduct
+                    name={ele.name}
+                    price={ele.price}
+                  />
+                </Box>
+              ))}
+            </Box>
+            <Divider />
           </Box>
-          <Divider />
-        </Box>
-      </Drawer>
-    </Box>
-  )
+        </Drawer>
+      </Box>
+    )
+  }
 }

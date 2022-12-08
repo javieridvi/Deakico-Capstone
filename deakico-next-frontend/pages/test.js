@@ -114,7 +114,7 @@ export default function Test() {
         </Box>
       </Drawer>
 
-      {/* <ProductCard
+      <ProductCard
         id={7}
         title={"Dozen Glazed Donut"}
         description={"12 glazed donut box."}
@@ -125,7 +125,7 @@ export default function Test() {
         liked={true}
         LogIn={handleLogInOpen}
         src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-      /> */}
+      />
       {
         open ? (
           <LogInPopUp
