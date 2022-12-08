@@ -75,8 +75,8 @@ export function ProviderCard(props) {
 
   let Area = (
     <CardActionArea
-      onClick={() => 
-        router.push('/profile/'+props.id)
+      onClick={() =>
+        router.push('/profile/' + props.id)
       }
     >
       <ActionArea
@@ -170,7 +170,8 @@ export function ProviderCard(props) {
 export function ProductCard(props) {
   const [liked, setLiked] = useState(props.liked);
 
-  function handleClick(liked, title, id) {
+  // Like button function **
+  function handleLikeClick(liked, title, id) {
     // When following undefined user is not logged in
     if (liked == undefined) {
       console.log('not logged');
@@ -209,10 +210,22 @@ export function ProductCard(props) {
     }
 
   }
+  // ** Like button function
 
+  // Request button function **
+  function handleRequestClick(id, name, price){
+    const   item = {
+      id: id,
+      name: name,
+      price: price,
+    }
+    props.request(item);
+  }
+  // ** Request button function
 
   let request = (
     <Button variant='outlined'
+    onClick={() => handleRequestClick(props.id, props.title, props.price)}
       sx={{
         height: '20px',
         minWidth: '60px',
@@ -226,7 +239,7 @@ export function ProductCard(props) {
   );
   let like = (
     <Box
-      onClick={() => handleClick(liked, 'product', props.id)}
+      onClick={() => handleLikeClick(liked, 'product', props.id)}
       sx={{
         display: 'flex',
         width: '25px',
@@ -239,7 +252,7 @@ export function ProductCard(props) {
         transition: 'all .2s ease-in-out',
         '&:hover': {
           transform: 'scale(1.2)',
-          backgroundColor: liked? '' : 'rgba(255, 0, 80, 0.16)'
+          backgroundColor: liked ? '' : 'rgba(255, 0, 80, 0.16)'
         }
       }}
     >
@@ -289,7 +302,7 @@ export function ProductCard(props) {
   let Area = (
     <ActionArea
       top={[
-        <Stars width={'75px'} rating={props.rating} key={0}/>
+        <Stars width={'75px'} rating={props.rating} key={0} />
         , infoRect(props.category, 1)
       ]}
       image={props.src}

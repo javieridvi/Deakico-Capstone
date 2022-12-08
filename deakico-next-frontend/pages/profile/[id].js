@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
-import Profile from '../../deakicomponents/Reusable/profile';
 import { useRouter } from 'next/router';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+import Profile from '../../deakicomponents/Reusable/profile';
+import Cart from '../../deakicomponents/Reusable/cart';
 
 
 export default function index() {
+  // Profile **
   const [providerId, setProviderId] = useState({ id: null, ready: false });
   const router = useRouter();
   useEffect(() => {
@@ -14,6 +16,26 @@ export default function index() {
       setProviderId({ id: router.query.id, ready: true });
     }
   }, [router.query])
+  // ** Profile
+
+  // Cart **
+  const [cartList, setCartlist] = useState([]);
+  function addToCart(item) {
+    /*
+    item = {
+      id: ,
+      name: ,
+      price; ,
+    }
+    */
+    console.log('[id].js CartList before item >');
+    console.log(cartList);
+    console.log('[id].js Item added is >');
+    console.log(item);
+    setCartlist(list => [...list, item]);
+  }
+  // ** Cart
+
   return (
     <>
 
@@ -25,8 +47,16 @@ export default function index() {
       <div>
 
         <main>
-          {providerId.ready ?
-              (<Profile paId={providerId.id} />) : (<CircularProgress />)
+          {!providerId.ready ?
+            (<CircularProgress />) :
+            (<Box
+            sx={{
+              position: 'relative',
+            }}
+            >
+              <Cart list={cartList} />
+              <Profile paId={providerId.id} request={addToCart} />
+            </Box>)
           }
         </main>
 
