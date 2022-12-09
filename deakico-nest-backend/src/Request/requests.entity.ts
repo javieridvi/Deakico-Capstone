@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { ArticleListEntity } from '../ArticleList/articleList.entity';
 
 export enum Status {
   REQUESTED = 'requested',
@@ -32,12 +33,9 @@ export class RequestEntity {
   @Column({ default: new Date(), type: 'timestamp' }) //find ways to set a default date of "now"
   req_date: Date;
 
-  @ManyToOne((type) => ItemEntity, (item) => item.requests)
+  @OneToMany((type) => ArticleListEntity, (articleList) => articleList.article_request)
   @JoinColumn({ name: 'i_id' })
-  item: ItemEntity[];
-
-  @Column({ nullable: true, type: 'int' })
-  i_id: number;
+  articleList: ArticleListEntity[];
 
   @ManyToOne((type) => UserAccountEntity, (user) => user.requests)
   @JoinColumn({ name: 'u_id' })

@@ -1,8 +1,6 @@
 import { LikeEntity } from '../Likes/likes.entity';
 import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
-import { RequestEntity } from '../Request/requests.entity';
 import { ReviewEntity } from '../Review/reviews.entity';
-// import { Categories } from '../ProviderAccount/providers.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -12,6 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { from } from 'rxjs';
+import { ArticleListEntity } from '../ArticleList/articleList.entity';
 
 export enum Categories {
   HAIR = 'hair',
@@ -73,8 +72,8 @@ export class ItemEntity {
   @Column({ type: 'int', nullable: false })
   pa_id: number;
 
-  @OneToMany((type) => RequestEntity, (req) => req.item)
-  requests: RequestEntity[];
+  @OneToMany((type) => ArticleListEntity, (articleList) => articleList.item_of_article)
+  articleList: ArticleListEntity[];
 
   @OneToMany((type) => ReviewEntity, (rev) => rev.item)
   reviews: ReviewEntity[];
