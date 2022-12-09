@@ -14,6 +14,7 @@ import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ItemRequest } from './requests.interface';
 import { RequestService } from './requests.service';
+import { ArticleList } from 'src/ArticleList/articleList.interface';
 
 @Controller('requests')
 export class ItemRequestController {
@@ -53,11 +54,11 @@ export class ItemRequestController {
 
   @UseGuards(JwtGuard)
   @Post()
-  insertRequest(
-    @Body() itemRequest: ItemRequest,
-    @Request() req: any,
-  ): Observable<ItemRequest> {
-    return this.requestsService.insertRequest(req.user, itemRequest);
+  insertRequest(@Body() fullRequest:{
+    request:  ItemRequest,
+    reqList: ArticleList,
+  }, @Request() req: any): Promise<ItemRequest> {
+    return this.requestsService.insertRequest(req.user, fullRequest.request, fullRequest.reqList);
   }
 
   /**
