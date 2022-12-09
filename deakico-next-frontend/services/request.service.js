@@ -5,7 +5,12 @@ const API_URL = process.env.API_URL;
 const entity = "requests";
 const endpoint = API_URL + entity;
 
-const insertRequest = async (data) => {
+const insertRequest = async (req, list) => {
+    data ={
+        request: req,
+        reqList: list
+    }
+
     return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 

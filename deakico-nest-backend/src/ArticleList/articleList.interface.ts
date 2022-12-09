@@ -3,5 +3,5 @@ export interface ArticleList {
     req_id?: number;
     i_id?: number;
     qty?: number;
-    price?: number;
+    priceAtReq?: number;
 }
