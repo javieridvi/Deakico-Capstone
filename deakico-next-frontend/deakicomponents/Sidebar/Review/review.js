@@ -3,9 +3,9 @@ import { Container, Box, } from '@mui/system';
 import{React, useState, useEffect, } from 'react';
 import Image from 'next/image';
 import axios from 'axios' ;
-import {ReviewForm} from '../../deakicomponents/reviewButton';
-import {CardView} from '../../deakicomponents/CardView' ;
-import reviewService from '../../services/review.service';
+import {ReviewForm} from './reviewButton';
+import {CardView} from '../../CardView' ;
+import reviewService from '../../../services/review.service';
 
 let rating = 0;
 
@@ -48,9 +48,9 @@ console.log(today);
 
   async function fetchItems() {
   const res = await reviewService.getProviderReviews().then((res) =>{
-  var sizeR =   res.data.length; 
-  setPagination({...pagination, count: sizeR });
-  return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
+    var sizeR = res.data.length; 
+    setPagination({...pagination, count: sizeR });
+    return res.data.slice(pagination.from, pagination.to);  // todos los reviews 
   }).catch((error)=> { 
     console.log(error);
   }) 
@@ -130,7 +130,7 @@ console.log(today);
 open = {open}
 handleClose= {handleClose}
 title = "-Company Name-"  //to do: pass the company Name too 
-
+//item prop
 />
 </>
  {/* REVIEW CARDS  */}      

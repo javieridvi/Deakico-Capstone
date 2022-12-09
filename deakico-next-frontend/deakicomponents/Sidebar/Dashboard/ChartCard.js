@@ -7,7 +7,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  CircularProgress
+  Skeleton
 } from "@mui/material";
 import React from "react";
 import {LineChart, PieChart, BarChart}  from "./Chart";
@@ -26,7 +26,7 @@ export function PieCard({ title, data, loading }) {
           <Typography color='primary'>
             {title}
           </Typography> 
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="demo-select-small">Filter</InputLabel>
             <Select
               labelId="demo-select-small"
@@ -39,11 +39,13 @@ export function PieCard({ title, data, loading }) {
             <MenuItem value="by-request">By Requests</MenuItem>
             <MenuItem value="by-rating">By Rating</MenuItem> 
             </Select>
-          </FormControl>
+          </FormControl> */}
           <Divider />
           {loading
           ? (
-            <CircularProgress size='100px'/>
+            <Skeleton>
+              <BarChart chartData={data}/>
+            </Skeleton> 
           )
           : (
             <PieChart chartData={data}/>
@@ -86,7 +88,9 @@ export function LineCard({ title, data, loading }) {
           <Divider />
           {loading
           ? (
-            <CircularProgress size='100px'/>
+            <Skeleton>
+              <BarChart chartData={data}/>
+            </Skeleton> 
           )
           : (
             <LineChart chartData={data}/>
@@ -110,7 +114,7 @@ export function BarCard({ title, data, loading }) {
           <Typography color='primary'>
             {title}
           </Typography> 
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="demo-select-small">Filter</InputLabel>
             <Select
               labelId="demo-select-small"
@@ -123,11 +127,13 @@ export function BarCard({ title, data, loading }) {
               <MenuItem value="likes">Likes</MenuItem>
               <MenuItem value="follows">Follows</MenuItem> 
             </Select>
-          </FormControl>
+          </FormControl> */}
           <Divider />
           {loading
           ? (
-            <CircularProgress size='100px'/>
+            <Skeleton>
+              <BarChart chartData={data}/>
+            </Skeleton> 
           )
           : (
             <BarChart chartData={data}/>

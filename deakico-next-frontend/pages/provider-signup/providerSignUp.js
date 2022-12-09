@@ -137,7 +137,7 @@ export default function ProviderSignUp() {
             }}
           >Enter your info down below</Typography>
         </Stack>
-        <Stack component="form" noValidate container spacing={2} onSubmit={handleSubmit}
+        <Stack component="form" container spacing={2} onSubmit={handleSubmit}
           sx={{
             mt: 3,
             minWidth: '100%'
@@ -206,7 +206,6 @@ export default function ProviderSignUp() {
               autoComplete="new-password"
               error={error}
               helperText={passwordMsg}
-              
               required
               fullWidth
             />

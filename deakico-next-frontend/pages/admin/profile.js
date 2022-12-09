@@ -3,15 +3,16 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, MenuItem, Rating, Stack, styled, Typography , CardMedia, TextField} from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
-import { ProductCard, } from "../../deakicomponents/Reusable/Card";
+import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
-import { useEffect, useState } from "react";
-import { AddProduct } from '../../deakicomponents/AddProduct';
+import { useEffect, useState, ChangeEvent } from "react";
+import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
+
 
 
 const StyledRating = styled(Rating)({
@@ -27,21 +28,21 @@ const StyledRating = styled(Rating)({
 const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile() {
-  const [selecting, setSelecting] = useState('');
+  let [selecting, setSelecting] = useState("")   ;
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
 
-  const profileRating = async () => {
-    const rvws = (await reviewService.getProviderReviews()).data;
+  const profileRating = async ()=>{
+    const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
     // console.log(rvws);
     let len = rvws.length;
     // console.log("len: "+ len)    //cantiad de reviews hechos
     // message = rData.map((item) => item?.r_message ) // List of all the messages 
-    const rating = rvws.map((item) => item?.rating)  // List of all the ratings. 
-
+    const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
+     
     let overallR = 0;   // overall rating calc  
 
     rating.forEach(element => {
@@ -53,10 +54,8 @@ export default function Profile() {
 
     //  return(overallRating);  // el overall rating 
   }
-  const handleSelect = (event) => {
-    console.log("event : " + event.target.value)
-    setSelecting(event.target.value)
-  };
+  
+
   // let testi = profileRating();  // As promise
   // console.log(testi);
   // const test =overallRating; 
@@ -89,60 +88,63 @@ export default function Profile() {
 
 
   const handleClickOpen = () => {
-    console.log("Open");
-    setOpen(true); // opens modal
-  }
-
+      console.log("Open") ;
+      setOpen(true); // opens modal
+      }
+   
   const handleClose = (e, reason) => {
-    setOpen(false);
+      setOpen(false);
+    }
+
+  const handleSelect = (e)=> {
+    setSelecting(e.target.value)
+    console.log("value: "+ e.target.value );
+    
   }
-
-
   return (
+      
+<Container>
+  <div className="topProfile"    > 
+  <Container 
+     sx={{
+        mt: 20 ,
+        width:'100%'
+    }}  > 
+    
+    <Box  xs={6} sx={{
+        maxWidth:'80%' ,
+        flexDirection:'column',
+    }} className="presentation-u"    >
 
-    <Container>
-      <div className="topProfile">
-        <Container
-          sx={{
-            mt: 20,
-            width: '100%'
-          }} 
-          >
-          <Box xs={6} 
-            className="presentation-u"    
-          sx={{
-            maxWidth: '80%',
-            flexDirection: 'column',
-          }}
-           >
-            <Box xs={4} 
-            sx={{
-              width: '100%',
-              display: 'flex',
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-            }} 
-            >
-              <Typography
-                sx={{
-                  left: '0',
-                  top: '10',
-                  fontWeight: '700',
-                  fontSize: '28px',
-                  mr: '2px',
-                }} 
-                > 
-                {provider?.pa_companyname}
-                </Typography>
-              <Stars rating={overallRating} />
-            </Box>
-            <Typography 
-            sx={{
-              fontSize: '28px',
-              fontWeight: '800',
-              mt: '10px',
-              mb: '20px',
-              direction: 'column'
+         <Box xs={4} sx={{
+        width:'100%' ,
+        display:'flex' ,
+        flexDirection: 'row' ,
+        flexWrap: 'wrap' ,
+      
+     
+            }} > 
+      
+        <Typography 
+      sx={{
+        left: '0' ,
+        top: '10' ,
+        fontWeight: '750' ,
+        fontSize: '28px' ,
+        mr:'2px',
+      
+       }} > Company Name  </Typography>   
+    
+       <Stars rating={overallRating}/>
+   
+     </Box>
+       <Typography  sx={{
+        
+        fontSize: '28px',
+        fontWeight:'700',
+        mt:'10px',
+        mb:'20px',
+        direction:'column'
 
             }}
             >
@@ -171,7 +173,8 @@ export default function Profile() {
               image='/Logphotos.png'
               width='auto'
               height="auto"
-            />
+              sx={{objectFit:'unset'}}
+               />
           </div>
         </Box>
       </div>
@@ -191,78 +194,82 @@ export default function Profile() {
       `}
       </style>
       <main>
-        <Container className='Items'>
-          <Box className='serviceTab'  >
-            {/* <Typography 
-            sx={{
-            mt: '4rem',
+
+      
+    <Box className='serviceTab'  >
+      
+        {/* <Typography sx={{
+            mt:'4rem',
             fontSize: '18px',
             fontWeight: '200'
         }}
         >
             My  Services
-        </Typography> */}
-            <>
-              <FormControl sx={{ width: '50%', mt: '2rem', }}>
-                <InputLabel>Services</InputLabel>
-                <Select
-                  label="services"
-                  value={selecting}
-                  id="select-service"
-                  onChange={handleSelect}
-                >
-                  {serviceList.map((e, index) => {
-                    return (
-                      <div key={index}>
+        </Typography>
+         */}
 
-                        <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
+          <FormControl sx={{width: '50%' , mt:'3rem', }}>
+              <TextField
+                      name= 'selectingcompany'
+                      label="services"
+                      value= {selecting}
+                      select 
+                      id="select-service"
+                      type='string'
+                      onChange={handleSelect}
+                    > 
+         { serviceList.map((e, index) => { 
+          return ( 
+                  <MenuItem  key={index} id='serviceName' value={e.i_name}> {e.i_name} </MenuItem>
+                         
+          ); 
+         }  )}         
+                   </TextField>  
+           </FormControl>
+                  <Typography
+                    sx={{
+                      mt: '2rem',
+                      mb: '1rem',
+                      width:'80%'
+                    }} > 
 
-                      </div>
-                    );
-                  })}
-
-                </Select>
-              </FormControl>
-              <Typography
-                sx={{
-                  mt: '2rem',
-                  mb: '4rem',
-                  width: '50%'
-                }}
-              >
-                What about my company :
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-              </Typography>
-            </>
-
+                    What about my service :  {selecting} 
+                    
+                   </Typography>
+    
+                   <Typography
+                    sx={{
+                      mt: '1rem',
+                      mb: '4rem',
+                      width:'60%'
+                    }} > 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.  
+             
+        </Typography>
           </Box>
 
-          <Box className='Products' width='90%'>
-            <Stack>
-
-              {productList.map((e, index) => {
-                <div>
-                  <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <ProductCard
-                      rating={e.i_rating}
-                      category={e.i_category}
-                      src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-                      title={e.i_name}
-                      description={e.i_description}
-                      price={e.i_price}
-                    />
-                  </Grid>
-                </div>
-
-              })}
-            </Stack>
+          <Box className='Products' display='flex' flexWrap='wrap'>
+          
+              {productList.map((e,index)=> (
+       <div key={index} >
+            <ProviderCardproducts
+                rating={e.i_rating}
+                category={e.i_category}
+                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                title={e.i_name}
+                description={e.i_description}
+                price={e.i_price}
+          
+              />    
+        </div>
+              ))}
+          
           </Box>
 
-        </Container>
       </main>
     </Container>
   )

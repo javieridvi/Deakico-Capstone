@@ -3,10 +3,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,19 +13,25 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
+//Icons for Sidebar
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import Dashboard from '../../deakicomponents/Dashboard/dashboard';
-import Profile from './profile';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
+import Dashboard from './Dashboard/dashboard';
+import Profile from '../../pages/admin/profile';
 
 import userService from '../../services/user.service';
-import DashboardFunc from '../dashboard';
+import Follows from './follows';
+import Liked from './liked';
+import Review from './Review/review';
+import Settings from './settings';
 
 const drawerWidth = 240;
 
@@ -92,6 +95,10 @@ export default function MainSidebar() {
         return <SettingsIcon/>;
       case 'Events':
         return <LocalActivityIcon/>;
+      case 'Liked Items':
+        return <FavoriteIcon/>;
+      case 'My Follows':
+        return <GroupAddIcon/>;
       default:
         return <SettingsIcon/>;
     }
@@ -105,11 +112,15 @@ export default function MainSidebar() {
       case 'Requests':
         return '#';
       case 'Reviews':
-        return '#';
+          return (<Review/>);
+      case 'Liked Items':
+        return (<Liked/>)
+      case 'My Follows':
+        return (<Follows/>)
       case 'Profile':
         return (<Profile/>);
       case 'Settings':
-        return '#';
+        return <Settings/>;
       case 'Events':
         return '#';
       default:
@@ -204,7 +215,7 @@ export default function MainSidebar() {
 
         <Divider />
         <List>
-          {['Settings', 'Events'].map((text, index) => (
+          {['Liked Items', 'My Follows', 'Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => {setComponent(text)} }>
                 <ListItemIcon>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head';
 import Profile from './profile';
-import MainSidebar from './Sidebar';
+import MainSidebar from '../../deakicomponents/Sidebar/Sidebar';
 
 
 export default function index() {

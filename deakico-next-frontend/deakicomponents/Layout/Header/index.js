@@ -1,5 +1,6 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Box, Divider, Grid, IconButton, Link, Menu, MenuItem, Toolbar } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import authService from "../../../services/auth/auth.service";
 import Account from './Account';
@@ -12,6 +13,7 @@ export default function Header() {
   const [loggedIn, setLoggedIn] = React.useState(undefined);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const router = useRouter();
 
   const checkLoggedIn = () => {
     setLoggedIn(authService.isLoggedIn());
@@ -33,8 +35,9 @@ export default function Header() {
   };
 
   const handleLogout = () => {
+    setAnchorEl(null);
     authService.logout();
-    location.reload();
+    location.assign('/');
   }
 
   React.useEffect(() => {
@@ -59,8 +62,11 @@ export default function Header() {
               <Box component='div' display={{ xs: 'block', lg: 'none' }}>
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
                 <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+                <MenuLink link='admin' onClick={handleClose}>Shop</MenuLink>
+                <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
+                
+                
               </Box>
             </Menu>
       )
@@ -76,13 +82,12 @@ export default function Header() {
       >
         <MenuLink link='/login' onClick={handleClose}>Log In</MenuLink>
         <MenuLink link='/signup' onClick={handleClose}>Sign Up</MenuLink>
-        <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
         <Box component='div' display={{ xs: 'block', lg: 'none' }}>
           <Divider />
-          <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-          <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
-          <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+          <MenuLink link='/' onClick={handleClose}>Home</MenuLink> 
           <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+          <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
+         
         </Box>
       </Menu>)
     }
