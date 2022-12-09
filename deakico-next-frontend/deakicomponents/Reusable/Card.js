@@ -252,6 +252,7 @@ export function ProviderCardproducts(props){
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
     setIsHovering(true);
+    setTimeout(() =>  5000);
   };
   const handleMouseOut = () => {
    setIsHovering(false);
@@ -264,17 +265,14 @@ export function ProviderCardproducts(props){
 return (
    <Card sx={{m: '2rem', backgroundColor:'#e5e5e5', width:'20rem'}} >
 
-    <Box onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} sx={{}} >
-      {isHovering && (
-  
+    <Box onMouseOver={handleMouseOver}  >
+   
+     {isHovering && (
      <Button variant="text" sx={{
-   display:'flex',
-   justifyContent:'space-evenly', ml:'80%', 
-  '&:hover':{
- }}} onClick= {handleDelete}> DELETE </Button>
-  )} 
-
-  <CardMedia
+   display:'flex', ml:'80%', }}
+    onClick= {handleDelete}> X </Button>
+ )}  
+  <CardMedia onMouseOut={handleMouseOut}
   component="img"
   image = {props.image}
   sx={{
