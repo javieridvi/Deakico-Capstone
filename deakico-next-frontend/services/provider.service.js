@@ -29,10 +29,12 @@ const getAllProvidersWithFollow = async () => {
     return await axios.get(endpoint+"/follows", {headers: authHeader()});
 };
 
-const getProvider = async (pa_id) => {
-    return await axios.get(endpoint + "/" + pa_id, {headers: authHeader()})
+//fetches the logged-in provider
+const getProvider = async () => {
+    return await axios.get(endpoint + "/account", {headers: authHeader()})
 }
 
+//fetches any provider, given the pa_id
 const getProviderProfile = async (pa_id) => {
   const data ={
     pa_id: pa_id,

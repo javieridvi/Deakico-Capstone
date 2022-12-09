@@ -83,8 +83,18 @@ export default function Profile() {
       console.log(err);
     })
   }
+
+  const getProvider = () => {
+    userService.getUser().then((res) => {
+      providerService.getProvider(res.data?.pa_id).then((res) => {
+        setProvider(res.data);
+      })
+    })
+  }
+
   useEffect(() => {
-    getProducts(); 
+    getProvider();
+    getProducts();
     profileRating();
   }, []);
 
@@ -137,7 +147,7 @@ function handleDelete(){
         fontSize: '28px' ,
         mr:'2px',
       
-       }} > Company Name  </Typography>   
+       }} > {provider.pa_companyname} </Typography>   
     
        <Stars 
         rating={overallRating}/>
