@@ -57,7 +57,7 @@ export class RequestService {
   async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList): Promise<InsertResult> {
     itemRequest.u_id = user.u_id;
     const request = await this.requestRepository.insert(itemRequest);
-    this.articleListService.insertArticleList()
+    //this.articleListService.insertArticleList()
     return request;
   }
 

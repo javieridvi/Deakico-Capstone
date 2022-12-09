@@ -12,6 +12,8 @@ import reviewService from '../../services/review.service';
 import { useEffect, useState, ChangeEvent } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
+import userService from '../../services/user.service';
+import providerService from '../../services/provider.service';
 
 
 
@@ -34,6 +36,7 @@ export default function Profile() {
   const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [provider, setProvider] = useState({});
 
   const profileRating = async ()=>{
     const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
@@ -81,7 +84,17 @@ export default function Profile() {
       console.log(err);
     })
   }
+
+  const getProvider = () => {
+    userService.getUser().then((res) => {
+      providerService.getProvider(res.data?.pa_id).then((res) => {
+        setProvider(res.data);
+      })
+    })
+  }
+
   useEffect(() => {
+    getProvider();
     getProducts();
     profileRating();
   }, []);
@@ -133,7 +146,7 @@ export default function Profile() {
         fontSize: '28px' ,
         mr:'2px',
       
-       }} > Company Name  </Typography>   
+       }} > {provider.pa_companyname} </Typography>   
     
        <Stars rating={overallRating}/>
    
