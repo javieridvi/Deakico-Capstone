@@ -16,5 +16,6 @@ import { ArticleListService } from './articleList.service';
   ],
   controllers: [ArticleListController],
   providers: [ArticleListService],
+  exports: [ArticleListService],
 })
 export class ArticleListModule {}

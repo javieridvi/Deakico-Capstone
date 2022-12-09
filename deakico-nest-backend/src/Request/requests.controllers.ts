@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { ItemRequest } from './requests.interface';
 import { RequestService } from './requests.service';
 import { ArticleList } from 'src/ArticleList/articleList.interface';
@@ -57,7 +57,7 @@ export class ItemRequestController {
   insertRequest(@Body() fullRequest:{
     request:  ItemRequest,
     reqList: ArticleList,
-  }, @Request() req: any): Promise<ItemRequest> {
+  }, @Request() req: any): Promise<InsertResult> {
     return this.requestsService.insertRequest(req.user, fullRequest.request, fullRequest.reqList);
   }
 

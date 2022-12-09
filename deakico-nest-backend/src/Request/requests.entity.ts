@@ -9,6 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ArticleListEntity } from '../ArticleList/articleList.entity';
+import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
 
 export enum Status {
   REQUESTED = 'requested',
@@ -40,6 +41,13 @@ export class RequestEntity {
   @ManyToOne((type) => UserAccountEntity, (user) => user.requests)
   @JoinColumn({ name: 'u_id' })
   user: UserAccountEntity[];
+
+  @ManyToOne((type) => ProviderAccountEntity, (provider) => provider.request)
+  @JoinColumn({ name: 'pa_id' })
+  provider: ProviderAccountEntity[];
+
+  @Column({ type: 'int'})
+  pa_id: number;
 
   @Column({ type: 'int'})
   u_id: number;
