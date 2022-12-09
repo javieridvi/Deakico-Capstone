@@ -24,7 +24,7 @@ const bstyle = {
 
 export default function BasicModal(props) {
 
-  return (
+  return( 
     <div>
       <Modal
         open={props.open}
@@ -32,14 +32,44 @@ export default function BasicModal(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography align='center' id="modal-modal-title" variant="h6" component="h2">
+        <Stack
+        spacing={2}
+          sx={
+            [style,
+              {
+                width: 'min(90%, 500px)',
+                maxHeight: '489px',
+                borderRadius: '1rem',
+                // margin: '1rem'
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',  
+              }]
+          }
+        >
+          <Typography 
+          variant="h6" 
+          component="h2"
+          align='center'
+          id="modal-modal-title"
+          sx={{
+            fontWeight: '800',
+            fontSize: '1.625rem'
+          }}
+          >
             {props.title}
           </Typography>
-          <Typography align='center' id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography 
+          variant='caption'
+          align='center'
+          id="modal-modal-description"
+          sx={{
+            fontSize: '1rem'
+          }}
+          >
             {props.message}
           </Typography>
-        </Box>
+        </Stack>
       </Modal>
     </div>
   );

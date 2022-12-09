@@ -63,9 +63,7 @@ export default function Header() {
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
                 <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
-                <MenuLink link='admin' onClick={handleClose}>Shop</MenuLink>
                 <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
-                
                 
               </Box>
             </Menu>

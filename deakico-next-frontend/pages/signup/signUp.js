@@ -91,7 +91,7 @@ export default function SignUp() {
       <CssBaseline />
 
       {/**Error Modal */}
-      <BasicModal 
+      <BasicModal
       open={open} 
       handleClose={() => {setOpen(false)}} 
       title="Email or Username already taken" 
