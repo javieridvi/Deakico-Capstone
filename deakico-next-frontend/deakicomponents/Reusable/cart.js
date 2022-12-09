@@ -12,12 +12,12 @@ export default function Cart(props) {
   const remove = props.remove;
 
   // Total **
-  function TotalPrice(){
+  function TotalPrice() {
     let total = 0;
     List.forEach(item => {
-      total = total + item.quantity*Number(item.price.replace(/[^0-9-]+/g,""))/100;
+      total = total + item.quantity * Number(item.price.replace(/[^0-9-]+/g, "")) / 100;
     });
-    total = (total).toLocaleString('en-US',{
+    total = (total).toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD'
     });
@@ -91,15 +91,15 @@ export default function Cart(props) {
           >+</ButtonBase>
         </Box>
         <div>
-        <ButtonBase 
-        onClick={() => remove(props.index)}
-        sx={{
-          marginTop: '0.375rem',
-          borderRadius: '0.25rem',
-          padding: '2px 4px',
-          left: '-4px',
-          }} >
-          <Typography variant="caption" color={'#6e6e6e'} >Remove</Typography>
+          <ButtonBase
+            onClick={() => remove(props.index)}
+            sx={{
+              marginTop: '0.375rem',
+              borderRadius: '0.25rem',
+              padding: '2px 4px',
+              left: '-4px',
+            }} >
+            <Typography variant="caption" color={'#6e6e6e'} >Remove</Typography>
           </ButtonBase>
 
         </div>
@@ -120,61 +120,62 @@ export default function Cart(props) {
 
   // Doesn't render until first item is added
 
-    return (
-      <Box
-        className="Cart"
+  return (
+    <Box
+      className="Cart"
+      sx={{
+        position: "absolute",
+        width: '100px',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 2,
+      }}
+    >
+      <Fab
+        color="primary"
+        aria-label="add"
+        onClick={toggleDrawer(true)}
         sx={{
-          position: "absolute",
-          width: '100px',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 2,
+          position: 'fixed',
+          right: { xs: 0, lg: 'calc(50% - 576px)' },
+          bottom: 0,
+          margin: '1rem',
         }}
       >
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={toggleDrawer(true)}
-          sx={{
-            position: 'fixed',
-            right: { xs: 0, lg: 'calc(50% - 576px)' },
-            bottom: 0,
-            margin: '1rem',
-          }}
-        >
-          <ShoppingCartIcon />
-        </Fab>
-        <Drawer
-          anchor={"right"}
-          open={drawer}
-          onClose={toggleDrawer(false)}
+        <ShoppingCartIcon />
+      </Fab>
+      <Drawer
+        anchor={"right"}
+        open={drawer}
+        onClose={toggleDrawer(false)}
+      >
+        <Box
+          sx={{ width: '200px' }}
+          role="presentation"
+        // onClick={toggleDrawer(false)}
+        // onKeyDown={toggleDrawer(false)}
         >
           <Box
-            sx={{ width: '200px' }}
-            role="presentation"
-          // onClick={toggleDrawer(false)}
-          // onKeyDown={toggleDrawer(false)}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
           >
-            <Box 
-            sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              }}
-              >
-              {List.map((ele, index) => (
-                <Box key={ele.name}>
-                  <ListProduct
-                    index={index}
-                    name={ele.name}
-                    price={ele.price}
-                    quantity={ele.quantity}
-                  />
-                  <Divider />
-                </Box>
-              ))}
-            </Box>
+            {List.map((ele, index) => (
+              <Box key={ele.name}>
+                <ListProduct
+                  index={index}
+                  name={ele.name}
+                  price={ele.price}
+                  quantity={ele.quantity}
+                />
+                <Divider />
+              </Box>
+            ))}
+          </Box>
+          <Box>
             <Box className="Total"
               sx={{
                 display: 'flex',
@@ -183,11 +184,34 @@ export default function Cart(props) {
               }}
             >
               <Typography variant="h6" >Total</Typography>
-              <TotalPrice/>
+              <TotalPrice />
             </Box>
             <Divider />
+            <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            >
+              <ButtonBase
+                sx={{
+                  width: '80%',
+                  height: '2.25rem',
+                  color: 'white',
+                  fontWeight: '600',
+                  fontSize: '0.75rem',
+                  marginTop: '1rem',
+                  borderRadius: '.75rem',
+                  backgroundColor: 'rgb(102, 105, 110)',
+                }}
+              >
+                MAKE REQUEST
+              </ButtonBase>
+            </Box>
           </Box>
-        </Drawer>
-      </Box>
-    )
-  }
+        </Box>
+      </Drawer>
+    </Box>
+  )
+}

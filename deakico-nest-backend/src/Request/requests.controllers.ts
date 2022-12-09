@@ -56,7 +56,7 @@ export class ItemRequestController {
   @Post()
   insertRequest(@Body() fullRequest:{
     request:  ItemRequest,
-    reqList: ArticleList,
+    reqList: ArticleList[],
   }, @Request() req: any): Promise<InsertResult> {
     return this.requestsService.insertRequest(req.user, fullRequest.request, fullRequest.reqList);
   }

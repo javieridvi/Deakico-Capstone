@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { from, Observable } from "rxjs";
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, InsertResult, Repository } from "typeorm";
 import { ArticleListEntity } from "./articleList.entity";
 import { ArticleList } from "./articleList.interface";
 
@@ -27,8 +27,8 @@ export class ArticleListService {
    * @param articleList a list of ArticleList objects
    * @returns insertion of many ArticleList objects into database.
    */
-  insertArticleList(articleList: ArticleList[]): Observable<DeepPartial<ArticleList[]>> {
-    return from(this.articleListRepository.save(articleList));
+  insertArticleList(articleList: ArticleList[]): Observable<InsertResult> {
+    return from(this.articleListRepository.insert(articleList));
   }
 
 }
