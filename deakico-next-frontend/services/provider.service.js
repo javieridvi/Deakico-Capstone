@@ -13,8 +13,8 @@ const insertProvider = async (data) => {
     ); 
 };
 
-const updateProvider = async (pa_id, data) => {
-    return await axios.put(endpoint + "/" + pa_id, data, {headers: authHeader()});
+const updateProvider = async (data) => {
+    return await axios.put(endpoint, data, {headers: authHeader()});
 };
 
 const deleteProvider = async () => {
