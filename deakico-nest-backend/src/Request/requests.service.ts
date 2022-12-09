@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { UserAccount } from '../UserAccount/users.interface';
-import { DataSource, DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 import { RequestEntity } from './requests.entity';
 import { ItemRequest } from './requests.interface';
 import { ArticleList } from 'src/ArticleList/articleList.interface';
@@ -54,10 +54,11 @@ export class RequestService {
     return res;
   }
 
-  async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList): Promise<ItemRequest> {
-    
+  async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList): Promise<InsertResult> {
     itemRequest.u_id = user.u_id;
-    return from(this.requestRepository.save(itemRequest));
+    const request = await this.requestRepository.insert(itemRequest);
+    this.articleListService.insertArticleList()
+    return request;
   }
 
   async updateRequest(
