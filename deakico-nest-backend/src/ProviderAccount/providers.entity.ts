@@ -24,7 +24,7 @@ export class ProviderAccountEntity {
   @PrimaryGeneratedColumn()
   pa_id: number;
 
-  @Column()
+  @Column({unique: true})
   pa_companyname: string;
 
   @Column({ nullable: true })
