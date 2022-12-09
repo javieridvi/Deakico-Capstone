@@ -107,7 +107,9 @@ export default function Profile() {
     const to = (page - 1) * pageSize + pageSize; 
     setPagination({...pagination, from: from, to: to});
   }
-
+function handleDelete(){
+  console.log("yup delete this")
+}
 
   return (
       
@@ -190,7 +192,7 @@ export default function Profile() {
       <main>
 
       
-     <Box className='serviceTab' sx={{mb:"4rem", width:'34rem'}} >
+     <Box className='serviceTab' sx={{mb:"4rem", width:'32rem'}} >
   
 
              <Typography
@@ -206,20 +208,22 @@ export default function Profile() {
 
 
           return (   
-            <div  key={index}>
+            <div  key={index} >
+              <Stack >
           <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
         <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
-          <Typography  sx={{ width: '33%', flexShrink: 0 }}> {e.i_name} </Typography>
+          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.i_name} </Typography>
           <Typography sx={{ color: 'text.secondary' }}>{e.i_category}</Typography>
         </AccordionSummary>
         <AccordionDetails>
+          <CardMedia component='img'  sx={{aspectRatio:'9/4'}} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"    />
           <Typography> Description:  {e.i_description} </Typography>
           <Typography>  Price: {e.i_price} </Typography>
           <Typography>  Time: {e.s_timeslot} minutes </Typography>
+          {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
 
-          
         </AccordionDetails>
-     </Accordion> </div> 
+     </Accordion></Stack> </div> 
      ); 
       }  )} 
 
@@ -236,7 +240,7 @@ export default function Profile() {
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
-                // delete= {Deletebutton }  To DO: 
+                // delete= {handleDelete}   
               />    
         </div>
               ))}

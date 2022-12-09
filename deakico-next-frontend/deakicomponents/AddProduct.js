@@ -1,5 +1,5 @@
 import {React, useState} from 'react'
-import { Dialog , Typography, Box , FormControl , TextField,Stack, MenuItem ,InputLabel , ToggleButton , ToggleButtonGroup , Select,FormHelperText , InputAdornment, Button, CardMedia} from '@mui/material'
+import { Dialog , Typography, Box , FormControl , Input, TextField,Stack, MenuItem ,InputLabel , ToggleButton , ToggleButtonGroup , Select,FormHelperText , InputAdornment, Button, CardMedia} from '@mui/material'
 import itemService from '../services/item.service';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -96,7 +96,7 @@ export  function AddProduct(props) {
      i_type: type, 
      p_stock: stock, 
      s_timeslot: workDuration,
-     
+
     } ;
     console.log(newItem); 
     try {
@@ -135,12 +135,17 @@ export  function AddProduct(props) {
         
         
         <div id='itemForm'>
-  <Box display='flex' mt="10px">
- <FormHelperText sx={{ml:'40px', mt:'20px', color:'black', }}>*choose a category</FormHelperText>
- <FormHelperText sx={{ml:'58px', mt:'20px',  color:'black', }}>*The type of your item </FormHelperText>
- </Box>   
+  <Box  mt="1rem" sx={{textAlign:'center'}}>
+  {/* <FormHelperText sx={{textAlign:'center'}}>Picture of the Item </FormHelperText> */}
+      <Input  variant="standard" noValidate type='file' sx={{ width:'auto', border:'none'}}> </Input>
+      </Box> 
+      
+      
+ <Box sx={{display:'flex'}} >  <FormHelperText sx={{ml:'40px', mt:'1rem',  }}>*choose a category</FormHelperText>
+  <FormHelperText sx={{ml:'3rem', textAlign:'center', mt:'1rem',  }}>*The type of your item </FormHelperText>   </Box>
+
   <Box sx={{ml:'40px', display:'flex', }}> 
-  <Select
+ <Select
     id="catego"
     defaultValue='Other'
     placeholder='Category'

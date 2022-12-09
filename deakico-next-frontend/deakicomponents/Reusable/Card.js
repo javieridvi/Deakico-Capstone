@@ -29,6 +29,7 @@ export function ProviderCard(props) {
 
   // Functions
 
+
   function handleClick(following, title, id) {
     // When following undefined user is not logged in
     if (following == undefined) {
@@ -255,20 +256,23 @@ export function ProviderCardproducts(props){
   const handleMouseOut = () => {
    setIsHovering(false);
   };
+  
+  function handleDelete(){
+    console.log("yup delete this");
+  }
 
 return (
    <Card sx={{m: '2rem', backgroundColor:'#e5e5e5', width:'20rem'}} >
-    {/* <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
+
+    <Box onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} sx={{}} >
       {isHovering && (
-     
+  
      <Button variant="text" sx={{
    display:'flex',
-   justifyContent:'space-evenly', ml:'40%', 
+   justifyContent:'space-evenly', ml:'80%', 
   '&:hover':{
-  color:'pink', 
- }}}onClick={props.delete}> X </Button>
-
-  )} </div> */}
+ }}} onClick= {handleDelete}> DELETE </Button>
+  )} 
 
   <CardMedia
   component="img"
@@ -279,7 +283,7 @@ return (
     color: 'whitesmoke' ,
 
   }}
-    /> 
+    /> </Box>
   <Typography variant={'h6'} className={'Card-Title'}
           sx={{
             height: '1.25rem', // 20px
