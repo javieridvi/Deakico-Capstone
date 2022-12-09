@@ -54,10 +54,11 @@ export class RequestService {
     return res;
   }
 
-  async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList): Promise<InsertResult> {
+  async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList[]): Promise<InsertResult> {
     itemRequest.u_id = user.u_id;
-    const request = await this.requestRepository.insert(itemRequest);
-    //this.articleListService.insertArticleList()
+    const request = (await this.requestRepository.insert(itemRequest)).raw;
+    articleList = articleList.map(a => ({...a, req_id: request.req_id}));
+    this.articleListService.insertArticleList(articleList)
     return request;
   }
 

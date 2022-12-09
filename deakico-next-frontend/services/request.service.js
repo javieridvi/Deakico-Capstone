@@ -10,7 +10,6 @@ const insertRequest = async (req, list) => {
         request: req,
         reqList: list
     }
-
     return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
