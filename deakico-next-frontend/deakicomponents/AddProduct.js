@@ -1,11 +1,12 @@
 import {React, useState} from 'react'
-import { Dialog , Typography, Box , FormControl , TextField, MenuItem ,InputLabel , ToggleButton , ToggleButtonGroup , Select,FormHelperText , InputAdornment, Button, CardMedia} from '@mui/material'
+import { Dialog , Typography, Box , FormControl , Input, TextField,Stack, MenuItem ,InputLabel , ToggleButton , ToggleButtonGroup , Select,FormHelperText , InputAdornment, Button, CardMedia} from '@mui/material'
 import itemService from '../services/item.service';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { width } from '@mui/system';
 
 
 
@@ -33,20 +34,20 @@ export  function AddProduct(props) {
   const handleType = (event) => {
     const t =  event.target.value
     console.log('test: '+ t)
+  try{
     setItemType(event.target.value);  //testing
-    try{
     if((t||{itemType}) == 'product'){
     document.getElementById('datepick').style.display = 'none';
     document.getElementById('stock').style.display= 'block';
     }
     else {
-      document.getElementById('datepick').style.display = 'inline';
+      document.getElementById('datepick').style.display = 'block';
       document.getElementById('stock').style.display= 'none';
 
     }
   }
-  catch(err){
-    console.log("ERROR, cant choose the same twice")
+  catch(err ){
+    console.log("ERROR, cant choose the same twice");
   }
   };
 
@@ -56,23 +57,32 @@ export  function AddProduct(props) {
     location.replace("/admin")
   } 
 
+
+   const  getMinutes =(newValue) =>{
+  if(newValue != null){
+    setValue(newValue)
+    var time = String(newValue.format('HH:mm'))
+    var hour = parseInt(time.substring(0, time.indexOf(":")))
+    var m = parseInt(time.substring(time.indexOf(":")+1))
+    console.log("hour in minutes: " + hour*60);
+    console.log("minutes: "+ m);
+    time = m + hour*60;
+    console.log("Final time:"+time)
+    setMinute(time)            
+
+  }}
+
   const AddingItem = (event) =>{
     const catego = category;
-    // console.log(catego);
     const name  = document.getElementById('itemName').value ; 
-    // console.log("name: "+name);
     const desc = document.getElementById('description').value ; 
-    // console.log("desc: "+desc);
     const price = document.getElementById('price').value;
-    // console.log("price: "+price);
     const type = itemType;
-    // console.log("type: "+type);
     const stock = document.getElementById('stock').value;
-    // console.log("stock: "+stock);
-    const workDuration = document.getElementById('timePicker').value;
+    const workDuration = minute;
     console.log("Time Picker: "+ workDuration); 
     
-   if( catego || name || price || type == null ){
+   if( catego == "" || name == "" || type == null ){
       
       console.log('error Item not added');
       alert('Item not added, missing information here!');
@@ -85,23 +95,26 @@ export  function AddProduct(props) {
      i_category: catego, 
      i_type: type, 
      p_stock: stock, 
+     s_timeslot: workDuration,
+
     } ;
     console.log(newItem); 
     try {
     itemService.insertItem(newItem);
     alert("Item Added");
-    redirect();}
+    redirect();
+  }
     catch (err) {
       alert("Error Item not added");
       redirect();
     }
 }
-
-
 }
   
-  const [value, setValue] = useState(dayjs("HH-mm"));
-  // console.log("Testin value: " + value)
+  const [value, setValue] = useState();
+  const [minute, setMinute] = useState(0);
+
+
 
 
   return ( 
@@ -111,23 +124,28 @@ export  function AddProduct(props) {
         //  onClose={props.handleClose} 
          aria-labelledby="modal-modal-title"    
          sx={{
-          maxWidth:'xl',
+          maxWidth:'100%',
          }}    >
         <Box sx={{
             width: '35rem', 
             height:'38rem',
         }}>
-        <Box sx={{backgroundColor:'pink'}}><Button sx={{ml:'1rem', mt:'10px'}} onClick={props.handleClose}> Cancel</Button>
-        <Typography sx={{ fontWeight:'bold' , textAlign:'center' }}> New Item </Typography>  </Box> 
+        <Box sx={{backgroundColor:'pink'}}><Button sx={{ml:'1rem', mt:'10px' }} onClick={props.handleClose}> Cancel</Button>
+        <Typography sx={{ fontWeight:'bold' , textAlign:'center' ,mt:'10px' }}> New Item </Typography>  </Box> 
         
         
         <div id='itemForm'>
-  <Box display='flex' mt="10px">
- <FormHelperText sx={{ml:'40px', mt:'20px', color:'black', }}>*choose a category</FormHelperText>
- <FormHelperText sx={{ml:'58px', mt:'20px',  color:'black', }}>*The type of your item </FormHelperText>
- </Box>   
+  <Box  mt="1rem" sx={{textAlign:'center'}}>
+  {/* <FormHelperText sx={{textAlign:'center'}}>Picture of the Item </FormHelperText> */}
+      <Input  variant="standard" noValidate type='file' sx={{ width:'auto', border:'none'}}> </Input>
+      </Box> 
+      
+      
+ <Box sx={{display:'flex'}} >  <FormHelperText sx={{ml:'40px', mt:'1rem',  }}>*choose a category</FormHelperText>
+  <FormHelperText sx={{ml:'3rem', textAlign:'center', mt:'1rem',  }}>*The type of your item </FormHelperText>   </Box>
+
   <Box sx={{ml:'40px', display:'flex', }}> 
-  <Select
+ <Select
     id="catego"
     defaultValue='Other'
     placeholder='Category'
@@ -146,8 +164,8 @@ export  function AddProduct(props) {
   <ToggleButtonGroup  value={itemType} color="primary"
   onChange={handleType} sx={{ml:'16px' }
 }>
-    <ToggleButton  value='product' sx={{m:'10px' }}>Product</ToggleButton>
-    <ToggleButton  value='service' sx={{m:'10px'}}>Service</ToggleButton>
+    <ToggleButton   value='product' sx={{m:'10px' }}>Product</ToggleButton>
+    <ToggleButton   disableFocusRipple	 value='service' sx={{m:'10px'}}>Service</ToggleButton>
 
   </ToggleButtonGroup>
 
@@ -160,29 +178,22 @@ export  function AddProduct(props) {
          <TextField id='price' defaultValue={0} type="number"  sx={{m:'10px',}} label="Item Price" InputProps={{
             startAdornment: <InputAdornment position="start"> $ </InputAdornment>, inputProps:{min:0}
           }} /> 
-<Box id='stock' display='none'><TextField  type="number"  sx={{m:'10px' }}  label="Item Stock" InputProps={{ inputProps:{min:0}}}/> </Box>
+<Box id='stock' display='none'><TextField  type="number"  sx={{m:'10px', width:'15rem' }}  label="Item Stock" InputProps={{ inputProps:{min:0}}}/> </Box>
          <Box id='datepick'display='none' sx={{mt:"1rem", mb:'10px'}}>
-         <LocalizationProvider  dateAdapter={AdapterDayjs}>
-          <TimePicker
-          ampm={false}
-          ampmInClock         
-          views={['hours', 'minutes']}
-          inputFormat="HH:mm"
-          mask="__:__"
-          // label= "time that would take to get done"
-          value={value}   
-          onChange={(newValue) => {
-            console.log("new Value here: "+ newValue.format('HH:mm'));
-            console.log(" Value in minutes here: "+ newValue);
 
-            setValue(newValue.format('HH:mm'));
-            
-          }}
-          
-        
+         <LocalizationProvider  dateAdapter={AdapterDayjs}>
+          <Stack>
+  
+   <TimePicker
+          ampm={false}
+          label= "time that takes to get done: hours/min"
+          inputFormat="HH:mm"
+          value={value}
+          onChange={getMinutes}
           renderInput={(params) => <TextField {...params} />}
         />
 
+          </Stack>
         </LocalizationProvider>
         </Box>
         </FormControl>   
@@ -197,11 +208,3 @@ export  function AddProduct(props) {
   )
 }
   
-        {/* "i_name": "Apart. Ciudadela",
-        "i_description": "el precio es la mensualidad",
-        "i_price": "$1.00",
-        "i_category": "other",
-        "i_rating": "4",
-        "i_type": "product",
-        "p_stock": 1,
-        "pa_id": 5 */}

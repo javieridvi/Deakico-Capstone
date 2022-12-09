@@ -28,6 +28,10 @@ const StyledRating = styled(Rating)({
   },
 });
 
+const email = 'deakicomoelcoqui@gmail.com'  // hacer el email diinamic dependiendo el profile id
+
+const email = 'deakicomoelcoqui@gmail.com'  // hacer el email diinamic dependiendo el profile id
+
 //Test const email CAMBIARLO POR EL USER ADMIN EMAIL
 const email = 'deakicomoelcoqui@gmail.com'
 
@@ -122,32 +126,31 @@ export default function Profile(props) {
     rating.forEach(element => {
       overallR += parseFloat(element)
 
-    });
 
-    setOverallRating(parseFloat(overallR / len).toFixed(2));
-
-    //  return(overallRating);  // el overall rating   
-  }
-  const handleSelect = (event) => {
-    console.log("event : " + event.target.value)
-    setSelecting(event.target.value)
-  };
-  // let testi = profileRating();  // As promise
-  // console.log(testi);
-  // const test =overallRating; 
-  // console.log("profileRating: "+ test)
-
-
-  const handleClickOpen = () => {
-    console.log("Open");
-    setOpen(true); // opens modal
+  const sendEmail = () =>{
+    return window.open('mailto:'+ id.email)
   }
 
-  const handleClose = (e, reason) => {
-    setOpen(false);
+  const handleFollow = () => {
+    const elem = document.getElementById('Follow');
+
+    if(elem.value == "Follow"){
+      // alert("Followed");
+      
+      elem.value = 'Followed';
+      elem.innerHTML = 'Followed';
+      elem.style.backgroundColor= '#c1efdd';
+      elem.style.color= 'black';
+    }
+
+    else{
+      elem.value = "Follow";
+      elem.innerHTML = '+ Follow';
+      elem.style.backgroundColor = '#ea498c';
+      elem.style.color= 'whitesmoke';
+    }
+
   }
-
-
   return (
 
     <Container>
@@ -199,15 +202,11 @@ export default function Profile(props) {
               {provider?.pa_desc}
             </Typography>
           </Box >
-          {/* <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
-            <AddProduct
-              open={open}
-              handleClose={handleClose}
-            />
-            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button>
-          </Stack> */}
+          <Stack className='topButtons' direction="row" spacing={2}>
+            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="primary" startIcon={<AddIcon />}> Follow </Button>
+            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}>Review</Button>
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact Provider</Button>
+          </Stack>
         </Container>
         <Box xs={6}
           sx={{
