@@ -12,7 +12,6 @@ export default function index() {
   const router = useRouter();
   useEffect(() => {
     if (router.query.id != undefined) {
-      console.log('[id].js query id is: ' + router.query.id);
       setProviderId({ id: router.query.id, ready: true });
     }
   }, [router.query])
@@ -21,19 +20,38 @@ export default function index() {
   // Cart **
   const [cartList, setCartlist] = useState([]);
   function addToCart(item) {
-    /*
-    item = {
-      id: ,
-      name: ,
-      price; ,
+    const inCart = cartList.some((cartItem, index) => {
+      if (cartItem.id === item.id) {
+        changeItemQuantity(index, (cartItem.quantity + 1));
+        return true;
+      }
+      return false;
+    })
+    if (!inCart) {
+      item.quantity = 1;
+      setCartlist(list => [...list, item]);
     }
-    */
-    console.log('[id].js CartList before item >');
-    console.log(cartList);
-    console.log('[id].js Item added is >');
-    console.log(item);
-    setCartlist(list => [...list, item]);
   }
+
+  function changeItemQuantity(index, qty) {
+    setCartlist(list =>
+      list.map((item, indx) => {
+        if (indx === index) {
+          return { ...item, quantity: qty };
+        }
+        return item;
+      }),
+    );
+  }
+
+  function removeItem(index) {
+    setCartlist(list =>
+      list.filter((item, indx) => {
+        return indx != index;
+      })
+    );
+  }
+
   // ** Cart
 
   return (
@@ -50,12 +68,15 @@ export default function index() {
           {!providerId.ready ?
             (<CircularProgress />) :
             (<Box
-            sx={{
-              position: 'relative',
-            }}
+              sx={{
+                position: 'relative',
+              }}
             >
-              <Cart list={cartList} />
               <Profile paId={providerId.id} request={addToCart} />
+              {cartList.length > 0 ?
+                (<Cart list={cartList} changeQty={changeItemQuantity} remove={removeItem} />)
+                : null
+              }
             </Box>)
           }
         </main>
