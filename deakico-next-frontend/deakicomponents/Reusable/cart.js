@@ -1,4 +1,4 @@
-import { Box, Button, ButtonBase, Fab, Typography } from "@mui/material";
+import { Box, Button, ButtonBase, Fab, InputBase, Typography } from "@mui/material";
 import { useState } from "react";
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -7,33 +7,58 @@ import Drawer from '@mui/material/Drawer';
 import * as React from 'react';
 
 export default function Cart(props) {
-
-  const [drawer, setDrawer] = useState(false);
   const List = props.list;
+  const changeQty = props.changeQty;
+  const remove = props.remove;
 
+  // Total **
+  function TotalPrice(){
+    let total = 0;
+    List.forEach(item => {
+      total = total + item.quantity*Number(item.price.replace(/[^0-9-]+/g,""))/100;
+    });
+    total = (total).toLocaleString('en-US',{
+      style: 'currency',
+      currency: 'USD'
+    });
+    return (<Typography variant="h6" >{total}</Typography>);
+  }
+  // ** Total
 
+  // Drawer **
+  const [drawer, setDrawer] = useState(false);
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     setDrawer(open);
   }
+  // ** Drawer
 
+  // Product List **
   function ListProduct(props) {
-    const [quantity, setQuantity] = useState(1);
+    const quantity = props.quantity;
     const buttonStyle = {
-      width: '40px',
-      height: '40px',
-      border: 'solid 2px rgba(0, 0, 0, 0.2)',
-      borderRadius: '4px',
+      width: '35px',
+      height: '35px',
+      border: 'solid 2px rgba(0, 0, 0, 0.16)',
+      '&:disabled': {
+        color: '#cfcfcf',
+      }
     }
-    console.log('item added');
+    const inputStyle = {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: '0.75rem',
+    }
+
     return (
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minWidth: '200px',
+          minWidth: 'auto',
           minHeight: '100px',
           backgroundColor: 'white',
           textAlign: 'left',
@@ -47,26 +72,41 @@ export default function Cart(props) {
           sx={{
             display: 'flex',
             flexDirection: 'row',
+            marginTop: '.5rem',
           }}
         >
           <ButtonBase
-            sx={{
-
-            }}
+            disabled={quantity == 1}
+            onClick={() => changeQty(props.index, (quantity - 1))}
+            sx={buttonStyle}
           >-</ButtonBase>
-          <div>
-            <Typography variant="caption">{quantity}</Typography>
-          </div>
+          <Box
+            sx={[buttonStyle, inputStyle]}
+          >
+            {quantity}
+          </Box>
           <ButtonBase
-            sx={{
-
-            }}
+            onClick={() => changeQty(props.index, (quantity + 1))}
+            sx={buttonStyle}
           >+</ButtonBase>
         </Box>
-        <Divider />
+        <div>
+        <ButtonBase 
+        onClick={() => remove(props.index)}
+        sx={{
+          marginTop: '0.375rem',
+          borderRadius: '0.25rem',
+          padding: '2px 4px',
+          left: '-4px',
+          }} >
+          <Typography variant="caption" color={'#6e6e6e'} >Remove</Typography>
+          </ButtonBase>
+
+        </div>
       </Box>
     )
   }
+  // ** Product List
 
   /*
   req_id
@@ -79,10 +119,7 @@ export default function Cart(props) {
   */
 
   // Doesn't render until first item is added
-  if (List.length < 1) {
-    return null;
-  } else {
-    console.log('cart.js Cart has item');
+
     return (
       <Box
         className="Cart"
@@ -120,17 +157,24 @@ export default function Cart(props) {
           // onClick={toggleDrawer(false)}
           // onKeyDown={toggleDrawer(false)}
           >
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              {List.map((ele) => (
-                <Box key={ele.name} disablePadding>
+            <Box 
+            sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              }}
+              >
+              {List.map((ele, index) => (
+                <Box key={ele.name}>
                   <ListProduct
+                    index={index}
                     name={ele.name}
                     price={ele.price}
+                    quantity={ele.quantity}
                   />
+                  <Divider />
                 </Box>
               ))}
             </Box>
-            <Divider />
             <Box className="Total"
               sx={{
                 display: 'flex',
@@ -139,7 +183,7 @@ export default function Cart(props) {
               }}
             >
               <Typography variant="h6" >Total</Typography>
-              <Typography variant="h6" >Total</Typography>
+              <TotalPrice/>
             </Box>
             <Divider />
           </Box>
@@ -147,4 +191,3 @@ export default function Cart(props) {
       </Box>
     )
   }
-}
