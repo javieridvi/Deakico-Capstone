@@ -2,6 +2,7 @@ import { type } from 'os';
 import { FollowEntity } from '../Follows/follows.entity';
 import { ItemEntity } from '../Item/items.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { RequestEntity } from 'src/Request/requests.entity';
 
 export enum Categories {
   HAIR = 'hair',
@@ -41,6 +42,9 @@ export class ProviderAccountEntity {
 
   @OneToMany((type) => ItemEntity, (item) => item.provider)
   items: ItemEntity[];
+
+  @OneToMany((type) => RequestEntity, (request) => request.provider)
+  request: RequestEntity[];
 
   @OneToMany((type) => FollowEntity, (follow) => follow.follows_provider)
   follows: FollowEntity[];

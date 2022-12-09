@@ -3,11 +3,19 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia } from '@mui/material';
+import { width } from '@mui/system';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import providerService from '../../services/provider.service';
+import { ProductCard, } from "./Card";
+import itemService from '../../services/item.service';
+import reviewService from '../../services/review.service';
+import { useEffect, useState } from "react";
+import { AddProduct } from '../../deakicomponents/AddProduct';
 import Stars from './Rating';
+import providerService from '../../services/provider.service';
+import authService from '../../services/auth/auth.service';
+import { LogInPopUp } from '../Modal';
+
 
 
 
@@ -20,33 +28,125 @@ const StyledRating = styled(Rating)({
   },
 });
 
-export default function Profile(id) {
+//Test const email CAMBIARLO POR EL USER ADMIN EMAIL
+const email = 'deakicomoelcoqui@gmail.com'
+
+export default function Profile(props) {
+  const providerId = props.paId;
+  const [overallRating, setOverallRating] = useState(0);
+  const [serviceList, setServiceList] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [selecting, setSelecting] = useState('');
+  const [open, setOpen] = useState(false);
+
+  // Modal**
+  const [openModal, setOpenModal] = useState(false);
+  const [modalTxt, setModalTxt] = useState({ ttl: '', msg: '' });
+  function handleLogInOpen(title) {
+    setModalTxt({
+      ttl: 'Title',
+      msg: 'message'
+    });
+    setOpenModal(true);
+  };
+  const handleLogInClose = () => setOpenModal(false);
+
+  // ** Modal
+
+
+  // Profile info **
   // const provider = await providerService.getProviderProfile(10)
   const [provider, setProvider] = useState(undefined);
 
-  function RequestProfile(ID) {
-    providerService.getProviderProfile(ID).then((res) => {
+  useEffect(() => {
+
+    console.log(props)
+    RequestProfile(providerId);
+    getProducts(providerId);
+    // profileRating();
+  }, [])
+
+  // Returns profile info of current provider
+  function RequestProfile(paID) {
+    console.log('provider is: ' + paID)
+    providerService.getProviderProfile(paID).then((res) => {
       setProvider(res.data);
-      console.log(res);
+      console.log(res.data);
     }).catch((err) => {
       console.log(err);
     })
   }
 
-  useEffect(() => {
-    RequestProfile(id);
-  }, [])
+  // Returns the products of current provider based on user being logged in
+  const getProducts = (paID) => {
+    console.log('provider for items is: ' + paID)
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      description: data.get('description'),
-      price: data.get('price'),
-      category: data.get('category')
+    let request;
+    if (authService.isLoggedIn()) {
+      request = itemService.getItemOfProviderLiked;
+    } else {
+      request = itemService.getItemOfProvider;
+    }
+
+    request(paID).then((res) => {
+      // console.log('items >');
+      // console.log(res.data);
+      // setItemList(res.data);
+      // const Services = res.data.map((item) => item?.i_type )
+      // console.log("Services Type: "+ Services);
+      res.data.forEach(element => {
+        if (element.i_type == 'service') {
+          console.log("true");
+          setServiceList(serviceList => [...serviceList, element])
+        }
+        else {
+          setProductList(productList => [...productList, element])
+        }
+
+      });
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+  // ** Profile info
+
+  const profileRating = async () => {
+    const rvws = (await reviewService.getProviderReviews()).data;
+    let len = rvws.length;
+    // console.log("len: "+ len)    //cantiad de reviews hechos
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
+    const rating = rvws.map((item) => item?.rating)  // List of all the ratings.   
+
+    let overallR = 0;   // overall rating calc  
+
+    rating.forEach(element => {
+      overallR += parseFloat(element)
+
     });
+
+    setOverallRating(parseFloat(overallR / len).toFixed(2));
+
+    //  return(overallRating);  // el overall rating   
+  }
+  const handleSelect = (event) => {
+    console.log("event : " + event.target.value)
+    setSelecting(event.target.value)
   };
+  // let testi = profileRating();  // As promise
+  // console.log(testi);
+  // const test =overallRating; 
+  // console.log("profileRating: "+ test)
+
+
+  const handleClickOpen = () => {
+    console.log("Open");
+    setOpen(true); // opens modal
+  }
+
+  const handleClose = (e, reason) => {
+    setOpen(false);
+  }
+
 
   return (
 
@@ -59,11 +159,11 @@ export default function Profile(id) {
           }}
         >
           <Box xs={6}
+            className="presentation-u"
             sx={{
-              maxWidth: '60%',
+              maxWidth: '80%',
               flexDirection: 'column',
             }}
-            className="presentation-u"
           >
             <Box xs={4}
               sx={{
@@ -71,28 +171,20 @@ export default function Profile(id) {
                 display: 'flex',
                 flexWrap: 'wrap',
                 flexDirection: 'row',
-                justifyContent: 'center',
               }}
             >
               <Typography
                 sx={{
                   left: '0',
                   top: '10',
-                  fontWeight: 'bold',
+                  fontWeight: '700',
                   fontSize: '28px',
-                  mr: '3px'
+                  mr: '2px',
                 }}
               >
                 {provider?.pa_companyname}
               </Typography>
-              {/* <Rating
-                name="rating"
-                value={provider?.pa_rating}
-                precision={0.5}
-                sx={{ left: '2px', }}
-                readOnly
-              /> */}
-              <Stars width={'100px'} rating={provider?.pa_rating} />
+              <Stars rating={provider?.pa_rating} />
             </Box>
             <Typography
               sx={{
@@ -107,11 +199,15 @@ export default function Profile(id) {
               {provider?.pa_desc}
             </Typography>
           </Box >
-          <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />} >Follow </Button>
-            <Button variant="contained" startIcon={<StarOutlineIcon />}>Review</Button>
-            <Button variant="contained" startIcon={<EmailIcon />}>Contact Provider</Button>
-          </Stack>
+          {/* <Stack className='topButtons' direction="row" spacing={2}>
+            <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
+            <AddProduct
+              open={open}
+              handleClose={handleClose}
+            />
+            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button>
+          </Stack> */}
         </Container>
         <Box xs={6}
           sx={{
@@ -120,10 +216,12 @@ export default function Profile(id) {
           }}
         >
           <div className='profilePic'>
-            <Image src="/Logphotos.png"
-              width={850}
-              height={474}
-              top={40} />
+            <CardMedia
+              component="img"
+              image='/Logphotos.png'
+              width='auto'
+              height="auto"
+            />
           </div>
         </Box>
       </div>
@@ -136,7 +234,6 @@ export default function Profile(id) {
       
         .profilePic{
             margin-top: 10rem;
-            margin-left: 20px;
         }
         .presentation-u{
             grid-row: 1 / 3;
@@ -144,63 +241,95 @@ export default function Profile(id) {
       `}
       </style>
       <main>
-        <Container className='servicesReq'>
-          <Container className='serviceTab'>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography
-                  sx={{
-                    mt: '4rem',
-                    fontSize: '18px',
-                    fontWeight: '200'
-                  }}
+        <Container className='Items'>
+          <Box className='serviceTab'  >
+            {/* <Typography 
+            sx={{
+            mt: '4rem',
+            fontSize: '18px',
+            fontWeight: '200'
+        }}
+        >
+            My  Services
+        </Typography> */}
+            <>
+              <FormControl sx={{ width: '50%', mt: '2rem', }}>
+                <InputLabel>Services</InputLabel>
+                <Select
+                  label="services"
+                  value={selecting}
+                  id="select-service"
+                  onChange={handleSelect}
                 >
-                  Provided Services
-                </Typography>
-                <>
-                  <FormControl sx={{ width: '100%', mt: '2rem' }}>
-                    <InputLabel >
-                      Select Service
-                    </InputLabel>
+                  {serviceList.map((e, index) => {
+                    return (
+                      <div key={index}>
 
-                    <Select
-                      label="Services"
-                      // onChange={(event) => setHeight(Number(event.target.value))}
-                      value={""}
-                      id="select-service"
-                      labelId="height-of-container-label"
-                    >
-                      <MenuItem value="service">Reselling</MenuItem>
-                      <MenuItem value="service">Classes</MenuItem>
-                      <MenuItem value="service">Video Conference</MenuItem>
-                      <MenuItem value="service"></MenuItem>
-                    </Select>
-                  </FormControl>
-                  <Typography
-                    sx={{
-                      mt: '2rem',
-                      mb: '4rem'
-                    }}
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                  </Typography>
-                </>
-              </Grid>
-              <Grid item xs={6} className="Feature">
-              </Grid>
+                        <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
+
+                      </div>
+                    );
+                  })}
+
+                </Select>
+              </FormControl>
+              <Typography
+                sx={{
+                  mt: '2rem',
+                  mb: '4rem',
+                  width: '50%'
+                }}
+              >
+                What about my company :
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
+              </Typography>
+            </>
+
+          </Box>
+
+          <Box className='Products' width='90%'>
+            <Grid className="Results"
+              container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+              sx={{
+                position: 'relative',
+                height: '100%',
+                maxWidth: '100rem',
+                paddingTop: '1rem',
+                paddingBottom: '100px'
+              }}
+            >
+              {productList.map((item) => (
+                <Grid item key={item.id} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <ProductCard
+                    id={item.id}
+                    title={item.name}
+                    description={item.description}
+                    price={item.price}
+                    category={item.category}
+                    rating={item.rating}
+                    liked={item.liked}
+                    LogIn={handleLogInOpen}
+                    request={props.request}
+                    src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                  />
+                </Grid>
+              ))}
             </Grid>
-          </Container>
+          </Box>
+          {openModal ?
+            <LogInPopUp
+              open={openModal}
+              handleClose={handleLogInClose}
+              title={modalTxt.ttl}
+              message={modalTxt.msg}
+            /> :
+            null
+          }
 
-          <Container className='Products' width='90%'>
-            <Stack>
-
-            </Stack>
-
-          </Container>
         </Container>
       </main>
     </Container>

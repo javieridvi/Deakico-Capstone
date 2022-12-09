@@ -31,14 +31,14 @@ export default function Profile() {
   let [selecting, setSelecting] = useState("")   ;
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
-  const [overallRating, setOverallRating ] = useState(0);
+  const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
 
   const profileRating = async ()=>{
     const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
     // console.log(rvws);
-    let len = rvws.length ; 
+    let len = rvws.length;
     // console.log("len: "+ len)    //cantiad de reviews hechos
     // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
@@ -46,13 +46,13 @@ export default function Profile() {
     let overallR = 0;   // overall rating calc  
 
     rating.forEach(element => {
-    overallR += parseFloat(element)
-       
-      });
+      overallR += parseFloat(element)
 
-    setOverallRating (parseFloat(overallR/len).toFixed(2)) ;  
+    });
 
-  //  return(overallRating);  // el overall rating 
+    setOverallRating(parseFloat(overallR / len).toFixed(2));
+
+    //  return(overallRating);  // el overall rating 
   }
   
 
@@ -63,26 +63,26 @@ export default function Profile() {
 
   const getProducts = () => {
     itemService.getItemOfProvider().then((res) => {
-      console.log( res.data);
+      console.log(res.data);
       setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )
       // console.log("Services Type: "+ Services);
-      res.data.forEach(element=>{
-        if(element.i_type == 'service'){
+      res.data.forEach(element => {
+        if (element.i_type == 'service') {
           console.log("true");
-          setServiceList(serviceList => [...serviceList,element])
+          setServiceList(serviceList => [...serviceList, element])
         }
-        else { 
-          setProductList(productList =>[...productList, element])
+        else {
+          setProductList(productList => [...productList, element])
         }
-              
+
       });
     }).catch((err) => {
       console.log(err);
     })
   }
   useEffect(() => {
-    getProducts(); 
+    getProducts();
     profileRating();
   }, []);
 
@@ -146,19 +146,18 @@ export default function Profile() {
         mb:'20px',
         direction:'column'
 
-              }}
+            }}
             >
-              Here goes a fancy text that sets you apart from other companies. 
-
+              {provider?.pa_desc}
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
             <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
             <AddProduct
-            open = {open}
-            handleClose= {handleClose}
+              open={open}
+              handleClose={handleClose}
             />
-            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
             {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
         </Container>
@@ -169,10 +168,10 @@ export default function Profile() {
           }}
         >
           <div className='profilePic'>
-             <CardMedia  
+            <CardMedia
               component="img"
               image='/Logphotos.png'
-              width= 'auto'
+              width='auto'
               height="auto"
               sx={{objectFit:'unset'}}
                />
@@ -188,7 +187,6 @@ export default function Profile() {
       
         .profilePic{
             margin-top: 10rem;
-            
         }
         .presentation-u{
             grid-row: 1 / 3;
@@ -203,8 +201,9 @@ export default function Profile() {
         {/* <Typography sx={{
             mt:'4rem',
             fontSize: '18px',
-            fontWeight:'200'
-        }}>
+            fontWeight: '200'
+        }}
+        >
             My  Services
         </Typography>
          */}

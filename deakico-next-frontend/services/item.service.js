@@ -37,8 +37,22 @@ const getItemByCategory = async (i_category) => {
     return await axios.get(endpoint+ "/category/" + i_category); //check endpoint
 };
 
-const getItemOfProvider = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader()}); //check endpoint
+const getItemOfProvider = async (pa_id) => {
+    const data = {
+        pa_id: pa_id,
+    }
+// console.log('item.service >');
+// console.log(data);
+    return await axios.post(endpoint + "/provider", data); //check endpoint
+}
+
+const getItemOfProviderLiked = async (pa_id) => {
+    const data = {
+        pa_id: pa_id,
+    }
+// console.log('item.service >');
+// console.log(data);
+    return await axios.post(endpoint + "/provider/liked", data, {headers: authHeader()}); //check endpoint
 }
 
 export default {
@@ -51,5 +65,5 @@ getItemByCategory,
 getItemByType,
 getItemCategories,
 getItemOfProvider,
-
+getItemOfProviderLiked,
 }

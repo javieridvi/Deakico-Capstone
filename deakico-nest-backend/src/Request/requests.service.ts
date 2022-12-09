@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { UserAccount } from '../UserAccount/users.interface';
-import { DataSource, DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 import { RequestEntity } from './requests.entity';
 import { ItemRequest } from './requests.interface';
+import { ArticleList } from 'src/ArticleList/articleList.interface';
+import { ArticleListService } from 'src/ArticleList/articleList.service';
 
 @Injectable()
 export class RequestService {
@@ -12,6 +14,8 @@ export class RequestService {
     @InjectRepository(RequestEntity)
     private readonly requestRepository: Repository<RequestEntity>,
   ) {}
+  @Inject(ArticleListService)
+  private readonly articleListService: ArticleListService;
 
   getAllRequests(): Observable<ItemRequest[]> {
     return from(this.requestRepository.find({where: {disabled: false}}));
@@ -50,12 +54,11 @@ export class RequestService {
     return res;
   }
 
-  insertRequest(
-    user: UserAccount,
-    itemRequest: ItemRequest,
-  ): Observable<ItemRequest> {
+  async insertRequest(user: UserAccount, itemRequest: ItemRequest, articleList: ArticleList): Promise<InsertResult> {
     itemRequest.u_id = user.u_id;
-    return from(this.requestRepository.save(itemRequest));
+    const request = await this.requestRepository.insert(itemRequest);
+    this.articleListService.insertArticleList()
+    return request;
   }
 
   async updateRequest(

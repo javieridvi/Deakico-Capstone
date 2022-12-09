@@ -16,6 +16,7 @@ import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { Item } from './items.interface';
 import { ItemsService } from './items.service';
+import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
 
 @Controller('items')
 export class ItemsController {
@@ -72,10 +73,20 @@ export class ItemsController {
    * @param req token used to retrieve the id of the provider
    * @returns {Observable<Item[]>} an observable promise
    */
+  @Post('provider')
+  getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
+    return this.itemsService.getItemOfProvider(data.pa_id);
+  }
+
+  // /**
+  //  * Fetches all items from given itemProvider
+  //  * @param req token used to retrieve the id of the provider
+  //  * @returns {Observable<Item[]>} an observable promise
+  //  */
   @UseGuards(JwtGuard)
-  @Get('provider')
-  getItemOfProvider(@Request() req: any): Promise<Observable<Item[]>> {
-    return this.itemsService.getItemOfProvider(req.user.pa_id);
+  @Post('provider/liked')
+  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>,  @Request() req: any): Promise<Item[]> {
+    return this.itemsService.getItemOfProviderLiked(data.pa_id, req.user.u_id);
   }
 
   /**

@@ -59,8 +59,8 @@ export class ProviderAccountService {
     return response;
   }
 
-  getProvider(pa_id): Observable<ProviderAccount> {
-    return from(this.providerRepository.findOneBy({ pa_id: pa_id, disabled: false }));
+  getProvider(pa_id: number): Observable<ProviderAccount> {
+    return from(this.providerRepository.findOneByOrFail({ pa_id: pa_id, disabled: false }));
   }
 
   async getProviderCategory(providerCat: string): Promise<Observable<ProviderAccount[]>> {
