@@ -8,8 +8,6 @@ import dayjs from 'dayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 
-
-
 export  function AddProduct(props) {
 
     const categories = [

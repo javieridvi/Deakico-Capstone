@@ -5,12 +5,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import * as React from 'react';
+import requestService from '../../services/request.service';
 
 export default function Cart(props) {
-  const List = props.list;
-  const changeQty = props.changeQty;
-  const remove = props.remove;
-
+  const List = props.list; // List of items added to cart
+  const remove = props.remove; // function to remove an item
+  const changeQty = props.changeQty; // function to change the quantity of an item
+  const provider = props.paId; // provider of current cart items
+  let Total = "$0.00"; // Total price of request
+  
   // Total **
   function TotalPrice() {
     let total = 0;
@@ -21,6 +24,7 @@ export default function Cart(props) {
       style: 'currency',
       currency: 'USD'
     });
+    Total = total;
     return (<Typography variant="h6" >{total}</Typography>);
   }
   // ** Total
@@ -108,17 +112,50 @@ export default function Cart(props) {
   }
   // ** Product List
 
-  /*
-  req_id
-  req_totalprice
-  i_id
-  u_id
-  status
-  disabled
-  req_date
-  */
+  // Send Request **
+  function prepareRequest(){
+    let reqItems = List.map(item => {
+      return {
+        i_id: item.id,
+        qty: item.quantity,
+        priceAtReq: item.price,
+      }
+    })    
 
-  // Doesn't render until first item is added
+    const fullRequest ={
+      request: {
+        pa_id: provider,
+        req_totalprice: Total,
+      },
+      articleList: reqItems,
+    }
+    console.log('cart.js Request to send >');
+    console.log(fullRequest);
+    requestService.insertRequest(fullRequest).then(res => {
+      console.log('cart.js Request successful >');
+      console.log(res);
+    }).catch(err =>{
+      console.log('Error at cart.js >');
+      console.log(err);
+    })
+  }
+  // ** Send Request
+  /*
+  Request: 
+  req_totalprice?: number; set
+  pa_id?: number; set
+  u_id?: number;
+  req_id?: number;
+  status?: string;
+  req_date?: Date;
+  disabled?: boolean;
+
+  ArticleList: 
+    req_id?: number;
+    i_id?: number;
+    qty?: number;
+    priceAtReq?: number;
+  */
 
   return (
     <Box
@@ -181,6 +218,7 @@ export default function Cart(props) {
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: '0 1rem',
+                margin: '1rem 0',
               }}
             >
               <Typography variant="h6" >Total</Typography>
@@ -195,6 +233,7 @@ export default function Cart(props) {
             }}
             >
               <ButtonBase
+              onClick={()=> prepareRequest()}
                 sx={{
                   width: '80%',
                   height: '2.25rem',
@@ -202,7 +241,7 @@ export default function Cart(props) {
                   fontWeight: '600',
                   fontSize: '0.75rem',
                   marginTop: '1rem',
-                  borderRadius: '.75rem',
+                  borderRadius: '1.125rem',
                   backgroundColor: 'rgb(102, 105, 110)',
                 }}
               >

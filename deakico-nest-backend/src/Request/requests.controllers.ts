@@ -56,9 +56,11 @@ export class ItemRequestController {
   @Post()
   insertRequest(@Body() fullRequest:{
     request:  ItemRequest,
-    reqList: ArticleList[],
+    articleList: ArticleList[],
   }, @Request() req: any): Promise<InsertResult> {
-    return this.requestsService.insertRequest(req.user, fullRequest.request, fullRequest.reqList);
+    console.log('requests.controller.js recieved request >');
+    console.log(fullRequest);
+    return this.requestsService.insertRequest(req.user, fullRequest.request, fullRequest.articleList);
   }
 
   /**

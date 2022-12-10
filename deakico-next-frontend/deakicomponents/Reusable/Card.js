@@ -212,19 +212,21 @@ export function ProductCard(props) {
   // ** Like button function
 
   // Request button function **
-  function handleRequestClick(id, name, price){
-    const   item = {
-      id: id,
-      name: name,
-      price: price,
+  function handleRequestClick(id, name, price) {
+    if (props.request) {
+      const item = {
+        id: id,
+        name: name,
+        price: price,
+      }
+      props.request(item);
     }
-    props.request(item);
   }
   // ** Request button function
 
   let request = (
     <Button variant='outlined'
-    onClick={() => handleRequestClick(props.id, props.title, props.price)}
+      onClick={() => handleRequestClick(props.id, props.title, props.price)}
       sx={{
         height: '20px',
         minWidth: '60px',
@@ -316,50 +318,50 @@ export function ProductCard(props) {
   />;
 }
 ///View of Provider Products Card 
-export function ProviderCardproducts(props){
-//uses price, request and like
-let bottom = [
-  <Box
-    key={0}
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      // height: '100%',
-      // width: '100%',
-    }}
-  >
-    <Typography variant={'h6'} className={'Price'}
+export function ProviderCardproducts(props) {
+  //uses price, request and like
+  let bottom = [
+    <Box
+      key={0}
       sx={{
-        fontSize: '1.125rem', // 18px
-        fontWeight: '700',
-        fontFamily: 'Roboto, sans-serif',
+        display: 'flex',
+        alignItems: 'center',
+        // height: '100%',
+        // width: '100%',
       }}
     >
-      {props.price}
-    </Typography>
-  </Box>,
-  <Box className={'Actions'}
-    key={1}
-    sx={{
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-      paddingBottom: '10px',
-      height: '100%',
-      width: '100%',
-    }}
-  >
-  </Box>
-];
+      <Typography variant={'h6'} className={'Price'}
+        sx={{
+          fontSize: '1.125rem', // 18px
+          fontWeight: '700',
+          fontFamily: 'Roboto, sans-serif',
+        }}
+      >
+        {props.price}
+      </Typography>
+    </Box>,
+    <Box className={'Actions'}
+      key={1}
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        paddingBottom: '10px',
+        height: '100%',
+        width: '100%',
+      }}
+    >
+    </Box>
+  ];
 
-let components = {
-  top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
-  image: props.src,
-  title: props.title,
-  description: props.description,
-  bottom: bottom,
-}
-return BaseCard(components);
+  let components = {
+    top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
+    image: props.src,
+    title: props.title,
+    description: props.description,
+    bottom: bottom,
+  }
+  return BaseCard(components);
 }
 
 function BaseCard(props) {

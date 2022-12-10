@@ -92,7 +92,7 @@ export class ProviderAccountController {
   ): Observable<UpdateResult> {
     return this.providersService.updateProvider(req.user.pa_id, provider);
   }
-
+  
   /**
    * Deletes the provider account of user
    * @param req token user to retrieve the id of the provider
