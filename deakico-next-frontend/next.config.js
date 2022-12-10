@@ -44,7 +44,7 @@ module.exports = {
     return [
       {
         // matching all API routes
-        source: "/https://hku4e8x349.execute-api.us-east-1.amazonaws.com/dev/:path*",
+        source: "https://hku4e8x349.execute-api.us-east-1.amazonaws.com/dev/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
