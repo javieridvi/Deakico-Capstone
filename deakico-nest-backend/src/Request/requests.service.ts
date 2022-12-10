@@ -28,26 +28,27 @@ export class RequestService {
   async getProviderRequest(providerId: number) {
     const res = await this.requestRepository
       .createQueryBuilder('request')
-      .innerJoin('request.item', 'item', 'item.i_id = request.i_id')
       .innerJoin('request.user', 'user', 'user.u_id = request.u_id')
       .select('request.req_id', 'req_id')
       .addSelect('request.req_totalprice', 'total')
       .addSelect('request.req_date', 'date')
+      .addSelect('request.status', 'status')
       .addSelect('user.username', 'username')
       .addSelect('user.email', 'email')
-      .addSelect('item.i_name', 'item_name')
-      .where('item.pa_id = :pa_id', { pa_id: providerId })
+      .where('request.pa_id = :pa_id', { pa_id: providerId })
       .andWhere('request.disabled = false')
       .getRawMany();
 
     return res;
   }
 
+  //item will not be found due to ArticleList entity
   async getUserRequest(userId: number) {
     const res = await this.requestRepository
       .createQueryBuilder('request')
-      .innerJoin('request.item', 'item')
-      .where('item.u_id = :u_id', { u_id: userId })
+      .innerJoin('request.provider', 'provider')
+      .select('request.*, provider.pa_companyname')
+      .where('request.u_id = :u_id', { u_id: userId }) 
       .andWhere('request.disabled = false')
       .getRawMany();
 

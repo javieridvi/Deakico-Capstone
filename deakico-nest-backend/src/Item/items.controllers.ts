@@ -68,11 +68,11 @@ export class ItemsController {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
-  /**
-   * Fetches all items from given itemProvider
-   * @param req token used to retrieve the id of the provider
-   * @returns {Observable<Item[]>} an observable promise
-   */
+/**Fetches Items of given provider's pa_id
+ * 
+ * @param data 
+ * @returns list of Items of the provider
+ */
   @Post('provider')
   getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
     return this.itemsService.getItemOfProvider(data.pa_id);
