@@ -44,7 +44,7 @@ export class ProviderAccountEntity {
   items: ItemEntity[];
 
   @OneToMany((type) => RequestEntity, (request) => request.provider)
-  request: RequestEntity[];
+  requests: RequestEntity[];
 
   @OneToMany((type) => FollowEntity, (follow) => follow.follows_provider)
   follows: FollowEntity[];

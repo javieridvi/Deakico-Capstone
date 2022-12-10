@@ -213,19 +213,21 @@ export function ProductCard(props) {
   // ** Like button function
 
   // Request button function **
-  function handleRequestClick(id, name, price){
-    const   item = {
-      id: id,
-      name: name,
-      price: price,
+  function handleRequestClick(id, name, price) {
+    if (props.request) {
+      const item = {
+        id: id,
+        name: name,
+        price: price,
+      }
+      props.request(item);
     }
-    props.request(item);
   }
   // ** Request button function
 
   let request = (
     <Button variant='outlined'
-    onClick={() => handleRequestClick(props.id, props.title, props.price)}
+      onClick={() => handleRequestClick(props.id, props.title, props.price)}
       sx={{
         height: '20px',
         minWidth: '60px',
@@ -399,6 +401,14 @@ return (
 );
 
 
+  let components = {
+    top: [<Stars key={0} width={'75px'} rating={props.rating} />, infoRect(props.category, 1)],
+    image: props.src,
+    title: props.title,
+    description: props.description,
+    bottom: bottom,
+  }
+  return BaseCard(components);
 }
 
 function BaseCard(props) {

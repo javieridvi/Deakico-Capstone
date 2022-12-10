@@ -196,7 +196,6 @@ export default function Profile(props) {
                 mt: '10px',
                 mb: '20px',
                 direction: 'column'
-
               }}
             >
               {provider?.pa_desc}

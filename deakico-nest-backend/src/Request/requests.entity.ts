@@ -42,7 +42,7 @@ export class RequestEntity {
   @JoinColumn({ name: 'u_id' })
   user: UserAccountEntity[];
 
-  @ManyToOne((type) => ProviderAccountEntity, (provider) => provider.request)
+  @ManyToOne((type) => ProviderAccountEntity, (provider) => provider.requests)
   @JoinColumn({ name: 'pa_id' })
   provider: ProviderAccountEntity[];
 

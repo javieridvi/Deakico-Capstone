@@ -74,7 +74,7 @@ export default function index() {
             >
               <Profile paId={providerId.id} request={addToCart} />
               {cartList.length > 0 ?
-                (<Cart list={cartList} changeQty={changeItemQuantity} remove={removeItem} />)
+                (<Cart list={cartList} changeQty={changeItemQuantity} remove={removeItem} paId={providerId.id} />)
                 : null
               }
             </Box>)
