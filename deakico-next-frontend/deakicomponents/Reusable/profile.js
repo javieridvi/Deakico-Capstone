@@ -33,11 +33,13 @@ const email = 'deakicomoelcoqui@gmail.com'
 
 export default function Profile(props) {
   const providerId = props.paId;
-  const [overallRating, setOverallRating] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
+  // Old states **
+  const [overallRating, setOverallRating] = useState(0);
   const [selecting, setSelecting] = useState('');
   const [open, setOpen] = useState(false);
+  // ** Old states
 
   // Modal**
   const [openModal, setOpenModal] = useState(false);
@@ -110,6 +112,7 @@ export default function Profile(props) {
   }
   // ** Profile info
 
+  /*
   const profileRating = async () => {
     const rvws = (await reviewService.getProviderReviews()).data;
     let len = rvws.length;
@@ -146,8 +149,9 @@ export default function Profile(props) {
   const handleClose = (e, reason) => {
     setOpen(false);
   }
+  */
 
-
+  // Profile Return
   return (
 
     <Container>
@@ -258,7 +262,7 @@ export default function Profile(props) {
                   label="services"
                   value={selecting}
                   id="select-service"
-                  onChange={handleSelect}
+                  // onChange={handleSelect}
                 >
                   {serviceList.map((e, index) => {
                     return (

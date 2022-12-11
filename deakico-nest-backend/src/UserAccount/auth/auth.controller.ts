@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { map, Observable } from 'rxjs';
@@ -22,6 +22,12 @@ export class AuthController {
       return this.authService
       .login(user)
       .pipe(map((jwt: string) => ({ token: jwt })));   
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('check')
+  checkToken(){
+    return true;
   }
 
   @UseGuards(JwtGuard)

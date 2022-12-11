@@ -1,21 +1,25 @@
-import { Box, Button, ButtonBase, Fab, InputBase, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, ButtonBase, Fab, InputBase, Modal, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import * as React from 'react';
 import requestService from '../../services/request.service';
+import authService from "../../services/auth/auth.service";
+import { useRouter } from "next/router";
+import { LogInPopUp } from "../Modal";
 
 export default function Cart(props) {
   const List = props.list; // List of items added to cart
   const remove = props.remove; // function to remove an item
+  const empty = props.empty;
   const changeQty = props.changeQty; // function to change the quantity of an item
   const provider = props.paId; // provider of current cart items
   let Total = "$0.00"; // Total price of request
-  
+
   // Total **
-  function TotalPrice() {
+  function TotalPrice({fontSize}) {
     let total = 0;
     List.forEach(item => {
       total = total + item.quantity * Number(item.price.replace(/[^0-9-]+/g, "")) / 100;
@@ -25,7 +29,7 @@ export default function Cart(props) {
       currency: 'USD'
     });
     Total = total;
-    return (<Typography variant="h6" >{total}</Typography>);
+    return (<Typography variant="h6" fontSize={'700'}>{total}</Typography>);
   }
   // ** Total
 
@@ -112,50 +116,201 @@ export default function Cart(props) {
   }
   // ** Product List
 
-  // Send Request **
-  function prepareRequest(){
-    let reqItems = List.map(item => {
-      return {
-        i_id: item.id,
-        qty: item.quantity,
-        priceAtReq: item.price,
-      }
-    })    
-
-    const fullRequest ={
-      request: {
-        pa_id: provider,
-        req_totalprice: Total,
-      },
-      articleList: reqItems,
-    }
-    console.log('cart.js Request to send >');
-    console.log(fullRequest);
-    requestService.insertRequest(fullRequest).then(res => {
-      console.log('cart.js Request successful >');
-      console.log(res);
-    }).catch(err =>{
-      console.log('Error at cart.js >');
-      console.log(err);
-    })
+  // Modal**
+  const [userIsAuth, setUserIsAuth] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
+  const modalTxt = {
+    ttl: 'Log In to start making requests',
+    msg: 'This is the best way to keep of your requests',
   }
-  // ** Send Request
-  /*
-  Request: 
-  req_totalprice?: number; set
-  pa_id?: number; set
-  u_id?: number;
-  req_id?: number;
-  status?: string;
-  req_date?: Date;
-  disabled?: boolean;
+  function prepareRequest() {
+    // console.log('cart.js prepare request');
+    // console.log('cart.js prepare request');
+    if (authService.isLoggedIn()) {
+      authService.checkToken().then(res => {
+        if (res.data) {
+          setUserIsAuth(true);
+        }
+        setDrawer(false);
+        setOpenModal(true);
+      })
+    } else {
+      setDrawer(false);
+      setOpenModal(true);
+    }
+  };
+  const handleLogInClose = () => setOpenModal(false);
 
-  ArticleList: 
-    req_id?: number;
-    i_id?: number;
-    qty?: number;
-    priceAtReq?: number;
-  */
+  // Request Bag **  
+  function Bag(props) {
+
+    const rowStyle = {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '0.5rem 1rem',
+    }
+
+    const qtypriceStyle = {
+      flex: '1',
+      display: 'flex',
+      alignItems: 'center',
+    }
+
+    // Send Request **
+    function makeRequest() {
+      let reqItems = List.map(item => {
+        return {
+          i_id: item.id,
+          qty: item.quantity,
+          priceAtReq: item.price,
+        }
+      })
+
+      const fullRequest = {
+        request: {
+          pa_id: provider,
+          req_totalprice: Total,
+        },
+        articleList: reqItems,
+      }
+      // console.log('cart.js Request to send >');
+      // console.log(fullRequest);
+      requestService.insertRequest(fullRequest).then(res => {
+        console.log('cart.js Request successful >');
+        // console.log(res);
+        empty();
+      }).catch(err => {
+        if(err.response.status === 401){
+          setUserIsAuth(false);
+        }
+        // console.log('Error at cart.js >');
+        // console.log(err);
+      })
+    }
+    // ** Send Request
+
+    return (
+      <Modal
+        open={props.open}
+        onClose={props.handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className="Request-Bag"
+          sx={{
+            position: 'absolute',
+            width: 'clamp(300px, 80%, 600px)',
+            height: 'auto',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            border: 'solid 1px #eeeeee',
+            borderRadius: '1rem',
+            backgroundColor: 'white',
+            paddingBottom: '1rem',
+            overflow: 'clip',
+          }}
+        >
+          <Box className="Bag-Headers"
+            sx={[
+              rowStyle, {
+                height: '40px',
+                backgroundColor: '#eeeeee',
+                borderBottom: 'solid 1px #eeeeee',
+              }]}
+          >
+            <Box
+              sx={{
+                flex: '3',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="caption">ITEM</Typography>
+
+            </Box>
+            <Box
+              sx={[
+                qtypriceStyle, {
+                  justifyContent: 'center',
+                }]}
+            >
+              <Typography variant="caption">QUANTITY</Typography>
+            </Box>
+            <Box
+              sx={[
+                qtypriceStyle, {
+                  justifyContent: 'flex-end',
+                  paddingLeft: '1rem',
+                }]}
+            >
+              <Typography variant="caption">PRICE</Typography>
+            </Box>
+          </Box>
+          {List.map((item) => (
+            <Box className="Bag-Item"
+              key={item.name}
+              sx={[
+                rowStyle, {
+                  height: 'auto',
+                  borderBottom: 'solid 1px #eeeeee',
+                }]}
+            >
+              <Box sx={{ flex: '3', wordWrap: 'break-word' }}>
+                <Typography variant="h6">{item.name}</Typography>
+              </Box>
+              <Box sx={[qtypriceStyle, { justifyContent: 'center', }]}>
+                <Typography variant="caption" fontSize={'1rem'}>{item.quantity}</Typography>
+              </Box>
+              <Box sx={[qtypriceStyle, { justifyContent: 'flex-end', }]}>
+                <Typography variant="caption">{item.price}</Typography>
+              </Box>
+            </Box>
+          ))}
+          <Box className="Bag-Total"
+            sx={[
+              rowStyle, {
+                height: 'auto',
+                borderBottom: 'solid 1px #eeeeee',
+              }]}
+          >
+            <Typography variant="h6" fontWeight={'700'}>Total</Typography>
+            {/* <Typography variant="h6" fontWeight={'700'}>{Total}</Typography> */}
+              <TotalPrice fontSize={700}/>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <ButtonBase
+              onClick={() => makeRequest()}
+              sx={{
+                width: '50%',
+                height: '2.25rem',
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '0.75rem',
+                marginTop: '1rem',
+                borderRadius: '1.125rem',
+                backgroundColor: 'rgb(102, 105, 110)',
+              }}
+            >
+              MAKE REQUEST
+            </ButtonBase>
+          </Box>
+        </Box>
+      </Modal>
+    )
+  }
+  // ** Request Bag
+  // ** Modal
 
   return (
     <Box
@@ -174,6 +329,7 @@ export default function Cart(props) {
         color="primary"
         aria-label="add"
         onClick={toggleDrawer(true)}
+        // onClick={toggleDrawer(true)}
         sx={{
           position: 'fixed',
           right: { xs: 0, lg: 'calc(50% - 576px)' },
@@ -226,14 +382,14 @@ export default function Cart(props) {
             </Box>
             <Divider />
             <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
             >
               <ButtonBase
-              onClick={()=> prepareRequest()}
+                onClick={() => prepareRequest()}
                 sx={{
                   width: '80%',
                   height: '2.25rem',
@@ -245,12 +401,26 @@ export default function Cart(props) {
                   backgroundColor: 'rgb(102, 105, 110)',
                 }}
               >
-                MAKE REQUEST
+                CHECK BAG
               </ButtonBase>
             </Box>
           </Box>
         </Box>
       </Drawer>
+      {openModal ?
+        userIsAuth ?
+          <Bag
+            open={openModal}
+            handleClose={handleLogInClose}
+          /> :
+          <LogInPopUp
+            open={openModal}
+            handleClose={handleLogInClose}
+            title={modalTxt.ttl}
+            message={modalTxt.msg}
+          /> :
+        null
+      }
     </Box>
   )
 }

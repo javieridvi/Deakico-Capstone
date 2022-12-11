@@ -399,8 +399,6 @@ return (
 
   </Card>
 );
-
-
 }
 
 function BaseCard(props) {

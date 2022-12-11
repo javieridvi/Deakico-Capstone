@@ -52,6 +52,10 @@ export default function index() {
     );
   }
 
+  function emptyList() {
+    setCartlist([]);
+  }
+
   // ** Cart
 
   return (
@@ -74,7 +78,7 @@ export default function index() {
             >
               <Profile paId={providerId.id} request={addToCart} />
               {cartList.length > 0 ?
-                (<Cart list={cartList} changeQty={changeItemQuantity} remove={removeItem} paId={providerId.id} />)
+                (<Cart list={cartList} changeQty={changeItemQuantity} remove={removeItem} paId={providerId.id} empty={emptyList}/>)
                 : null
               }
             </Box>)

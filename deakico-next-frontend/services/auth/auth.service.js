@@ -38,6 +38,14 @@ const getCurrentUser = () => {
 const isLoggedIn = () => {
   return sessionStorage.getItem("user") ? true : false;
 }
+const checkToken = async () => {
+  return await axios.get(API_URL + "auth/check", {headers: authHeader()}).catch((err) =>{
+  if(err.response.status === 401){
+    return false;
+  }
+  return err;
+  })
+}
 
 const updatePassword = async (newPassword) => {
   const data = { password: newPassword };
@@ -51,5 +59,6 @@ export default {
   logout,
   getCurrentUser,
   isLoggedIn,
+  checkToken,
   updatePassword,
 };
