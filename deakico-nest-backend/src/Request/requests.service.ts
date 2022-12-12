@@ -42,12 +42,15 @@ export class RequestService {
     return res;
   }
 
-  //item will not be found due to ArticleList entity
   async getUserRequest(userId: number) {
     const res = await this.requestRepository
       .createQueryBuilder('request')
       .innerJoin('request.provider', 'provider')
-      .select('request.*, provider.pa_companyname')
+      .select('request.req_id', 'req_id')
+      .addSelect('request.req_totalprice', 'total')
+      .addSelect('request.req_date', 'date')
+      .addSelect('request.status', 'status')
+      .addSelect('provider.pa_companyname', 'company_name')
       .where('request.u_id = :u_id', { u_id: userId }) 
       .andWhere('request.disabled = false')
       .getRawMany();
@@ -63,7 +66,7 @@ export class RequestService {
     return request;
   }
 
-  async updateRequest(
+  async updateRequestByUser(
     requestId: number,
     request: ItemRequest,
     userId: number,
@@ -75,6 +78,20 @@ export class RequestService {
     });
     return from(this.requestRepository.update(requestId, request));
   }
+
+  async updateRequestByProvider(
+    requestId: number,
+    request: ItemRequest,
+    providerId: number,
+  ): Promise<Observable<UpdateResult>> {
+    //check if request exists and belongs to user
+    await this.requestRepository.findOneOrFail({
+      select: { req_id: true },
+      where: { req_id: requestId, pa_id: providerId, disabled: false },
+    });
+    return from(this.requestRepository.update(requestId, request));
+  }
+
 
   async deleteRequest(
     requestId: number,
