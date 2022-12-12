@@ -3,10 +3,13 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { ProductCard, ProviderCard } from "../Reusable/Card";
 import likeService from "../../services/likes.service";
+import { useRouter } from "next/router";
+
 
 
 export default function Liked() {
   const [likedItems, setLikedItems] = useState([]);
+  const router = useRouter()
 
   async function RequestLiked() {
     const response = await likeService.getUserLiked().then((response) => {
@@ -41,33 +44,34 @@ export default function Liked() {
           backgroundColor: '#f1f1f1'
         }}
       >
-        <Grid className="Results"
-          container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-          sx={{
-            position: 'relative',
-            height: '100%',
-            maxWidth: '100rem',
-            paddingTop: '1rem',
-            paddingBottom: '100px'
-          }}
-        >
-          {likedItems?.map((e, index) => {
-            return (
-              <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box className='Products' width='90%'>
+          <Grid className="Results"
+            container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+            sx={{
+              position: 'relative',
+              height: '100%',
+              maxWidth: '100rem',
+              paddingTop: '1rem',
+              paddingBottom: '100px'
+            }}
+          >
+            {likedItems.map((item) => (
+              <Grid item key={item.id} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ProductCard
-                  id={e.items_pa_id}
-                  title={e.items_i_name}
-                  description={e.items_i_description}
-                  price={e.items_i_price}
-                  category={e.items_i_category}
-                  rating={e.items_i_rating}
+                  id={item.id}
+                  title={item.name}
+                  description={item.description}
+                  price={item.price}
+                  category={item.category}
+                  rating={item.rating}
                   liked={true}
-                  src={e.items_i_image ? e.items_i_image : '/product-placeholder.png'}
+                  request={(itemR) => router.push('/profile/'+item.pa_id)}
+                  src={item.image ? item.image : '/product-placeholder.png'}
                 />
               </Grid>
-            );
-          })}
-        </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </>
     /**

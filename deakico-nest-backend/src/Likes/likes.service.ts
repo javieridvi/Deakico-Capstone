@@ -47,7 +47,16 @@ export class LikesService {
     const res = await this.likeRepository
       .createQueryBuilder('likes')
       .innerJoin('likes.likes_item', 'items')
-      .select('items')
+      .select('items.i_id', 'id')
+      .addSelect('items.i_name', 'name')
+      .addSelect('items.i_description', 'description')
+      .addSelect('items.i_price', 'price')
+      .addSelect('items.i_rating', 'rating')
+      .addSelect('items.i_category', 'category')
+      .addSelect('items.i_type', 'type')
+      .addSelect('items.s_timeslot', 'timeslot')
+      .addSelect('items.i_image', 'image')
+      .addSelect('items.pa_id', 'pa_id')
       .where('likes.u_id = :u_id', { u_id: userId })
       .andWhere('items.disabled = false')
       .getRawMany();
