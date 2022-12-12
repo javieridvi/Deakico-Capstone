@@ -34,6 +34,7 @@ export class ProviderAccountService {
       'pa_desc AS desc',
       'pa_rating AS rating',
       'pa_category AS category',
+      'pa_type AS type',
       ])
       .where('disabled = false')
     .getRawMany()
@@ -51,6 +52,7 @@ export class ProviderAccountService {
           'provider.pa_desc AS desc',
           'provider.pa_rating AS rating',
           'provider.pa_category AS category',
+          'provider.pa_type AS type',
           ])
         .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')
         .setParameter('u_id', uID)
