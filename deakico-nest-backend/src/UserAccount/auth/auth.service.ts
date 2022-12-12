@@ -83,12 +83,14 @@ export class AuthService {
   //consider login with username as well
   login(user: UserAccount): Observable<string> {
     const { email, password } = user;
-    return this.validateUser(email, password).pipe(
-    switchMap((user: UserAccount) => {
-      if (user) {
-        // create JWT - credentials
-        return from(this.jwtService.signAsync({ user }));
-      }
-    }),);
+
+      return this.validateUser(email, password).pipe(
+      switchMap((user: UserAccount) => {
+        if (user) {
+          // create JWT - credentials
+          return from(this.jwtService.signAsync({ user }));
+        }
+      }),
+    );
   }
 }
