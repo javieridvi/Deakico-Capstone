@@ -42,11 +42,11 @@ export class RequestEntity {
   @JoinColumn({ name: 'u_id' })
   user: UserAccountEntity[];
 
-  @ManyToOne((type) => ProviderAccountEntity, (provider) => provider.requests)
+  @ManyToOne((type) => ProviderAccountEntity, (provider) => provider.request)
   @JoinColumn({ name: 'pa_id' })
   provider: ProviderAccountEntity[];
 
-  @Column({ type: 'int'})
+  @Column({ type: 'int', nullable: true})
   pa_id: number;
 
   @Column({ type: 'int'})

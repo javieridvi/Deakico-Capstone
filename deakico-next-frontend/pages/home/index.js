@@ -8,26 +8,26 @@ import itemService from "../../services/item.service"
 
 function Home(){
   
-  // const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  // function callGetItemCategories() {
-  //   itemService.getItemCategories()
-  //   .then((res) => {setCategories(res.data.map((e)=> {return e.i_category}))}).catch((err) => console.log(err));
-  // };
+  function callGetItemCategories() {
+    itemService.getItemCategories()
+    .then((res) => {setCategories(res.data.map((e)=> {return e.i_category}))}).catch((err) => console.log(err));
+  };
 
-  // useEffect(() => {
-  //   callGetItemCategories();
-  // }, []);
+  useEffect(() => {
+    callGetItemCategories();
+  }, []);
 
-  const categories = [
-    "Hair",
-    "Pastry",
-    "Food",
-    "Clothing",
-    "Cleaning",
-    "Jewelery",
-    "Other"
-  ];
+  // const categories = [
+  //   "Hair",
+  //   "Pastry",
+  //   "Food",
+  //   "Clothing",
+  //   "Cleaning",
+  //   "Jewelery",
+  //   "Other"
+  // ];
 
   return (
     <Stack
