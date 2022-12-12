@@ -150,7 +150,7 @@ export function ProviderCard(props) {
     title={props.title}
     description={props.description}
     bottom={bottom}
-  />;;
+  />;
 
 }
 

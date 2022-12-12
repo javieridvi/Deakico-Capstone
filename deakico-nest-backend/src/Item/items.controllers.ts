@@ -17,10 +17,11 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { Item } from './items.interface';
 import { ItemsService } from './items.service';
 import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
+import getUploadImageUrl from '../imageS3';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) {}
+  constructor(private readonly itemsService: ItemsService) { }
 
   @Get()
   getAllItems(): Observable<Item[]> {
@@ -30,6 +31,14 @@ export class ItemsController {
   @Get('/id/:i_id')
   getItem(@Param('i_id') itemId: number): Observable<Item> {
     return this.itemsService.getItem(itemId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('image')
+  async getImageUrl(@Request() req: any): Promise<String> {
+    const url = await getUploadImageUrl('provider/'+req.user.pa_id+'/item/');
+    console.log(url)
+    return url;
   }
 
   /**
@@ -68,11 +77,11 @@ export class ItemsController {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
-/**Fetches Items of given provider's pa_id
- * 
- * @param data 
- * @returns list of Items of the provider
- */
+  /**Fetches Items of given provider's pa_id
+   * 
+   * @param data 
+   * @returns list of Items of the provider
+   */
   @Post('provider')
   getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
     return this.itemsService.getItemOfProvider(data.pa_id);
@@ -85,7 +94,7 @@ export class ItemsController {
   //  */
   @UseGuards(JwtGuard)
   @Post('provider/liked')
-  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>,  @Request() req: any): Promise<Item[]> {
+  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>, @Request() req: any): Promise<Item[]> {
     return this.itemsService.getItemOfProviderLiked(data.pa_id, req.user.u_id);
   }
 

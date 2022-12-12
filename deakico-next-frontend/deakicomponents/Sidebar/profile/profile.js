@@ -4,13 +4,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia,FormControl, TextField, MenuItem, AccordionDetails,AccordionSummary, Accordion ,Pagination, Dialog} from '@mui/material';
-import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
-import itemService from '../../services/item.service';
-import reviewService from '../../services/review.service';
+import { ProductCard, ProviderCardproducts } from "../../Reusable/Card";
+import itemService from '../../../services/item.service';
+import reviewService from '../../../services/review.service';
 import { useEffect, useState, ChangeEvent } from "react";
-import {AddProduct} from '../../deakicomponents/AddProduct';
-import Stars from '../../deakicomponents/Reusable/Rating';
-import Deletebutton from '../../deakicomponents/Reusable/Deletebutton';
+import {AddProduct} from '../../AddProduct';
+import Stars from '../../Reusable/Rating';
+import userService from '../../../services/user.service';
+import providerService from '../../../services/provider.service';
+import Deletebutton from '../../Reusable/Deletebutton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 

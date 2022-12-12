@@ -25,7 +25,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 import Dashboard from './Dashboard/dashboard';
-import Profile from '../../pages/admin/profile';
+import Profile from './profile/profile';
 
 import userService from '../../services/user.service';
 import Follows from './follows';

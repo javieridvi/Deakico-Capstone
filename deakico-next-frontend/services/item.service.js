@@ -25,6 +25,14 @@ const getItem = async (i_id) => {
     return await axios.get(endpoint + "/id/" + i_id);
 };
 
+const getItemImageUploadUrl = async () => {
+    return await axios.get(endpoint + "/image", {headers: authHeader()});
+};
+
+const putUploadItemImage = async (url, file) => {
+    return await axios.put(url,file);
+};
+
 const getItemByType = async (i_type) => {
     return await axios.get(endpoint + "/type/" + i_type); //check endpoint
 };
@@ -60,6 +68,8 @@ insertItem,
 updateItem,
 deleteItem,
 getItem,
+getItemImageUploadUrl,
+putUploadItemImage,
 getAllItems,
 getItemByCategory,
 getItemByType,

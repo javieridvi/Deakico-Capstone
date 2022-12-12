@@ -59,6 +59,9 @@ export class ItemEntity {
   })
   i_type: string;
 
+  @Column({ nullable: true})
+  i_image: string;
+
   @Column({ nullable: true, type: 'int', default: null })
   p_stock: number;
 

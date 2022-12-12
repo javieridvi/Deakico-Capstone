@@ -317,7 +317,7 @@ export default function Profile(props) {
                     liked={item.liked}
                     LogIn={handleLogInOpen}
                     request={props.request}
-                    src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                    src={item.image ? item.image : '/product-placeholder.png'}
                   />
                 </Grid>
               ))}
