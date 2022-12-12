@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { PieCard, LineCard, BarCard } from './ChartCard';
 import itemService from '../../../services/item.service'
 import likesService from '../../../services/likes.service';
-import followsService from '../../../services/follows.service'
+import followsService from '../../../services/follows.service';
 
-export default function Dashboard() {
+export default function Dashboard({user}) {
 
     const [loading, setLoading] = useState(true);
     
@@ -36,17 +36,22 @@ export default function Dashboard() {
     });
     
     const fetchItems = () => {
-        itemService.getItemOfProvider().then((res) => {
-            setItemsRating({
-                labels: res.data?.map((item) => item?.i_name),
-                datasets: [{
-                    label: "Item Ratings",
-                    data: res.data?.map((item) => item?.i_rating),
-                }]
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
+        if(user){
+            itemService.getItemOfProvider(user?.pa_id).then((res) => {
+                setItemsRating({
+                    labels: res.data?.map((item) => item?.name),
+                    datasets: [{
+                        label: "Item Ratings",
+                        data: res.data?.map((item) => item?.rating),
+                    }]
+                });
+            }).catch((err) => {
+                console.log(err);
+            }); 
+        } else {
+            console.log('User not found')
+        }
+        
 
         likesService.getLikesOfProvider().then((res) => {
             setItemLikes({
@@ -93,7 +98,7 @@ export default function Dashboard() {
             </Grid>
         </Grid>
                 
-            <DashboardTable/>
+            <DashboardTable userType='provider'/>
         </>
         
     )

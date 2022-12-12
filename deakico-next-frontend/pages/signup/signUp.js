@@ -13,12 +13,21 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    //confirm that passwords are the same
+    const firstName = data.get('firstName');
+    const lastName = data.get('lastName');
+    const username = data.get('username');    
     const pass = data.get('password');
     const confPass = data.get('confirm-password');
-    if(!validatePassword(pass, confPass)) {
-      return; //return if invalid password
+
+    //function calls
+    const validFName = validateFirstName(firstName);
+    const validLName = validateLastName(lastName);
+    const validUName = validateUsername(username);
+    const validPass = validatePassword(pass, confPass);
+    if(!(validFName && validLName && validUName && validPass)) {
+      return; //return if invalid any
     }
+  
     
     //register api endpoint 
     authService.register(
@@ -45,7 +54,15 @@ export default function SignUp() {
 
     //for confirm password validation
     const [passwordMsg, setPasswordMsg] = React.useState("");
-    const [error, setError] = React.useState(false);
+    const [passError, setPassError] = React.useState(false);
+    //for Names validation
+    const [firstNameError, setFirstNameError] = React.useState(false);
+    const [firstNameMsg, setFirstNameMsg] = React.useState("");
+    const [lastNameError, setLastNameError] = React.useState(false);
+    const [lastNameMsg, setLastNameMsg] = React.useState("");
+    //for usernames validation
+    const [uNameError, setUNameError] = React.useState(false);
+    const [uNameMsg, setUNameMsg] = React.useState(false);
 
     //Arbitrary black list of password users should not use
     const passBlacklist = [
@@ -63,16 +80,52 @@ export default function SignUp() {
       if((pass === confPass) 
       && (pass != "" || confPass != "") 
       && (!passBlacklist.includes(pass))) {
-        setError(false);
+        setPasswordMsg("");
+        setPassError(false);
         return true; //valid password
       }
       else {
-        setPasswordMsg("Password not valid!");
-        setError(true);
+        setPasswordMsg("Password invalid or mismatch!");
+        setPassError(true);
         return false; //invalid password
       }
     }
 
+  const validateFirstName = (name) => {
+    var nameRegex = /^[a-zA-Z\-]{3,16}$/; //regular expression to match FirstName/LastName
+    if(name.match(nameRegex)) {
+      setFirstNameMsg("");
+      setFirstNameError(false)
+      return true; //valid FirstName/LastName
+    } 
+    setFirstNameMsg("Invalid First Name! Must be 3-16 characters long, and may contain only letters.");
+    setFirstNameError(true);
+    return false; //invalid FirstName/LastName
+  }
+
+  const validateLastName = (name) => {
+    var nameRegex = /^[a-zA-Z\-]{3,16}$/; //regular expression to match FirstName/LastName
+    if(name.match(nameRegex)) {
+      setLastNameMsg("");
+      setLastNameError(false)
+      return true; //valid FirstName/LastName
+    } 
+    setLastNameMsg("Invalid Last Name! Must be 3-16 characters long, and may contain only letters.");
+    setLastNameError(true);
+    return false; //invalid FirstName/LastName
+  }
+
+  const validateUsername = (username) => {
+    var usernameRegex = /^[a-zA-Z0-9\._-]{3,16}$/; //regular expression to match usernames
+    if(username.match(usernameRegex)) {
+      setUNameMsg("");
+      setUNameError(false);
+      return true; //valid username
+    }
+    setUNameMsg("Invalid Username! Must be 3-16 characters long, and may contain letters, numbers and/or '-', '_', '.'.");
+    setUNameError(true);
+    return false; //invalid username
+  }
   return (
     <Container 
       component="main"
@@ -145,6 +198,8 @@ export default function SignUp() {
               name="firstName"
               label="First Name"
               autoComplete="given-name"
+              error={firstNameError}
+              helperText={firstNameMsg}
               required
               fullWidth
               autoFocus
@@ -156,6 +211,8 @@ export default function SignUp() {
               name="lastName"
               label="Last Name"
               autoComplete="family-name"
+              error={lastNameError}
+              helperText={lastNameMsg}
               required
               fullWidth
             />
@@ -176,6 +233,8 @@ export default function SignUp() {
               id="username"
               name="username"
               label="Username"
+              error={uNameError}
+              helperText={uNameMsg}
               required
               fullWidth
             />
@@ -187,7 +246,7 @@ export default function SignUp() {
               type="password"
               label="Password"
               autoComplete="new-password"
-              error={error}
+              error={passError}
               helperText={passwordMsg}
               required
               fullWidth
@@ -200,7 +259,7 @@ export default function SignUp() {
               type="password"
               label="Confirm Password"
               autoComplete="new-password"
-              error={error}
+              error={passError}
               helperText={passwordMsg}
               required
               fullWidth

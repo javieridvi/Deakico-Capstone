@@ -23,6 +23,9 @@ export default function ProviderSignUp() {
   //for confirm password validation
   const [passwordMsg, setPasswordMsg] = React.useState("This is your regular account's password.");
   const [error, setError] = React.useState(false);
+  //for Company Name validation
+  const [compNameMsg, setCompNameMsg] = React.useState("");
+  const [compNameErr, setCompNameErr] = React.useState(false);
 
 
   const checkCurrUser = () => {
@@ -68,9 +71,14 @@ export default function ProviderSignUp() {
     //confirm that passwords are the same
     const pass = data.get('password');
     const confPass = data.get('confirm-password');
-    if(!validatePassword(pass, confPass)) {
-      return; //return if invalid password
-   }
+    const compName = data.get('companyName');
+    
+    const validPass = validatePassword(pass, confPass);
+    const validCompName = validateCompName(compName);
+    if(!(validPass && validCompName)){
+      return; //return if invalid any
+    }
+
     //then register, once the user is validated
     const payload = {
           pa_companyname: data.get('companyName'),
@@ -127,6 +135,17 @@ export default function ProviderSignUp() {
       setError(true);
       return false; //invalid password
     }
+  }
+
+  const validateCompName = (compName) => {
+    var compNameRegex = /^[a-zA-Z0-9\&-\s]+$/;
+    if(compName.match(compNameRegex)){
+      setCompNameMsg("");
+      setCompNameErr(false);
+      return; //valid password
+    }
+    setCompNameMsg("Invalid Company Name! May contain letters, numbers and/or '-', '&'.");
+    setCompNameErr(true);
   }
 
   return (
@@ -201,6 +220,8 @@ export default function ProviderSignUp() {
               name="companyName"
               label="Company"
               autoComplete="given-name"
+              error={compNameErr}
+              helperText={compNameMsg}
               required
               fullWidth
               autoFocus

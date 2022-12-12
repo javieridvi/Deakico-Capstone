@@ -71,18 +71,39 @@ export class ItemRequestController {
    * @returns update confirmation
    */
   @UseGuards(JwtGuard)
-  @Put(':req_id')
-  updateRequest(
+  @Put('user/:req_id')
+  updateRequestByUser(
     @Param('req_id') req_Id: number,
     @Body() itemRequest: ItemRequest,
     @Request() req: any,
   ): Promise<Observable<UpdateResult>> {
-    return this.requestsService.updateRequest(
+    return this.requestsService.updateRequestByUser(
       req_Id,
       itemRequest,
       req.user.u_id,
     );
   }
+
+    /**
+   * Updates provider's request
+   * @param req_Id id of request
+   * @param itemRequest info to be updated
+   * @param req token used to retrieve provider id
+   * @returns update confirmation
+   */
+    @UseGuards(JwtGuard)
+    @Put('provider/:req_id')
+    updateRequestByProvider(
+      @Param('req_id') req_Id: number,
+      @Body() itemRequest: ItemRequest,
+      @Request() req: any,
+    ): Promise<Observable<UpdateResult>> {
+      return this.requestsService.updateRequestByProvider(
+        req_Id,
+        itemRequest,
+        req.user.pa_id,
+      );
+    }
 
   /**
    * Deletes user's request

@@ -16,7 +16,7 @@ const style = {
     }
 };
 
-export default function Settings() {
+export default function Settings({user}) {
 
     const router = useRouter();
 
@@ -92,6 +92,72 @@ export default function Settings() {
         return false; //invalid password
         }
     }
+    
+  const validateUsername = (username) => {
+    var usernameRegex = /^[a-zA-Z0-9\._-]{3,16}$/; //regular expression to match usernames
+    if(username.match(usernameRegex)) {
+      setError({
+        flag: false,
+        msg: ""
+      })
+      return true; //valid username
+    }
+    setError({
+        flag: true, 
+        msg: "Invalid Username! Must be 3-16 characters long, and may contain letters, numbers and/or '-', '_', '.'.",
+
+    })
+    return false; //invalid username
+  }
+
+  const validateFirstName = (name) => {
+    var nameRegex = /^[a-zA-Z\-]{3,16}$/; //regular expression to match FirstName/LastName
+    if(name.match(nameRegex)) {
+      setError({
+        flag: false, 
+        msg: "",
+      })
+      return true; //valid FirstName/LastName
+    } 
+    setError({
+        flag: true,
+        msg: "Invalid First Name!  Must be 3-16 characters long, and may contain only letters."
+    })
+    return false; //invalid FirstName/LastName
+  }
+
+  const validateLastName = (name) => {
+    var nameRegex = /^[a-zA-Z\-]{3,16}$/; //regular expression to match FirstName/LastName
+    if(name.match(nameRegex)) {
+      setError({
+        flag: false,
+        msg: "",
+      })
+      return true; //valid FirstName/LastName
+    } 
+    setError({
+        flag: true,
+        msg: "Invalid Last Name! Must be 3-16 characters long, and may contain only letters.",
+    })
+    return false; //invalid FirstName/LastName
+  }
+
+  const validateCompName = (compName) => {
+    var compNameRegex = /^[a-zA-Z0-9\&-\s]+$/; //regular expression to match Company Name
+    if(compName.match(compNameRegex)) {
+      setError({
+        flag: false,
+        msg: "",
+      })
+      return true; //valid Company Name
+    } 
+    setError({
+        flag: true,
+        msg: "Invalid Company Name! May contain letters, numbers and/or '-', '&'.",
+    })
+    return false; //invalid Company Name
+  }
+
 
     const handleClickFormModal = (event) => {
         event.preventDefault();
@@ -101,8 +167,8 @@ export default function Settings() {
                 const oldPass = data.get('old-password');
                 const newPass = data.get('new-password');
                 const confPass = data.get('confirm-password');
-                userService.getUser().then((res) => {
-                    authService.login(res.data.email, oldPass).then(() => {
+                if(user) {
+                    authService.login(user.email, oldPass).then(() => {
                         if(!validatePassword(newPass, confPass)) {
                             setError({
                                 flag: true,
@@ -120,14 +186,26 @@ export default function Settings() {
                             msg: 'Invalid Password!'
                         })
                     })
-                })
+                } else {
+                    setError({
+                        flag: true,
+                        msg: 'User Not Found!'
+                    });
+                }
                 return;
             case 'username':
                 const pass1 = data.get('password');
                 const newUsername = data.get('new-username');
-                userService.getUser().then((res) => {
-                    authService.login(res.data.email, pass1).then(() => {
-                        //To-Do: validate username with a helper method
+             
+                if(user) {
+                    authService.login(user.email, pass1).then(() => {
+                        if(!validateUsername(newUsername)) {
+                            setError({
+                                flag: true, 
+                                msg: "Invalid Username! Must be 3-16 characters long, and may contain letters, numbers and/or '-', '_', '.'.",
+                            })
+                            return; //invalid username
+                        }
                         userService.updateUser({
                             username: newUsername,
                         }).then(() => {
@@ -140,18 +218,34 @@ export default function Settings() {
                         flag: true,
                         msg: 'Invalid Credentials!'
                     }));
-                }).catch((err) => setError({
-                    flag: true,
-                    msg: err
-                }));
+                } else {
+                    setError({
+                        flag: true,
+                        msg: 'User Not Found!'
+                    });
+                }
                 return;
             case 'full-name':
                 const pass2 = data.get('password');
                 const firstName = data.get('new-first-name');
                 const lastName = data.get('new-last-name');
-                userService.getUser().then((res) => {
-                    authService.login(res.data.email, pass2).then(() => {
-                        //To-Do: validate username with a helper method
+                if(user) {
+                    authService.login(user.email, pass2).then(() => {
+                        if(!validateFirstName(firstName)) {
+                            setError({
+                                flag: true,
+                                msg: "Invalid First Name! Must be 3-16 characters long, and may contain only letters.",
+                            })
+                            return; //Invalid First Name
+                        }
+
+                        if(!validateLastName(lastName)) {
+                            setError({
+                                flag: true,
+                                msg: "Invalid Last Name! Must be 3-16 characters long, and may contain only letters.",
+                            })
+                            return;//Invalid Last Name
+                        }
                         userService.updateUser({
                             u_firstname: firstName,
                             u_lastname: lastName,
@@ -165,17 +259,25 @@ export default function Settings() {
                         flag: true,
                         msg: 'Invalid Credentials!'
                     }));
-                }).catch((err) => setError({
-                    flag: true,
-                    msg: err
-                }));
+                } else {
+                    setError({
+                        flag: true,
+                        msg: 'User not found!'
+                    });
+                }
                 return;
             case 'company-name':
                 const pass3 = data.get('password');
                 const companyName = data.get('new-company-name');
-                userService.getUser().then((res) => {
-                    authService.login(res.data.email, pass3).then(() => {
-                        //To-Do: validate username with a helper method
+                if(user) {
+                    authService.login(user.email, pass3).then(() => {
+                        if(!(validateCompName(companyName))){
+                            setError({
+                                flag: true,
+                                msg: "Invalid Company Name! May contain letters, numbers and/or '-', '&'.",
+                            })
+                            return; //invalid company name
+                        }
                         providerService.updateProvider({
                             pa_companyname: companyName,
                         }).then(() => {
@@ -188,10 +290,12 @@ export default function Settings() {
                         flag: true,
                         msg: 'Invalid Credentials!'
                     }));
-                }).catch((err) => setError({
-                    flag: true,
-                    msg: err
-                }));
+                } else {
+                    setError({
+                        flag: true,
+                        msg: 'User Not Found!'
+                    });
+                }
                 return;
         }
     }
@@ -376,7 +480,8 @@ export default function Settings() {
                <Box sx={style}>
                     {row.name}
                     <Button sx={{}} color={row.color}
-                    onClick={() => {row.handler()}}>
+                    onClick={() => {row.handler()}}
+                    >
                     {row.action}
                     </Button>
                </Box>

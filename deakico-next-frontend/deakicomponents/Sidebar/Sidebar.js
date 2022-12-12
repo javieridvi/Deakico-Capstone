@@ -32,6 +32,8 @@ import Follows from './follows';
 import Liked from './liked';
 import Review from './Review/review';
 import Settings from './settings';
+import { CircularProgress, Skeleton } from '@mui/material';
+import DashboardTable from '../Table';
 
 const drawerWidth = 240;
 
@@ -80,6 +82,27 @@ export default function MainSidebar() {
     setComponent(text);
   }
 
+  
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [currUser, setCurrUser] = React.useState(null);
+  const [flag, setFlag] = React.useState(false);
+
+  const checkUser = () => {
+    userService.getUser().then((res) => {
+      console.log(res.data)
+      setIsLoggedIn(res.data.pa_id? true : false);
+      setCurrUser(res?.data);
+      setFlag(true);
+    }).catch((err) => {
+      console.log(err);
+      setIsLoggedIn(false)
+    });
+  };
+  
+  React.useEffect(() => {
+    checkUser();
+  }, []);
+
 //render switch function to display icons accordingly
   function renderIcon(param) {
     switch(param) {
@@ -105,46 +128,42 @@ export default function MainSidebar() {
   }
 
   //render switch function to display icons accordingly
+  //To-Do: pass user data through all of these components
   function renderSwitch(param) {
     switch(param) {
       case 'Dashboard':
-        return (<Dashboard/>);
-      case 'Requests':
-        return '#';
+        return (<Dashboard user={currUser}/>);
       case 'Reviews':
-          return (<Review/>);
+        return (<Review user={currUser}/>); //user not needed
       case 'Liked Items':
-        return (<Liked/>)
+        return (<Liked user={currUser}/>); //user not needed
       case 'My Follows':
-        return (<Follows/>)
+        return (<Follows user={currUser}/>); //user not needed
+      case 'Requests':
+        return (<DashboardTable userType='user'/>);
       case 'Profile':
-        return (<Profile/>);
+        return (<Profile user={currUser}/>); 
       case 'Settings':
-        return <Settings/>;
+        return <Settings user={currUser}/>;
       case 'Events':
-        return '#';
+        return (<></>);
       default:
-        return (<Profile/>);
+        return (<Profile user={currUser}/>);
     }
   }
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
-  const checkUser = () => {
-    userService.getUser().then((res) => {
-      setIsLoggedIn(res.data.pa_id? true : false);
-    }).catch((err) => {
-      console.log(err);
-      setIsLoggedIn(false)
-    });
-  };
-
-  React.useEffect(() => {
-    checkUser();
-  }, []);
-
-
-  return (
+if(!flag) {
+  // return (
+  //   <Box
+  //   alignContent='center'
+  //   >
+  //     <CircularProgress
+  //     size='50%'/>
+  //   </Box>
+  // ); 
+  return (null);
+} else 
+return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       {/* <AppBar position="fixed" open={open}> */}
@@ -195,7 +214,7 @@ export default function MainSidebar() {
         ? <>
           <Divider />
             <List>
-              {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
+              {['Dashboard', 'Reviews', 'Profile'].map((text, index) => (
                 <ListItem key={text} disablePadding>
                       <ListItemButton onClick={() => {setComponent(text)} } > {/** onClick render option */}
                         <ListItemIcon>
@@ -215,7 +234,7 @@ export default function MainSidebar() {
 
         <Divider />
         <List>
-          {['Liked Items', 'My Follows', 'Settings', 'Events'].map((text, index) => (
+          {['Liked Items', 'My Follows', 'Requests', 'Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => {setComponent(text)} }>
                 <ListItemIcon>
@@ -229,6 +248,7 @@ export default function MainSidebar() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader /> 
+        
         {/** Whatever is inside here (Main component) will be passed through props and displayed in dashboard page
          * and it will adapt size with the sidebar's opening.
          * I (José) advice not to use any dynamic call to the api through this component yet, as we don't know what problems
