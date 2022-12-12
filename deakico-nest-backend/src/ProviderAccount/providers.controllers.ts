@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -20,8 +22,14 @@ export class ProviderAccountController {
   constructor(private readonly providersService: ProviderAccountService) {}
 
   @Get()
-  getAllProviders(): Observable<ProviderAccount[]> {
+  getAllProviders(): Promise<ProviderAccount[]> {
     return this.providersService.getAllProviders();
+  }
+
+  @UseGuards(JwtGuard)  
+  @Get('follows')
+  getAllProvidersWithFollow(@Request() req: any): Promise<ProviderAccount[]> {
+    return this.providersService.getAllProvidersWithFollow(req.user.u_id);
   }
 
   /**
@@ -33,6 +41,16 @@ export class ProviderAccountController {
   @Get('account')
   getProvider(@Request() req: any): Observable<ProviderAccount> {
     return this.providersService.getProvider(req.user.pa_id);
+  }
+
+  /**
+   * Fetches user's provider account
+   * @param pa_id id of provider to return
+   * @returns user's provider account
+   */
+  @Post('profile')
+  getProviderProfile(@Body() data: Partial<ProviderAccount>): Observable<ProviderAccount> {
+    return this.providersService.getProvider(data.pa_id);
   }
 
   /**
@@ -74,7 +92,7 @@ export class ProviderAccountController {
   ): Observable<UpdateResult> {
     return this.providersService.updateProvider(req.user.pa_id, provider);
   }
-
+  
   /**
    * Deletes the provider account of user
    * @param req token user to retrieve the id of the provider
@@ -82,7 +100,12 @@ export class ProviderAccountController {
    */
   @UseGuards(JwtGuard)
   @Delete()
-  deleteProvider(@Request() req: any): Observable<DeleteResult> {
-    return this.providersService.deleteProvider(req.user.pa_id);
+  deleteProvider(@Request() req: any): Promise<UpdateResult> {
+    try {
+      return this.providersService.deleteProvider(req.user.pa_id, req.user.u_id);
+    }
+    catch(error) {
+      throw new HttpException('Provider Deletion Unsuccessful!', HttpStatus.BAD_REQUEST, {cause: error});
+    }
   }
 }

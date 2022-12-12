@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -46,7 +48,13 @@ export class UserAccountController {
 
   @UseGuards(JwtGuard)
   @Delete()
-  deleteUser(@Request() req: any): Observable<DeleteResult> {
-    return this.usersService.deleteUser(req.user.u_id);
+  deleteUser(@Request() req: any): Promise<UpdateResult> {
+
+    try {
+      return this.usersService.deleteUser(req.user.u_id, req.user.pa_id);
+    }
+    catch(error) {
+      throw new HttpException('User Deletion Unsuccessful!', HttpStatus.BAD_REQUEST)
+    }
   }
 }

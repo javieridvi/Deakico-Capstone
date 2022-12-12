@@ -3,10 +3,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,16 +13,27 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
+//Icons for Sidebar
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
-import userService from '../services/user.service';
+import Dashboard from './Dashboard/dashboard';
+import Profile from './profile/profile';
+
+import userService from '../../services/user.service';
+import Follows from './follows';
+import Liked from './liked';
+import Review from './Review/review';
+import Settings from './settings';
+import { CircularProgress, Skeleton } from '@mui/material';
+import DashboardTable from '../Table';
 
 const drawerWidth = 240;
 
@@ -69,8 +77,34 @@ export default function MainSidebar() {
     setOpen(false);
   };
 
+  const [component, setComponent] = React.useState();
+  const handleClick = (text) => {
+    setComponent(text);
+  }
+
+  
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [currUser, setCurrUser] = React.useState(null);
+  const [flag, setFlag] = React.useState(false);
+
+  const checkUser = () => {
+    userService.getUser().then((res) => {
+      console.log(res.data)
+      setIsLoggedIn(res.data.pa_id? true : false);
+      setCurrUser(res?.data);
+      setFlag(true);
+    }).catch((err) => {
+      console.log(err);
+      setIsLoggedIn(false)
+    });
+  };
+  
+  React.useEffect(() => {
+    checkUser();
+  }, []);
+
 //render switch function to display icons accordingly
-  function renderSwitch(param) {
+  function renderIcon(param) {
     switch(param) {
       case 'Dashboard':
         return <DashboardIcon/>;
@@ -84,47 +118,52 @@ export default function MainSidebar() {
         return <SettingsIcon/>;
       case 'Events':
         return <LocalActivityIcon/>;
+      case 'Liked Items':
+        return <FavoriteIcon/>;
+      case 'My Follows':
+        return <GroupAddIcon/>;
       default:
         return <SettingsIcon/>;
     }
   }
 
   //render switch function to display icons accordingly
-  function redirectSwitch(param) {
+  //To-Do: pass user data through all of these components
+  function renderSwitch(param) {
     switch(param) {
       case 'Dashboard':
-        return '/dashboard';
-      case 'Requests':
-        return '#';
+        return (<Dashboard user={currUser}/>);
       case 'Reviews':
-        return '#';
+        return (<Review user={currUser}/>); //user not needed
+      case 'Liked Items':
+        return (<Liked user={currUser}/>); //user not needed
+      case 'My Follows':
+        return (<Follows user={currUser}/>); //user not needed
+      case 'Requests':
+        return (<DashboardTable userType='user'/>);
       case 'Profile':
-        return '/admin';
+        return (<Profile user={currUser}/>); 
       case 'Settings':
-        return '#';
+        return <Settings user={currUser}/>;
       case 'Events':
-        return '#';
+        return (<></>);
       default:
-        return '#';
+        return (<Profile user={currUser}/>);
     }
   }
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const checkUser = () => {
-    userService.getUser().then((res) => {
-      setIsLoggedIn(res.data.pa_id? true : false);
-    }).catch((err) => {
-      console.log(err);
-      setIsLoggedIn(false);
-    });
-  };
-
-  React.useEffect(() => {
-    checkUser();
-  }, []);
-
-
-  return (
+if(!flag) {
+  // return (
+  //   <Box
+  //   alignContent='center'
+  //   >
+  //     <CircularProgress
+  //     size='50%'/>
+  //   </Box>
+  // ); 
+  return (null);
+} else 
+return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       {/* <AppBar position="fixed" open={open}> */}
@@ -175,14 +214,16 @@ export default function MainSidebar() {
         ? <>
           <Divider />
             <List>
-              {['Dashboard', 'Reviews', 'Requests', 'Profile'].map((text, index) => (
+              {['Dashboard', 'Reviews', 'Profile'].map((text, index) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton href={redirectSwitch(text)}>
-                    <ListItemIcon>
-                      {renderSwitch(text)}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
+                      <ListItemButton onClick={() => {setComponent(text)} } > {/** onClick render option */}
+                        <ListItemIcon>
+                          {renderIcon(text)}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    
+
                 </ListItem>
               ))}
             </List> 
@@ -193,11 +234,11 @@ export default function MainSidebar() {
 
         <Divider />
         <List>
-          {['Settings', 'Events'].map((text, index) => (
+          {['Liked Items', 'My Follows', 'Requests', 'Settings', 'Events'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton href={redirectSwitch(text)}>
+              <ListItemButton onClick={() => {setComponent(text)} }>
                 <ListItemIcon>
-                {renderSwitch(text)}
+                {renderIcon(text)}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -205,14 +246,19 @@ export default function MainSidebar() {
           ))}
         </List>
       </Drawer>
-      {/* <Main open={open}> */}
-        <DrawerHeader />
+      <Main open={open}>
+        <DrawerHeader /> 
+        
         {/** Whatever is inside here (Main component) will be passed through props and displayed in dashboard page
          * and it will adapt size with the sidebar's opening.
          * I (José) advice not to use any dynamic call to the api through this component yet, as we don't know what problems
          * it might cause. For now just display static data inside here.
-         */}
-      {/* </Main> */}
+         */}        
+         {renderSwitch(component)}
+      </Main>
     </Box>
+   
+
+    
   );
 }

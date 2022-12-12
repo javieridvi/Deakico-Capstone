@@ -4,5 +4,6 @@ export interface Review {
   r_rating?: number;
   u_id?: number;
   i_id?: number;
-  //To-Do: create date column
+  r_date?: Date;
+  disabled?: boolean;
 }

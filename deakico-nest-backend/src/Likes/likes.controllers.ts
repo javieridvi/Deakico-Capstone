@@ -52,13 +52,13 @@ export class LikesController {
 
   @UseGuards(JwtGuard) //requires user login token authentification
   @Post()
-  insertLike(@Body() like: Likes, @Request() req: any): Observable<Likes> {
+  insertLike(@Body() like: Likes, @Request() req: any): Promise<Observable<Likes>> {
     return this.likesService.insertLike(req.user, like);
   }
 
   @UseGuards(JwtGuard)
   @Delete()
-  deleteItem(
+  deleteLike(
     @Body() like: Likes,
     @Request() req: any,
   ): Observable<DeleteResult> {

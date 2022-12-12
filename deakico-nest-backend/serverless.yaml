@@ -1,4 +1,6 @@
-service: serverless-example
+service: deakico-sls-api
+
+useDotenv: true
 
 custom:
   serverless-offline:
@@ -10,7 +12,33 @@ plugins:
 provider:
   name: aws
   runtime: nodejs14.x
-
+  # Default stage (default: dev)
+  stage: dev
+  # Default region (default: us-east-1)
+  region: us-east-1
+  # Use a custom name for the CloudFormation stack
+  stackName: deakico-stack
+  # Method used for CloudFormation deployments: 'changesets' or 'direct' (default: changesets)
+  # See https://www.serverless.com/framework/docs/providers/aws/guide/deploying#deployment-method
+  deploymentMethod: direct
+  # Disable automatic rollback by CloudFormation on failure. To be used for non-production environments.
+  disableRollback: true
+  tracing:
+    # Can only be true if API Gateway is inside a stack.
+    apiGateway: true
+    # Optional, can be true (true equals 'Active'), 'Active' or 'PassThrough'
+    lambda: true
+  # Use a custom name for the API Gateway API
+  apiName: deakico-api
+    # Enable REST API logs
+    # This can either be set to `restApi: true` to use defaults, or configured via subproperties
+    # Can only be configured if the API is created by Serverless Framework
+  logs:
+      # Enable REST API logs
+    # This can either be set to `restApi: true` to use defaults, or configured via subproperties
+    # Can only be configured if the API is created by Serverless Framework
+    restApi: true
+    
 functions:
   main:
     handler: dist/main.handler
@@ -18,6 +46,8 @@ functions:
       - http:
           method: ANY
           path: /
+          cors: true
       - http:
           method: ANY
           path: '{proxy+}'
+          cors: true

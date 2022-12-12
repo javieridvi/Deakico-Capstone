@@ -1,13 +1,14 @@
 import Head from 'next/head';
 import * as React from 'react';
 import { Box } from '@mui/material';
-import Dashboard from './dashboard';
-
+import Dashboard from '../../deakicomponents/Dashboard/dashboard';
+import MainSidebar from '../admin/Sidebar';
 
 export default function DashboardFunc({ UserData }) {
 
   return (
-    <>
+    <>        
+    <MainSidebar/>
       <Head>
         <title>Dashboard</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -22,7 +23,8 @@ export default function DashboardFunc({ UserData }) {
           padding: '5em 1.5em'
         }}
       >
-        <Dashboard/>
+
+        {/* <Dashboard/> */}
       </Box>
     </>)
 }

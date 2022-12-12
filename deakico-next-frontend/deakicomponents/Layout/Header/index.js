@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { AppBar, Box, Button, Divider, Grid, IconButton, Link, Menu, MenuItem, Toolbar } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AppBar, Box, Divider, Grid, IconButton, Link, Menu, MenuItem, Toolbar } from '@mui/material';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import authService from "../../../services/auth/auth.service";
 import Account from './Account';
 import LogoName from './logo-name';
 import NavBar from './Navbar';
-import Search from './search';
-import authService from "../../../services/auth/auth.service";
 
 
 export default function Header() {
@@ -13,6 +13,7 @@ export default function Header() {
   const [loggedIn, setLoggedIn] = React.useState(undefined);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const router = useRouter();
 
   const checkLoggedIn = () => {
     setLoggedIn(authService.isLoggedIn());
@@ -34,8 +35,9 @@ export default function Header() {
   };
 
   const handleLogout = () => {
+    setAnchorEl(null);
     authService.logout();
-    location.reload();
+    location.assign('/');
   }
 
   React.useEffect(() => {
@@ -60,9 +62,9 @@ export default function Header() {
               <Box component='div' display={{ xs: 'block', lg: 'none' }}>
                 <Divider />
                 <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-                <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
-                <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
                 <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+                <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
+                
               </Box>
             </Menu>
       )
@@ -78,20 +80,19 @@ export default function Header() {
       >
         <MenuLink link='/login' onClick={handleClose}>Log In</MenuLink>
         <MenuLink link='/signup' onClick={handleClose}>Sign Up</MenuLink>
-        <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
         <Box component='div' display={{ xs: 'block', lg: 'none' }}>
           <Divider />
-          <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
-          <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
-          <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
+          <MenuLink link='/' onClick={handleClose}>Home</MenuLink> 
           <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
+          <MenuLink link='/feed' onClick={handleClose}>Search</MenuLink>
+         
         </Box>
       </Menu>)
     }
   }
 
   return (
-    <AppBar color='secondary' sx={{ position: 'fixed' }}>
+    <AppBar color='secondary' sx={{ position: 'sticky' }}>
       <Toolbar>
         <Grid container
           columns={{ xs: 4, sm: 8, md: 10, lg: 12 }}
@@ -109,7 +110,7 @@ export default function Header() {
           >
             <LogoName />
           </Grid>
-          <Grid item
+          {/* <Grid item
             xs={2}
             md={4}
             lg={2}
@@ -120,14 +121,14 @@ export default function Header() {
             flexGrow='2'
           >
             <Search />
-          </Grid>
+          </Grid> */}
           <Grid item
             lg={3}
             display={{ xs: 'none', lg: 'flex' }}
             justifyContent="center"
             alignItems="center"
           >
-            <NavBar />
+          <NavBar />
           </Grid>
           <Grid item
             xs={2}

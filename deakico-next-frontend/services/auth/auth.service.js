@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from "./auth.header";
 
 const API_URL = process.env.API_URL;
 
@@ -37,14 +38,19 @@ const getCurrentUser = () => {
 const isLoggedIn = () => {
   return sessionStorage.getItem("user") ? true : false;
 }
+const checkToken = async () => {
+  return await axios.get(API_URL + "auth/check", {headers: authHeader()}).catch((err) =>{
+  if(err.response.status === 401){
+    return false;
+  }
+  return err;
+  })
+}
 
-// const removeAcount = (id_user,obj) => {
-//   return axios.delete(API_URL + "users/"+id_user, {data:obj});
-// };
-
-// const updateAcount = (id_user,obj) => {
-//   return axios.put(API_URL + "users/"+id_user, obj);
-// };
+const updatePassword = async (newPassword) => {
+  const data = { password: newPassword };
+  return await axios.put(API_URL + 'auth/update-password', data, {headers: authHeader()})
+}
 
 
 export default {
@@ -53,6 +59,6 @@ export default {
   logout,
   getCurrentUser,
   isLoggedIn,
-  // removeAcount,
-  // updateAcount,
+  checkToken,
+  updatePassword,
 };

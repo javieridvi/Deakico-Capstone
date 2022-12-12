@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { UserAccount } from '../UserAccount/users.interface';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { LikeEntity } from './likes.entity';
 import { Likes } from './likes.interface';
+import { ItemsService } from 'src/Item/items.service';
 
 @Injectable()
 export class LikesService {
@@ -12,6 +13,9 @@ export class LikesService {
     @InjectRepository(LikeEntity)
     private readonly likeRepository: Repository<LikeEntity>,
   ) {}
+
+  @Inject(ItemsService)
+  private readonly itemService: ItemsService;
 
   getAllLikes(): Observable<Likes[]> {
     return from(this.likeRepository.find());
@@ -45,6 +49,7 @@ export class LikesService {
       .innerJoin('likes.likes_item', 'items')
       .select('items')
       .where('likes.u_id = :u_id', { u_id: userId })
+      .andWhere('items.disabled = false')
       .getRawMany();
     return res;
   }
@@ -62,9 +67,15 @@ export class LikesService {
    * @param {Likes} like Likes object to be saved to the database
    * @returns {Observable<Likes>} an observable Promise (a promise given representation).
    */
-  insertLike(user: UserAccount, like: Likes): Observable<Likes> {
+  async insertLike(user: UserAccount, like: Likes): Promise<Observable<Likes>> {
     like.u_id = user.u_id;
-    return from(this.likeRepository.save(like));
+    const check = await this.itemService.getItemProvider(like.i_id);
+    if (check.pa_id === user.pa_id) {
+      console.log(check.pa_id);
+      throw new Error("Can't like your own items");
+    } else{
+      return from(this.likeRepository.save(like));
+    }
   }
 
   updateLike(l_id: number, like: Likes): Observable<UpdateResult> {
@@ -73,5 +84,20 @@ export class LikesService {
 
   deleteLike(userId: number, itemId: number): Observable<DeleteResult> {
     return from(this.likeRepository.delete({ u_id: userId, i_id: itemId }));
+  }
+
+  async deleteLikesOfProvider(providerId: number): Promise<DeleteResult> {
+    const res = await this.likeRepository.manager
+    .query(`delete from "Likes" where "Likes".i_id in (
+      select L.i_id from "Likes" L
+      left join "Items" I on L.i_id = I.i_id
+      where I.pa_id = $1
+      );`,
+    [providerId]);
+    return res;
+  }
+
+  deleteLikesOfUser(userId: number): Observable<DeleteResult> {
+    return from(this.likeRepository.delete({u_id: userId}));
   }
 }

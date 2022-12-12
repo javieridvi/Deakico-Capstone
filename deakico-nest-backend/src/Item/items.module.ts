@@ -6,6 +6,7 @@ import { ItemsService } from './items.service';
 import { ProviderAccountEntity } from '../ProviderAccount/providers.entity';
 import { RequestEntity } from '../Request/requests.entity';
 import { ReviewEntity } from '../Review/reviews.entity';
+import { ArticleListEntity } from '../ArticleList/articleList.entity';
 
 @Module({
   imports: [
@@ -14,9 +15,11 @@ import { ReviewEntity } from '../Review/reviews.entity';
       ProviderAccountEntity,
       RequestEntity,
       ReviewEntity,
+      ArticleListEntity,
     ]),
   ],
   controllers: [ItemsController],
   providers: [ItemsService],
+  exports: [ItemsService],
 })
 export class ItemsModule {}

@@ -17,12 +17,12 @@ export default function About() {
             width: '100%',
             maxHeight: '300px',
             backgroundColor: 'primary',
-            mt: '8%',
+            mt: '10%',
             textAlign: 'center',
           }}
         >
           <div className='aboutPic'>
-            <img src='/Coqui.svg' width={"100%"} />
+            <img src='/Coqui.svg' width={"90%"} />
           </div>
           <Typography variant='h3'
             sx={{
@@ -39,7 +39,7 @@ export default function About() {
 
         <Container className='aboutInfo' sx={{ display: 'flex' }}>
           <Box sx={{ mt: '5%' }}>
-            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5px' }}> About Deakico :    </Typography>
+            <Typography variant='h2' sx={{ fontSize: '46px', fontWeight: '700', mt: '5%' }}> <mark>About Deakico :  </mark>  </Typography>
             <Typography variant='h2' sx={{ fontSize: '28px', fontWeight: '600', fontStyle: 'italic', m: '10px' }}> "De aqui como el Coqui"   </Typography>
             <Typography sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left' }}> - We establish ourselves as
               the platform that connects local small companies with potential customers.
@@ -74,9 +74,9 @@ export default function About() {
                 fontWeight: '700',
               }}
             >
-              <mark className='problem-st'>
+           
                 Problem Statement :
-              </mark>
+              
             </Typography>
             <Typography
               variant='body1'
@@ -108,14 +108,7 @@ export default function About() {
           }}
           >
           </Box>
-          {/* <div>
-            <Image src="/solu.jpg"
-              width={500}
-              height={550}
-              layout='fixed'
-
-            />
-          </div> */}
+      
         </Box>
 
         <Box sx={{ display: 'flex', width: '100%', height: '40%', p: '0', m: '10px' }}>
@@ -142,9 +135,9 @@ export default function About() {
                 marginBottom: '1rem',
               }}
             >
-              <mark className='sol' >
+             
                 Solution Approach:
-              </mark>
+              
             </Typography>
             <Typography
               variant=''
@@ -177,7 +170,7 @@ export default function About() {
                 mb: '1rem',
               }}
             >
-              <mark className='gap-sol'> Gap with existing solutions: </mark>
+              Gap with existing solutions: 
             </Typography>
 
             <Typography variant='body1' sx={{ fontSize: '25px', fontWeight: '500', textAlign: 'left', pb: '3rem', width: '80%' }}> -  Existing solutions do not merge the possibility of finding local products and services in a single space.

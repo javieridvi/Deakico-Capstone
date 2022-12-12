@@ -56,7 +56,7 @@ export default function LogoName() {
         display: { xs: 'none', sm: 'block' }
       }}
       >
-        <Typography component='h1' variant="h3">
+        <Typography component='h1' variant="h4">
           <Link underline='none' color="black" href='/'>Deakico.</Link>
         </Typography>
       </Box>
