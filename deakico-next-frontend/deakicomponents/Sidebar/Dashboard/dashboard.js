@@ -1,26 +1,12 @@
-import { Box, Typography, Stack, Divider, Container, Grid } from '@mui/material';
-import DashboardSidebar from '../../pages/admin/Sidebar'
-import DashboardTable from '../Table';
+import { Grid } from '@mui/material';
+import DashboardTable from '../../Table';
 import { useEffect, useState } from 'react';
-import LineChart from './Chart';
-import PieChart from './Chart';
 import { PieCard, LineCard, BarCard } from './ChartCard';
-import itemService from '../../services/item.service'
-import likesService from '../../services/likes.service';
-import followsService from '../../services/follows.service'
-import {CircularProgress} from '@mui/material';
+import itemService from '../../../services/item.service'
+import likesService from '../../../services/likes.service';
+import followsService from '../../../services/follows.service';
 
-export function formatDate(date) {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const time = [date.getHours(), date.getMinutes()].join(':');
-    const withSlashes = [month, day, year].join('/').concat(`, ${time}`);
-    const withHyphens = [month, day, year].join('-').concat(`, ${time}`);
-    return withSlashes.toString();
-}
-
-export default function Dashboard() {
+export default function Dashboard({user}) {
 
     const [loading, setLoading] = useState(true);
     
@@ -50,17 +36,22 @@ export default function Dashboard() {
     });
     
     const fetchItems = () => {
-        itemService.getItemOfProvider().then((res) => {
-            setItemsRating({
-                labels: res.data?.map((item) => item?.i_name),
-                datasets: [{
-                    label: "Item Ratings",
-                    data: res.data?.map((item) => item?.i_rating),
-                }]
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
+        if(user){
+            itemService.getItemOfProvider(user?.pa_id).then((res) => {
+                setItemsRating({
+                    labels: res.data?.map((item) => item?.name),
+                    datasets: [{
+                        label: "Item Ratings",
+                        data: res.data?.map((item) => item?.rating),
+                    }]
+                });
+            }).catch((err) => {
+                console.log(err);
+            }); 
+        } else {
+            console.log('User not found')
+        }
+        
 
         likesService.getLikesOfProvider().then((res) => {
             setItemLikes({
@@ -77,10 +68,10 @@ export default function Dashboard() {
 
         followsService.getFollowersGroupByDate().then((res) => {
             setFollows({
-                labels: res.data?.map((follow) => follow?.f_date), //display the number of follows for the day
+                labels: res.data?.map((follow) => new Date(follow?.f_date).toLocaleDateString()), //display the date the follow was made
                 datasets: [{
                     label: "Follows",
-                    data: res.data?.map((follow) => follow?.count),
+                    data: res.data?.map((follow) => follow?.count),//display the number of follows for the day
                 }]
             });
             setLoading(false);
@@ -107,7 +98,7 @@ export default function Dashboard() {
             </Grid>
         </Grid>
                 
-            <DashboardTable/>
+            <DashboardTable userType='provider'/>
         </>
         
     )

@@ -5,16 +5,6 @@ const API_URL = process.env.API_URL;
 const entity = "likes";
 const endpoint = API_URL + entity;
 
-const insertLike = async (data) => {
-    return await axios.post(endpoint, data, {headers: authHeader()}); 
-};
-
-const deleteLike = async (iId) => {
-    let data = {
-        i_id: iId
-    };
-    return await axios.delete(endpoint, {headers: authHeader()}, data=data);
-}
 
 //most likely unnecessary
 // const updateLike = async (l_id, data) => {
@@ -22,7 +12,7 @@ const deleteLike = async (iId) => {
 // };
 
 const getAllLikes = async () => {
-    return await axios.get(endpoint);
+  return await axios.get(endpoint);
 };
 
 // const getLike = async (l_id) => {
@@ -32,25 +22,38 @@ const getAllLikes = async () => {
 
 //it returns the list of items a provider has, and their corresponding like count.
 const getLikesOfProvider = async () => {
-    return await axios.get(endpoint + "/provider", {headers: authHeader()});
+  return await axios.get(endpoint + "/provider", { headers: authHeader() });
 }
 
 const getUserLiked = async () => {
-    return await axios.get(endpoint + "/user", {headers: authHeader()});
+  return await axios.get(endpoint + "/user", { headers: authHeader() });
 };
 
 const getItemLikes = async (i_id) => {
-    return await axios.get(endpoint + "/item/" + i_id);
+  return await axios.get(endpoint + "/item/" + i_id);
+};
+
+const insertLike = async (I_id) => {
+  let data = {
+    i_id: I_id
+  };
+  return await axios.post(endpoint, data, { headers: authHeader() });
+};
+
+const deleteLike = async (I_id) => {
+  let data = {
+    i_id: I_id
+  };
+  return await axios.delete(endpoint, { headers: authHeader(), data: data });
 };
 
 export default {
-    insertLike,
-    //updateLike,
-    deleteLike,
-    getAllLikes,
-    //getLike,
-    getLikesOfProvider,
-    getUserLiked,
-    getItemLikes,
-   
+  //updateLike,
+  //getLike,
+  getAllLikes,
+  getLikesOfProvider,
+  getUserLiked,
+  getItemLikes,
+  insertLike,
+  deleteLike,
 };

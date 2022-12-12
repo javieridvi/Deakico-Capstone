@@ -9,8 +9,6 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { width } from '@mui/system';
 
 
-
-
 export  function AddProduct(props) {
 
     const categories = [

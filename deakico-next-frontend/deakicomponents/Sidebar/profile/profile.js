@@ -3,14 +3,16 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia, AccordionDetails,AccordionSummary, Accordion ,Pagination, } from '@mui/material';
-import {  ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
-import itemService from '../../services/item.service';
-import reviewService from '../../services/review.service';
-import { useEffect, useState,  } from "react";
-import {AddProduct} from '../../deakicomponents/AddProduct';
-import Stars from '../../deakicomponents/Reusable/Rating';
-import Deletebutton from '../../deakicomponents/Reusable/Deletebutton';
+import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia,FormControl, TextField, MenuItem, AccordionDetails,AccordionSummary, Accordion ,Pagination, Dialog} from '@mui/material';
+import { ProductCard, ProviderCardproducts } from "../../Reusable/Card";
+import itemService from '../../../services/item.service';
+import reviewService from '../../../services/review.service';
+import { useEffect, useState, ChangeEvent } from "react";
+import {AddProduct} from '../../AddProduct';
+import Stars from '../../Reusable/Rating';
+import userService from '../../../services/user.service';
+import providerService from '../../../services/provider.service';
+import Deletebutton from '../../Reusable/Deletebutton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
@@ -31,58 +33,79 @@ const pageSize = 6 ;
 
 
 
-export default function Profile() {
+export default function Profile({user}) {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [Del, setDel] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [provider, setProvider] = useState({});
   const [pagination, setPagination] = useState({
   count: 1 ,
   from: 0 ,
   to: pageSize 
 });
   const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews()).data; //todos los reviews de ese provider
-    let len = rvws.length ; //Cantidad de reviews hechos 
+    const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
+    // console.log(rvws);
+    let len = rvws.length;
+    // console.log("len: "+ len)    //cantiad de reviews hechos
+    // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
      
     let overallR = 0;   // overall rating calc  
 
     rating.forEach(element => {
-    overallR += parseFloat(element)
-       
-      });
+      overallR += parseFloat(element)
 
-    setOverallRating (parseFloat(overallR/len).toFixed(2)) ;  
-  //  return(overallRating);  // el overall rating del profile
+    });
+
+    setOverallRating(parseFloat(overallR / len).toFixed(2));
+    //  return(overallRating);  // el overall rating del profile
   }
   
 //Para encontrar todos los items de ese provider
-  const getProducts = () => {
-    itemService.getItemOfProvider().then((res) => {
-      console.log( res.data);
-      setItemList(res.data);
-      var sizeR =   res.data.length; 
-      setPagination({...pagination, count: sizeR });
-     
-      res.data.forEach(element=>{
-        if(element.i_type == 'service'){
-          console.log("true");
-          setServiceList(serviceList => [...serviceList,element])
-        }
-        else { 
-          setProductList(productList =>[...productList, element])
-        }
-              
-      });
-    }).catch((err) => {
-      console.log(err);
+  const getProducts = async () => {
+    // userService.getUser().then((res)=> {
+    if(user){
+
+      itemService.getItemOfProvider(user.pa_id).then((res) => {
+        console.log(res.data);
+        setItemList(res.data);
+        var sizeR =   res.data.length; 
+        setPagination({...pagination, count: sizeR });
+       
+        res.data.forEach(element=>{
+          if(element.type == 'service'){
+            console.log("true");
+            setServiceList(serviceList => [...serviceList, element])
+          }
+          else {
+            setProductList(productList => [...productList, element])
+          }
+  
+        });
+      }).catch((err) => {
+        console.log(err);
+      })
+    } else {
+      console.log("User not Found! 1");
+    }
+
+  }
+
+  const getProvider = () => {
+    userService.getUser().then((res) => {
+      providerService.getProvider(res.data?.pa_id).then((res) => {
+        setProvider(res.data);
+      })
     })
   }
+
   useEffect(() => {
-    getProducts(); 
+    getProvider();
+    getProducts();
     profileRating();
   }, []);
 
@@ -140,7 +163,7 @@ function handleDelete(){
         fontSize: '28px' ,
         mr:'2px',
       
-       }} > Company Name  </Typography>   
+       }} > {provider.pa_companyname} </Typography>   
     
        <Stars 
         rating={overallRating}/>
@@ -154,20 +177,19 @@ function handleDelete(){
         mb:'1.2rem',
         direction:'column'
 
-              }}
+            }}
             >
-              Here goes a fancy text that sets you apart from other companies. 
-
+              {provider?.pa_desc}
             </Typography>
           </Box >
           <Box id='provider-Buttons'>
           <Stack className='topButtons' direction="row" spacing={2}>
             <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
             <AddProduct
-            open = {open}
-            handleClose= {handleClose}
+              open={open}
+              handleClose={handleClose}
             />
-            <Button variant="contained" onClick={()=> {window.location.href = "/review";}} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
             {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
         </Box>
@@ -177,7 +199,7 @@ function handleDelete(){
              <CardMedia  
               component="img"
               image='/Logphotos.png'
-              width= 'auto'
+              width='auto'
               height="auto"
               sx={{mb:"2rem"}}
                />
@@ -208,9 +230,9 @@ function handleDelete(){
                       width:'80%', fontWeight:'700'
                     }} > 
 
-                    What about my services :  
-                   </Typography> 
- { serviceList.map((e, index) => { 
+              What about my services :  
+            </Typography> 
+          { serviceList.map((e, index) => { 
 
 
           return (   
@@ -244,7 +266,7 @@ function handleDelete(){
        <div key={index} >
             <ProviderCardproducts
           image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
-          rating={e.i_rating}
+                rating={e.i_rating}
                 category={e.i_category}
                 title={e.i_name}
                 description={e.i_description}

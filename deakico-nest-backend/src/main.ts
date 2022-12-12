@@ -27,6 +27,11 @@ bootstrap();
 
 // async function bootstrap(): Promise<Handler> {
 //   const app = await NestFactory.create(AppModule);
+//   app.enableCors({
+//     origin: 'https://deakico.vercel.app',
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+//     credentials: true
+//   });
 //   await app.init();
 
 //   const expressApp = app.getHttpAdapter().getInstance();

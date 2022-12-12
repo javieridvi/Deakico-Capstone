@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, Grid, Typography, IconButton, Menu, MenuItem, Link, Box, Divider } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Button, ButtonGroup, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import authService from "../../../services/auth/auth.service";
 import userService from "../../../services/user.service";
@@ -25,10 +25,11 @@ export default function Account() {
   }
 
   const checkCurrUser = () => {
-    setCurrUser(userService.getUser()?.then((res) => {
+    setCurrUser(userService.getUser().then((res) => {
       setCurrUser(res.data);
     }).catch((err) => {
-      if (err.response.status == 401) {
+      //changed from "response" to "request" because it raised an error att: José
+      if (err.request.status == 401) {
         setOpenPopup(true);
       } else {
         console.log(err);
@@ -45,7 +46,7 @@ export default function Account() {
 
   const handleLogout = () => {
     authService.logout();
-    location.reload();
+    location.assign('/');
   }
 
   function MenuLink(props) {
@@ -61,8 +62,8 @@ export default function Account() {
     setLoggedIn((state) => {
       let logged = authService.isLoggedIn();
       if (logged) {
-        checkCurrUser();
       }
+        checkCurrUser();
       return logged;
     })
     // checkLoggedIn();    
@@ -73,7 +74,7 @@ export default function Account() {
   return typeof (loggedIn !== 'undefined') ? (
     loggedIn ? (
       <>
-        <Typography>Welcome, {currUser.username}</Typography>
+        <Typography>{currUser.username}</Typography>
         <IconButton
           id="basic-button"
           color='primary'

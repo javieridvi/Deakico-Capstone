@@ -34,6 +34,7 @@ export class ProviderAccountService {
       'pa_desc AS desc',
       'pa_rating AS rating',
       'pa_category AS category',
+      'pa_type AS type',
       ])
       .where('disabled = false')
     .getRawMany()
@@ -51,6 +52,7 @@ export class ProviderAccountService {
           'provider.pa_desc AS desc',
           'provider.pa_rating AS rating',
           'provider.pa_category AS category',
+          'provider.pa_type AS type',
           ])
         .addSelect(('CASE WHEN (follow.pa_id = provider.pa_id) THEN true ELSE false END'), 'following')
         .setParameter('u_id', uID)
@@ -59,8 +61,8 @@ export class ProviderAccountService {
     return response;
   }
 
-  getProvider(pa_id): Observable<ProviderAccount> {
-    return from(this.providerRepository.findOneBy({ pa_id: pa_id, disabled: false }));
+  getProvider(pa_id: number): Observable<ProviderAccount> {
+    return from(this.providerRepository.findOneByOrFail({ pa_id: pa_id, disabled: false }));
   }
 
   async getProviderCategory(providerCat: string): Promise<Observable<ProviderAccount[]>> {

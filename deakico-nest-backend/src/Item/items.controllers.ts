@@ -16,10 +16,12 @@ import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { Item } from './items.interface';
 import { ItemsService } from './items.service';
+import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
+import getUploadImageUrl from '../imageS3';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) {}
+  constructor(private readonly itemsService: ItemsService) { }
 
   @Get()
   getAllItems(): Observable<Item[]> {
@@ -29,6 +31,14 @@ export class ItemsController {
   @Get('/id/:i_id')
   getItem(@Param('i_id') itemId: number): Observable<Item> {
     return this.itemsService.getItem(itemId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('image')
+  async getImageUrl(@Request() req: any): Promise<String> {
+    const url = await getUploadImageUrl('provider/'+req.user.pa_id+'/item/');
+    console.log(url)
+    return url;
   }
 
   /**
@@ -67,15 +77,25 @@ export class ItemsController {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
-  /**
-   * Fetches all items from given itemProvider
-   * @param req token used to retrieve the id of the provider
-   * @returns {Observable<Item[]>} an observable promise
+  /**Fetches Items of given provider's pa_id
+   * 
+   * @param data 
+   * @returns list of Items of the provider
    */
+  @Post('provider')
+  getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
+    return this.itemsService.getItemOfProvider(data.pa_id);
+  }
+
+  // /**
+  //  * Fetches all items from given itemProvider
+  //  * @param req token used to retrieve the id of the provider
+  //  * @returns {Observable<Item[]>} an observable promise
+  //  */
   @UseGuards(JwtGuard)
-  @Get('provider')
-  getItemOfProvider(@Request() req: any): Promise<Observable<Item[]>> {
-    return this.itemsService.getItemOfProvider(req.user.pa_id);
+  @Post('provider/liked')
+  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>, @Request() req: any): Promise<Item[]> {
+    return this.itemsService.getItemOfProviderLiked(data.pa_id, req.user.u_id);
   }
 
   /**

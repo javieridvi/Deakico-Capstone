@@ -6,11 +6,17 @@ const entity = "requests";
 const endpoint = API_URL + entity;
 
 const insertRequest = async (data) => {
+    console.log('request.service.js data recieved >');
+    console.log(data);
     return await axios.post(endpoint, data, {headers: authHeader()}); 
 };
 
-const updateRequest = async (req_id, data) => {
-    return await axios.put(endpoint + "/" + req_id, data, {headers: authHeader()});
+const updateRequestByUser = async (req_id, data) => {
+    return await axios.put(endpoint + "/user/" + req_id, data, {headers: authHeader()});
+};
+
+const updateRequestByProvider = async (req_id, data) => {
+    return await axios.put(endpoint + "/provider/" + req_id, data, {headers: authHeader()});
 };
 
 const deleteRequest = async (req_id) => {
@@ -35,7 +41,8 @@ const getUserRequest = async () => {
 
 export default {
     insertRequest,
-    updateRequest,
+    updateRequestByUser,
+    updateRequestByProvider,
     deleteRequest, 
     getAllRequests,
     getRequest,

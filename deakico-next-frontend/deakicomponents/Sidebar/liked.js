@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { ProductCard, ProviderCard } from "../../deakicomponents/Card";
+import { ProductCard, ProviderCard } from "../Reusable/Card";
 import likeService from "../../services/likes.service";
 
 
@@ -50,7 +50,7 @@ export default function Liked() {
             paddingBottom: '100px'
           }}
         >
-          {likedItems.map((e, index) => {
+          {likedItems?.map((e, index) => {
             return (
               <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ProductCard

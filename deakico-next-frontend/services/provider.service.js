@@ -13,8 +13,8 @@ const insertProvider = async (data) => {
     ); 
 };
 
-const updateProvider = async (pa_id, data) => {
-    return await axios.put(endpoint + "/" + pa_id, data, {headers: authHeader()});
+const updateProvider = async (data) => {
+    return await axios.put(endpoint, data, {headers: authHeader()});
 };
 
 const deleteProvider = async () => {
@@ -29,15 +29,18 @@ const getAllProvidersWithFollow = async () => {
     return await axios.get(endpoint+"/follows", {headers: authHeader()});
 };
 
-const getProvider = async (pa_id) => {
-    return await axios.get(endpoint + "/" + pa_id, {headers: authHeader()})
+//fetches the logged-in provider
+const getProvider = async () => {
+    return await axios.get(endpoint + "/account", {headers: authHeader()})
 }
 
+//fetches any provider, given the pa_id
 const getProviderProfile = async (pa_id) => {
   const data ={
     pa_id: pa_id,
   }
-    return await axios.get(endpoint + "/profile", data)
+  console.log(data);
+    return await axios.post(endpoint + "/profile", data)
 }
 
 const getProviderCategory = async (pa_category) => {
