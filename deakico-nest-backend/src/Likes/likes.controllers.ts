@@ -62,6 +62,7 @@ export class LikesController {
     @Body() like: Likes,
     @Request() req: any,
   ): Observable<DeleteResult> {
+    
     return this.likesService.deleteLike(req.user.u_id, like.i_id);
   }
 }

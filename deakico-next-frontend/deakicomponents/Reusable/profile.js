@@ -3,7 +3,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
 import { ProductCard, } from "./Card";
@@ -15,6 +15,8 @@ import Stars from './Rating';
 import providerService from '../../services/provider.service';
 import authService from '../../services/auth/auth.service';
 import { LogInPopUp } from '../Modal';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import requestService from '../../services/request.service';
 
 
 
@@ -96,8 +98,9 @@ export default function Profile(props) {
       // setItemList(res.data);
       // const Services = res.data.map((item) => item?.i_type )
       // console.log("Services Type: "+ Services);
+      console.log(res.data);
       res.data.forEach(element => {
-        if (element.i_type == 'service') {
+        if (element.type == 'service') {
           console.log("true");
           setServiceList(serviceList => [...serviceList, element])
         }
@@ -111,6 +114,54 @@ export default function Profile(props) {
     })
   }
   // ** Profile info
+
+  // Service Handling **
+  const [expanded, setExpanded] = useState('"panel1"');
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
+  const handlePageChange = (event, page) => {
+    const from = (page - 1) * pageSize;
+    const to = (page - 1) * pageSize + pageSize;
+    setPagination({ ...pagination, from: from, to: to });
+  }
+  // ** Service Handling
+
+  // Request Handling **
+
+  // Send Request **
+  function handleRequestClick(id, name, price) {
+    const service = {
+      i_id: id,
+      qty: 1,
+      priceAtReq: price,
+    }
+
+    const fullRequest = {
+      request: {
+        pa_id: providerId,
+        req_totalprice: price,
+      },
+      articleList: [service],
+    }
+    console.log('profile.js Request to send >');
+    console.log(fullRequest);
+    requestService.insertRequest(fullRequest).then(res => {
+      console.log('profile.js Request successful >');
+      console.log(res);
+    }).catch(err => {
+      if (err.request.status === 401) {
+        openModal(true);
+      }
+      console.log('Error at cart.js >');
+      console.log(err);
+    })
+  }
+  // ** Send Request
+
+  // ** Request Handling
 
   /*
   const profileRating = async () => {
@@ -245,54 +296,53 @@ export default function Profile(props) {
       </style>
       <main>
         <Container className='Items'>
-          <Box className='serviceTab'  >
-            {/* <Typography 
-            sx={{
-            mt: '4rem',
-            fontSize: '18px',
-            fontWeight: '200'
-        }}
-        >
-            My  Services
-        </Typography> */}
-            <>
-              <FormControl sx={{ width: '50%', mt: '2rem', }}>
-                <InputLabel>Services</InputLabel>
-                <Select
-                  label="services"
-                  value={selecting}
-                  id="select-service"
-                  // onChange={handleSelect}
-                >
-                  {serviceList.map((e, index) => {
-                    return (
-                      <div key={index}>
 
-                        <MenuItem value={e.i_name}>{e.i_name}</MenuItem>
+          <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
 
-                      </div>
-                    );
-                  })}
 
-                </Select>
-              </FormControl>
-              <Typography
-                sx={{
-                  mt: '2rem',
-                  mb: '4rem',
-                  width: '50%'
-                }}
-              >
-                What about my company :
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Maecenas accumsan lacus vel facilisis volutpat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Maecenas accumsan lacus vel facilisis volutpat est.
-              </Typography>
-            </>
+            <Typography
+              sx={{
+                mt: '2rem',
+                mb: '1rem',
+                width: '80%', fontWeight: '700'
+              }} >
 
-          </Box>
+              What about my services :
+            </Typography>
+            {serviceList.map((e, index) => {
+              return (
+                <div key={e.name}>
+                  <Stack >
+                    <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                        <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <CardMedia component='img' sx={{ aspectRatio: '9/4' }} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" />
+                        <Typography> Description:  {e.description} </Typography>
+                        <Typography>  Price: {e.price} </Typography>
+                        <Typography>  Time: {e.timeslot} minutes </Typography>
+                        <Button variant='outlined'
+                          onClick={() => handleRequestClick(e.id, e.name, e.price)}
+                          sx={{
+                            height: '20px',
+                            minWidth: '60px',
+                            fontSize: '.875rem', // 14px
+                            fontFamily: 'Roboto, sans-serif',
+                            fontWeight: '500',
+                          }}
+                        >
+                          +
+                        </Button>
+                        {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
+
+                      </AccordionDetails>
+                    </Accordion></Stack> </div>
+              );
+            })}
+
+          </Box >
 
           <Box className='Products' width='90%'>
             <Grid className="Results"
