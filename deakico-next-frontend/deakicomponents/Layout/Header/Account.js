@@ -25,10 +25,11 @@ export default function Account() {
   }
 
   const checkCurrUser = () => {
-    setCurrUser(userService.getUser()?.then((res) => {
+    setCurrUser(userService.getUser().then((res) => {
       setCurrUser(res.data);
     }).catch((err) => {
-      if (err.response.status == 401) {
+      //changed from "response" to "request" because it raised an error att: José
+      if (err.request.status == 401) {
         setOpenPopup(true);
       } else {
         console.log(err);

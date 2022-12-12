@@ -33,7 +33,7 @@ const pageSize = 6 ;
 
 
 
-export default function Profile() {
+export default function Profile({user}) {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating] = useState(0);
@@ -65,26 +65,33 @@ export default function Profile() {
   }
   
 //Para encontrar todos los items de ese provider
-  const getProducts = () => {
-    itemService.getItemOfProvider().then((res) => {
-      console.log(res.data);
-      setItemList(res.data);
-      var sizeR =   res.data.length; 
-      setPagination({...pagination, count: sizeR });
-     
-      res.data.forEach(element=>{
-        if(element.i_type == 'service'){
-          console.log("true");
-          setServiceList(serviceList => [...serviceList, element])
-        }
-        else {
-          setProductList(productList => [...productList, element])
-        }
+  const getProducts = async () => {
+    // userService.getUser().then((res)=> {
+    if(user){
 
-      });
-    }).catch((err) => {
-      console.log(err);
-    })
+      itemService.getItemOfProvider(user.pa_id).then((res) => {
+        console.log(res.data);
+        setItemList(res.data);
+        var sizeR =   res.data.length; 
+        setPagination({...pagination, count: sizeR });
+       
+        res.data.forEach(element=>{
+          if(element.type == 'service'){
+            console.log("true");
+            setServiceList(serviceList => [...serviceList, element])
+          }
+          else {
+            setProductList(productList => [...productList, element])
+          }
+  
+        });
+      }).catch((err) => {
+        console.log(err);
+      })
+    } else {
+      console.log("User not Found! 1");
+    }
+
   }
 
   const getProvider = () => {
@@ -217,9 +224,9 @@ function handleDelete(){
                       width:'80%', fontWeight:'700'
                     }} > 
 
-                    What about my services :  
-                   </Typography> 
- { serviceList.map((e, index) => { 
+              What about my services :  
+            </Typography> 
+          { serviceList.map((e, index) => { 
 
 
           return (   
@@ -250,12 +257,12 @@ function handleDelete(){
        <div key={index} >
             <ProviderCardproducts
           image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
-          rating={e.i_rating}
-                category={e.i_category}
-                title={e.i_name}
-                description={e.i_description}
-                price={e.i_price}
-                // delete= {handleDelete}   
+          rating={e.rating}
+          category={e.category}
+          title={e.name}
+          description={e.description}
+          price={e.price}
+          // delete= {handleDelete}   
               />    
         </div>
               ))}
