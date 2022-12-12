@@ -32,7 +32,7 @@ function sortIntHelper(a, b) {
   }
 }
 
-export default function ToggleSection() {
+export default function ToggleSection(props) {
 
   //arbitrarily, true==Product, false==Service
 
@@ -64,53 +64,73 @@ export default function ToggleSection() {
 
     if (toggle) {
       return (
-        <Box>
-          <Typography component='h4' variant='h4' align="center"
+        <>
+        <Typography component='h4' variant='h4' align="center"
             sx={{
               padding: '2rem',
             }}>
             Products
           </Typography>
-          
-          {productList.map((product) => {
-            return (
-            <ProductCard
-              id={product.i_id}
-              title={product.i_name}
-              price={product.i_price}
-              rating={product.i_rating}
-              category={product.i_category}
-              description={product.i_description}
-            />
-            )
-          })}
-        </Box>
+          <Box
+          sx={{
+            display: 'flex',
+            //flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+            
+            
+            {productList.map((product) => {
+              return (
+              <ProductCard
+                id={product.i_id}
+                title={product.i_name}
+                price={product.i_price}
+                rating={product.i_rating}
+                category={product.i_category}
+                description={product.i_description}
+                src={props.image ? props.image : '/product-placeholder.png'}
+              />
+              )
+            })}
+          </Box>
+        </>
       );
     }
     else {
       return (
-        <Box>
-          <Typography component='h4' variant='h4' align="center"
+        <>       
+         <Typography component='h4' variant='h4' align="center"
             sx={{
               padding: '2rem',
             }}>
             Services
           </Typography>
-          {serviceList.map((service) => {
-            return (
-            <ProductCard
-              id={service.i_id}
-              title={service.i_name}
-              price={service.i_price}
-              rating={service.i_rating}
-              category={service.i_category}
-              description={service.i_description}
-            />
-            )
-          })}
-          
-        </Box>
-
+          <Box
+          sx={{
+            display: 'flex',
+            //flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+          >
+    
+            {serviceList.map((service) => {
+              return (
+              <ProductCard
+                id={service.i_id}
+                title={service.i_name}
+                price={service.i_price}
+                rating={service.i_rating}
+                category={service.i_category}
+                description={service.i_description}
+                src={props.image ? props.image : '/product-placeholder.png'}
+              />
+              )
+            })}
+            
+          </Box>
+        </>
       );
     }
 
@@ -140,13 +160,8 @@ export default function ToggleSection() {
 
         </Switch>
         <Stack 
-        direction={'row'} 
         gap={4} 
-        paddingBottom='2rem' 
-        sx={{
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
+        paddingBottom='2rem'
         >
         {displayItems()}
         </Stack>
