@@ -106,7 +106,7 @@ console.log(today);
             p:'0',
             backgroundColor:'black',
             height:'17rem',
-            width: 1, display:'flex', justifyContent:'center',   m:'0', p:'0 ', mt:'0', mb:'2rem', 
+            width: "100%", display:'flex', justifyContent:'center',   m:'0', p:'0 ', mt:'0', mb:'2rem', 
         }}> 
                 <Typography variant='h2'  sx={{
                     textAlign:'center', color:'white', ml:'6rem' , alignContent:'center', mt:'6rem', fontFamily:'Comfortaa', fontStyle: 'normal', 

@@ -48,9 +48,7 @@ export default function Profile({user}) {
 });
   const profileRating = async ()=>{
     const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
-    // console.log(rvws);
     let len = rvws.length;
-    // console.log("len: "+ len)    //cantiad de reviews hechos
     // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
      
@@ -189,7 +187,7 @@ function handleDelete(){
               open={open}
               handleClose={handleClose}
             />
-            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+            {/* <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button> */}
             {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
           </Stack>
         </Box>
@@ -199,8 +197,9 @@ function handleDelete(){
              <CardMedia  
               component="img"
               image='/Logphotos.png'
-              width='auto'
+              width= 'auto'
               height="auto"
+              alt='profilepicture'
               sx={{mb:"2rem"}}
                />
           </div>
@@ -234,21 +233,20 @@ function handleDelete(){
             </Typography> 
           { serviceList.map((e, index) => { 
 
-
           return (   
             <div  key={index} >
               <Stack >
           <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
         <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
-          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.i_name} </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{e.i_category}</Typography>
+          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.name} </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <CardMedia component='img'  sx={{aspectRatio:'9/4'}} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"    />
-          <Typography sx={{mt:'15px'}}> Description:  {e.i_description} </Typography>
-          <Typography sx={{mt:'10px'}}>  Price: {e.i_price} </Typography>
-          <Typography sx={{mt:'10px'}}>  Time: {e.s_timeslot} minutes </Typography>
-          <Button sx={{display:'flex' , textAlign:'center', height:'1.5rem', mt:'10px'}}>Request</Button> 
+          <Typography sx={{mt:'15px'}}> Description:  {e.description} </Typography>
+          <Typography sx={{mt:'10px'}}>  Price: {e.price} </Typography>
+          <Typography sx={{mt:'10px'}}>  Time: {e.timeslot} minutes </Typography>
+          {/* <Button sx={{display:'flex' , textAlign:'center', height:'1.5rem', mt:'10px'}}>Request</Button>  */}
 
         </AccordionDetails>
      </Accordion></Stack> </div> 
@@ -265,13 +263,14 @@ function handleDelete(){
               {productList.slice(pagination.from, pagination.to).map((e,index)=> (
        <div key={index} >
             <ProviderCardproducts
-          image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
-                rating={e.i_rating}
-                category={e.i_category}
-                title={e.i_name}
-                description={e.i_description}
-                price={e.i_price}
+                image={e.image ? e.image : '/product-placeholder.png'}              
+                rating={e.rating}
+                category={e.category}
+                title={e.name}
+                description={e.description}
+                price={e.price}
                 delete= {handleDelete}   
+                alt="products"
               />  
         </div>
               ))}

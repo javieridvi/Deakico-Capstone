@@ -330,9 +330,6 @@ export function ProviderCardproducts(props){
    setIsHovering(false);
   };
   
-  function handleDelete(){
-    console.log("yup delete this");
-  }
 
 return (
    <Card sx={{m: '2rem', backgroundColor:'#e5e5e5', width:'20rem'}} >
@@ -350,7 +347,8 @@ return (
   sx={{
     maxHeight:'14rem',
     aspectRatio:'16/9',
-    color: 'whitesmoke' ,
+    // color: 'whitesmoke' 
+    
 
   }}
     /> </Box>
@@ -362,7 +360,8 @@ return (
             fontWeight: '700',
             fontSize: '1.125rem', // 18px
             fontFamily: 'Comfortaa',
-            ml:'1rem'
+            ml:'1rem',
+            color:'black'
           }}
         >
           {props.title}

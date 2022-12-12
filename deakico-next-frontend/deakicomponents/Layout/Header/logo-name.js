@@ -34,6 +34,7 @@ export default function LogoName() {
               src="/Deakico-Icon.svg"
               width={32}
               height={32}
+              alt='deakicoicon'
             />
           </Link>
         </Box>
@@ -48,6 +49,7 @@ export default function LogoName() {
           <Image
             src="/Coqui.svg"
             layout='fill'
+            alt='coqui-icon'
           />
         </Box>
       </Typography>
