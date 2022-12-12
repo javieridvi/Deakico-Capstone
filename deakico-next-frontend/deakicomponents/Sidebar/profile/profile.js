@@ -234,14 +234,14 @@ function handleDelete(){
               <Stack >
           <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
         <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
-          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.i_name} </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{e.i_category}</Typography>
+          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.name} </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <CardMedia component='img'  sx={{aspectRatio:'9/4'}} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"    />
-          <Typography> Description:  {e.i_description} </Typography>
-          <Typography>  Price: {e.i_price} </Typography>
-          <Typography>  Time: {e.s_timeslot} minutes </Typography>
+          <Typography> Description:  {e.description} </Typography>
+          <Typography>  Price: {e.price} </Typography>
+          <Typography>  Time: {e.timeslot} minutes </Typography>
           {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
 
         </AccordionDetails>
