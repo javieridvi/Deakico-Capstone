@@ -69,9 +69,9 @@ export class LikesService {
    */
   async insertLike(user: UserAccount, like: Likes): Promise<Observable<Likes>> {
     like.u_id = user.u_id;
+    console.log(like);
     const check = await this.itemService.getItemProvider(like.i_id);
-    if (check.pa_id === user.pa_id) {
-      console.log(check.pa_id);
+    if (user.pa_id != undefined && check.pa_id === user.pa_id) {
       throw new Error("Can't like your own items");
     } else{
       return from(this.likeRepository.save(like));

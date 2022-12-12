@@ -3,12 +3,12 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia,FormControl, TextField, MenuItem, AccordionDetails,AccordionSummary, Accordion ,Pagination, Dialog} from '@mui/material';
+import { Box, Button, Container, Rating, Stack, styled, Typography, CardMedia, FormControl, TextField, MenuItem, AccordionDetails, AccordionSummary, Accordion, Pagination, Dialog } from '@mui/material';
 import { ProductCard, ProviderCardproducts } from "../../Reusable/Card";
 import itemService from '../../../services/item.service';
 import reviewService from '../../../services/review.service';
 import { useEffect, useState, ChangeEvent } from "react";
-import {AddProduct} from '../../AddProduct';
+import { AddProduct } from '../../AddProduct';
 import Stars from '../../Reusable/Rating';
 import userService from '../../../services/user.service';
 import providerService from '../../../services/provider.service';
@@ -29,11 +29,11 @@ const StyledRating = styled(Rating)({
 //Test const email CAMBIARLO POR EL USER ADMIN EMAIL
 const email = 'deakicomoelcoqui@gmail.com'
 
-const pageSize = 6 ;
+const pageSize = 6;
 
 
 
-export default function Profile({user}) {
+export default function Profile({ user }) {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
   const [overallRating, setOverallRating] = useState(0);
@@ -41,18 +41,18 @@ export default function Profile({user}) {
   const [productList, setProductList] = useState([]);
   const [provider, setProvider] = useState({});
   const [pagination, setPagination] = useState({
-  count: 1 ,
-  from: 0 ,
-  to: pageSize 
-});
-  const profileRating = async ()=>{
-    const rvws =  (await reviewService.getProviderReviews().catch(() => {})).data;
+    count: 1,
+    from: 0,
+    to: pageSize
+  });
+  const profileRating = async () => {
+    const rvws = (await reviewService.getProviderReviews().catch(() => { })).data;
     // console.log(rvws);
     let len = rvws.length;
     // console.log("len: "+ len)    //cantiad de reviews hechos
     // message = rData.map((item) => item?.r_message ) // List of all the messages 
-    const  rating = rvws.map((item) => item?.rating )  // List of all the ratings. 
-     
+    const rating = rvws.map((item) => item?.rating)  // List of all the ratings. 
+
     let overallR = 0;   // overall rating calc  
 
     rating.forEach(element => {
@@ -63,27 +63,27 @@ export default function Profile({user}) {
     setOverallRating(parseFloat(overallR / len).toFixed(2));
     //  return(overallRating);  // el overall rating del profile
   }
-  
-//Para encontrar todos los items de ese provider
+
+  //Para encontrar todos los items de ese provider
   const getProducts = async () => {
     // userService.getUser().then((res)=> {
-    if(user){
+    if (user) {
 
       itemService.getItemOfProvider(user.pa_id).then((res) => {
         console.log(res.data);
         setItemList(res.data);
-        var sizeR =   res.data.length; 
-        setPagination({...pagination, count: sizeR });
-       
-        res.data.forEach(element=>{
-          if(element.type == 'service'){
+        var sizeR = res.data.length;
+        setPagination({ ...pagination, count: sizeR });
+
+        res.data.forEach(element => {
+          if (element.type == 'service') {
             console.log("true");
             setServiceList(serviceList => [...serviceList, element])
           }
           else {
             setProductList(productList => [...productList, element])
           }
-  
+
         });
       }).catch((err) => {
         console.log(err);
@@ -110,15 +110,15 @@ export default function Profile({user}) {
 
 
   const handleClickOpen = () => {
-      console.log("Open") ;
-      setOpen(true); // opens modal
-      }
-   
-  const handleClose = (e, reason) => {
-      setOpen(false);
-    }
+    console.log("Open");
+    setOpen(true); // opens modal
+  }
 
-    //Services Handling
+  const handleClose = (e, reason) => {
+    setOpen(false);
+  }
+
+  //Services Handling
   const [expanded, setExpanded] = useState('"panel1"');
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -126,50 +126,50 @@ export default function Profile({user}) {
   };
 
   const handlePageChange = (event, page) => {
-    const from = (page -1) * pageSize ;
-    const to = (page - 1) * pageSize + pageSize; 
-    setPagination({...pagination, from: from, to: to});
+    const from = (page - 1) * pageSize;
+    const to = (page - 1) * pageSize + pageSize;
+    setPagination({ ...pagination, from: from, to: to });
   }
-function handleDelete(){
-  console.log("yup delete this")
-}
+  function handleDelete() {
+    console.log("yup delete this")
+  }
 
   return (
-      
-<Container  sx={{
-        mt: 15 ,
-        width:'100%'
+
+    <Container sx={{
+      mt: 15,
+      width: '100%'
     }}  >
-  <div className="topProfile"     > 
-  <Container  > 
-         <Box xs={4} sx={{
-        width:'100%' ,
-        display:'flex' ,
-        flexDirection: 'row' ,
-        flexWrap: 'wrap' ,
-            }} > 
-      
-        <Typography 
-      sx={{
-        left: '0' ,
-        top: '10' ,
-        fontWeight: '750' ,
-        fontSize: '28px' ,
-        mr:'2px',
-      
-       }} > {provider.pa_companyname} </Typography>   
-    
-       <Stars 
-        rating={overallRating}/>
-   
-     {/* </Box> */}
-       <Typography  sx={{
-        
-        fontSize: '28px',
-        fontWeight:'700',
-        mt:'.6rem',
-        mb:'1.2rem',
-        direction:'column'
+      <div className="topProfile"     >
+        <Container  >
+          <Box xs={4} sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }} >
+
+            <Typography
+              sx={{
+                left: '0',
+                top: '10',
+                fontWeight: '750',
+                fontSize: '28px',
+                mr: '2px',
+
+              }} > {provider.pa_companyname} </Typography>
+
+            <Stars
+              rating={overallRating} />
+
+            {/* </Box> */}
+            <Typography sx={{
+
+              fontSize: '28px',
+              fontWeight: '700',
+              mt: '.6rem',
+              mb: '1.2rem',
+              direction: 'column'
 
             }}
             >
@@ -177,28 +177,28 @@ function handleDelete(){
             </Typography>
           </Box >
           <Box id='provider-Buttons'>
-          <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
-            <AddProduct
-              open={open}
-              handleClose={handleClose}
-            />
-            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-            {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
-          </Stack>
-        </Box>
+            <Stack className='topButtons' direction="row" spacing={2}>
+              <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
+              <AddProduct
+                open={open}
+                handleClose={handleClose}
+              />
+              <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
+              {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
+            </Stack>
+          </Box>
         </Container>
 
         <div className='profilePic'>
-             <CardMedia  
-              component="img"
-              image='/Logphotos.png'
-              width='auto'
-              height="auto"
-              sx={{mb:"2rem"}}
-               />
-          </div>
-      
+          <CardMedia
+            component="img"
+            image='/Logphotos.png'
+            width='auto'
+            height="auto"
+            sx={{ mb: "2rem" }}
+          />
+        </div>
+
       </div>
       <style jsx>{`
         .topProfile {
@@ -213,72 +213,72 @@ function handleDelete(){
       </style>
       <main>
 
-      
-     <Box className='serviceTab' sx={{mb:"4rem", width:'32rem'}} >
-  
 
-             <Typography
-                    sx={{
-                      mt: '2rem',
-                      mb: '1rem',
-                      width:'80%', fontWeight:'700'
-                    }} > 
-
-              What about my services :  
-            </Typography> 
-          { serviceList.map((e, index) => { 
+        <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
 
 
-          return (   
-            <div  key={index} >
-              <Stack >
-          <Accordion expanded={expanded === index } onChange={handleChange(index)}   TransitionProps={{ unmountOnExit: true }} >
-        <AccordionSummary  expandIcon={<ExpandMoreIcon />} >
-          <Typography  sx={{ width: '33%', flexShrink: 0 , mb:'1rem'}}> {e.i_name} </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{e.i_category}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <CardMedia component='img'  sx={{aspectRatio:'9/4'}} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"    />
-          <Typography> Description:  {e.i_description} </Typography>
-          <Typography>  Price: {e.i_price} </Typography>
-          <Typography>  Time: {e.s_timeslot} minutes </Typography>
-          {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
+          <Typography
+            sx={{
+              mt: '2rem',
+              mb: '1rem',
+              width: '80%', fontWeight: '700'
+            }} >
 
-        </AccordionDetails>
-     </Accordion></Stack> </div> 
-     ); 
-      }  )} 
+            What about my services :
+          </Typography>
+          {serviceList.map((e, index) => {
+console.log(e)
 
-          </Box >
+            return (
+              <div key={index} >
+                <Stack >
+                  <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                      <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
+                      <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <CardMedia component='img' sx={{ aspectRatio: '9/4' }} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" />
+                      <Typography> Description:  {e.description} </Typography>
+                      <Typography>  Price: {e.price} </Typography>
+                      <Typography>  Time: {e.timeslot} minutes </Typography>
+                      {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
 
-          <Box className='Products' display='flex' flexWrap='wrap'>
-          
-              {productList.slice(pagination.from, pagination.to).map((e,index)=> (
-       <div key={index} >
-            <ProviderCardproducts
-          image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"        
-          rating={e.rating}
-          category={e.category}
-          title={e.name}
-          description={e.description}
-          price={e.price}
-          // delete= {handleDelete}   
-              />    
-        </div>
-              ))}
-              
-          
-          </Box>
-     
-      </main>    
-       <footer>
-<Stack spacing={2} sx={{mt:'5%', alignItems:'center', mb:'12%' }}>
-<Pagination color="secondary" count= {Math.ceil(pagination.count/pageSize)} 
- onChange={handlePageChange}
+                    </AccordionDetails>
+                  </Accordion></Stack> </div>
+            );
+          })}
 
-/>
-</Stack>
-</footer>
+        </Box >
+
+        <Box className='Products' display='flex' flexWrap='wrap'>
+
+          {productList.slice(pagination.from, pagination.to).map((e, index) => (
+            <div key={index} >
+              <ProviderCardproducts
+                image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                rating={e.rating}
+                category={e.category}
+                title={e.name}
+                description={e.description}
+                price={e.price}
+              // delete= {handleDelete}   
+              />
+            </div>
+          ))}
+
+
+        </Box>
+
+      </main>
+      <footer>
+        <Stack spacing={2} sx={{ mt: '5%', alignItems: 'center', mb: '12%' }}>
+          <Pagination color="secondary" count={Math.ceil(pagination.count / pageSize)}
+            onChange={handlePageChange}
+
+          />
+        </Stack>
+      </footer>
     </Container>
   )
 }

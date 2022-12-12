@@ -10,6 +10,7 @@ export default function Liked() {
 
   async function RequestLiked() {
     const response = await likeService.getUserLiked().then((response) => {
+      console.log(response.data);
       return response.data;
     }).catch((error) => {
       console.log(error);
@@ -54,12 +55,14 @@ export default function Liked() {
             return (
               <Grid item key={index} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ProductCard
-                  rating={e.items_i_rating}
-                  category={e.items_i_category}
-                  src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
+                  id={e.items_pa_id}
                   title={e.items_i_name}
                   description={e.items_i_description}
                   price={e.items_i_price}
+                  category={e.items_i_category}
+                  rating={e.items_i_rating}
+                  liked={true}
+                  src={e.items_i_image ? e.items_i_image : '/product-placeholder.png'}
                 />
               </Grid>
             );
