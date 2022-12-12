@@ -270,7 +270,7 @@ return (
      {isHovering && (
      <Button variant="text" sx={{
    display:'flex', ml:'80%', }}
-    onClick= {handleDelete}> X </Button>
+    onClick= {props.delete}> X </Button>
  )}  
   <CardMedia onMouseOut={handleMouseOut}
   component="img"

@@ -3,11 +3,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia,FormControl, TextField, MenuItem, AccordionDetails,AccordionSummary, Accordion ,Pagination, Dialog} from '@mui/material';
-import { ProductCard, ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
+import { Box, Button, Container, Rating, Stack, styled, Typography , CardMedia, AccordionDetails,AccordionSummary, Accordion ,Pagination, } from '@mui/material';
+import {  ProviderCardproducts } from "../../deakicomponents/Reusable/Card";
 import itemService from '../../services/item.service';
 import reviewService from '../../services/review.service';
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState,  } from "react";
 import {AddProduct} from '../../deakicomponents/AddProduct';
 import Stars from '../../deakicomponents/Reusable/Rating';
 import Deletebutton from '../../deakicomponents/Reusable/Deletebutton';
@@ -34,6 +34,7 @@ const pageSize = 6 ;
 export default function Profile() {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
+  const [Del, setDel] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -89,10 +90,12 @@ export default function Profile() {
   const handleClickOpen = () => {
       console.log("Open") ;
       setOpen(true); // opens modal
+
       }
    
   const handleClose = (e, reason) => {
       setOpen(false);
+      setDel(false);
     }
 
     //Services Handling
@@ -108,16 +111,19 @@ export default function Profile() {
     setPagination({...pagination, from: from, to: to});
   }
 function handleDelete(){
-  console.log("yup delete this")
+  setDel(true);
+  console.log("yup pls delete this");
+  
 }
-
   return (
+      
       
 <Container  sx={{
         mt: 15 ,
         width:'100%'
     }}  >
   <div className="topProfile"     > 
+  
   <Container  > 
          <Box xs={4} sx={{
         width:'100%' ,
@@ -217,18 +223,21 @@ function handleDelete(){
         </AccordionSummary>
         <AccordionDetails>
           <CardMedia component='img'  sx={{aspectRatio:'9/4'}} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"    />
-          <Typography> Description:  {e.i_description} </Typography>
-          <Typography>  Price: {e.i_price} </Typography>
-          <Typography>  Time: {e.s_timeslot} minutes </Typography>
-          {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
+          <Typography sx={{mt:'15px'}}> Description:  {e.i_description} </Typography>
+          <Typography sx={{mt:'10px'}}>  Price: {e.i_price} </Typography>
+          <Typography sx={{mt:'10px'}}>  Time: {e.s_timeslot} minutes </Typography>
+          <Button sx={{display:'flex' , textAlign:'center', height:'1.5rem', mt:'10px'}}>Request</Button> 
 
         </AccordionDetails>
      </Accordion></Stack> </div> 
      ); 
       }  )} 
-
+       
           </Box >
-
+     
+        <Deletebutton 
+        open= {Del}
+        close = {handleClose} />
           <Box className='Products' display='flex' flexWrap='wrap'>
           
               {productList.slice(pagination.from, pagination.to).map((e,index)=> (
@@ -240,13 +249,14 @@ function handleDelete(){
                 title={e.i_name}
                 description={e.i_description}
                 price={e.i_price}
-                // delete= {handleDelete}   
-              />    
+                delete= {handleDelete}   
+              />  
         </div>
               ))}
               
           
           </Box>
+         
      
       </main>    
        <footer>
