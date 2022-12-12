@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import * as React from 'react';
 import { Box } from '@mui/material';
-import Dashboard from '../../deakicomponents/Dashboard/dashboard';
-import MainSidebar from '../admin/Sidebar';
+import Dashboard from '../../deakicomponents/Sidebar/Dashboard/dashboard';
+import MainSidebar from '../../deakicomponents/Sidebar/Sidebar';
 
 export default function DashboardFunc({ UserData }) {
 

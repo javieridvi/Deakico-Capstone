@@ -142,10 +142,11 @@ export default function ProviderSignUp() {
     if(compName.match(compNameRegex)){
       setCompNameMsg("");
       setCompNameErr(false);
-      return; //valid password
+      return true; //valid password
     }
     setCompNameMsg("Invalid Company Name! May contain letters, numbers and/or '-', '&'.");
     setCompNameErr(true);
+    return false;
   }
 
   return (
