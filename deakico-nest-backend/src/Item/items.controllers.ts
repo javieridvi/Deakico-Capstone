@@ -16,10 +16,12 @@ import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { Item } from './items.interface';
 import { ItemsService } from './items.service';
+import { ProviderAccountEntity } from 'src/ProviderAccount/providers.entity';
+import getUploadImageUrl from '../imageS3';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) {}
+  constructor(private readonly itemsService: ItemsService) { }
 
   @Get()
   getAllItems(): Observable<Item[]> {
@@ -31,13 +33,21 @@ export class ItemsController {
     return this.itemsService.getItem(itemId);
   }
 
+  @UseGuards(JwtGuard)
+  @Get('image')
+  async getImageUrl(@Request() req: any): Promise<String> {
+    const url = await getUploadImageUrl('provider/'+req.user.pa_id+'/item/');
+    console.log(url)
+    return url;
+  }
+
   /**
    * Fetches items depending on their type (product or service)
    * @param itemType the type that is being requested
    * @returns {Observable<Likes>} an observable Promise (a promise given representation).
    */
   @Get('type/:i_type')
-  getItemByType(@Param('i_type') itemType: string): Observable<Item[]> {
+  getItemByType(@Param('i_type') itemType: string): Promise<Observable<Item[]>> {
     const types = ['product', 'service'];
     if (types.includes(itemType)) {
       return this.itemsService.getItemByType(itemType);
@@ -63,19 +73,29 @@ export class ItemsController {
   @Get('category/:i_category')
   getItemByCategory(
     @Param('i_category') itemCategory: string,
-  ): Observable<Item[]> {
+  ): Promise<Observable<Item[]>> {
     return this.itemsService.getItemByCategory(itemCategory);
   }
 
-  /**
-   * Fetches all items from given itemProvider
-   * @param req token used to retrieve the id of the provider
-   * @returns {Observable<Item[]>} an observable promise
+  /**Fetches Items of given provider's pa_id
+   * 
+   * @param data 
+   * @returns list of Items of the provider
    */
+  @Post('provider')
+  getItemOfProvider(@Body() data: Partial<ProviderAccountEntity>): Promise<Item[]> {
+    return this.itemsService.getItemOfProvider(data.pa_id);
+  }
+
+  // /**
+  //  * Fetches all items from given itemProvider
+  //  * @param req token used to retrieve the id of the provider
+  //  * @returns {Observable<Item[]>} an observable promise
+  //  */
   @UseGuards(JwtGuard)
-  @Get('provider')
-  getItemOfProvider(@Request() req: any): Observable<Item[]> {
-    return this.itemsService.getItemOfProvider(req.user.pa_id);
+  @Post('provider/liked')
+  getItemOfProviderLiked(@Body() data: Partial<ProviderAccountEntity>, @Request() req: any): Promise<Item[]> {
+    return this.itemsService.getItemOfProviderLiked(data.pa_id, req.user.u_id);
   }
 
   /**
@@ -114,11 +134,12 @@ export class ItemsController {
    * @returns delete confirmation
    */
   @UseGuards(JwtGuard)
-  @Delete('/id/:i_id')
+  @Delete('/delete/:i_id')
   deleteItem(
     @Param('i_id') itemId: number,
+    @Body() item: Item,
     @Request() req: any,
-  ): Promise<Observable<DeleteResult>> {
-    return this.itemsService.deleteItem(itemId, req.user.pa_id);
+  ): Promise<Observable<UpdateResult>> {
+    return this.itemsService.deleteItem(itemId, item, req.user.pa_id);
   }
 }

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import * as bcryptjs from 'bcryptjs';
 import { from, map, Observable, switchMap } from 'rxjs';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UserAccountEntity } from '../users.entity';
 import { UserAccount } from '../users.interface';
 
@@ -45,6 +45,19 @@ export class AuthService {
     );
   }
 
+
+  async updatePassword(u_id: number, newPass: string): Promise<Observable<UpdateResult>> {
+    try{
+      return this.hashPassword(newPass).pipe(
+      switchMap((hashedPassword?: string) => {
+        return this.userRepository.update( {u_id: u_id}, {password: hashedPassword} )
+      }))
+    ;
+    } catch {
+      throw new Error('Error while updating password!');
+    }
+  }
+
   validateUser(email: string, password: string): Observable<UserAccount> {
     return from(this.userRepository.findOneBy({ email: email })).pipe(
       switchMap((user: UserAccount) => 
@@ -71,12 +84,11 @@ export class AuthService {
   login(user: UserAccount): Observable<string> {
     const { email, password } = user;
     return this.validateUser(email, password).pipe(
-      switchMap((user: UserAccount) => {
-        if (user) {
-          // create JWT - credentials
-          return from(this.jwtService.signAsync({ user }));
-        }
-      }),
-    );
+    switchMap((user: UserAccount) => {
+      if (user) {
+        // create JWT - credentials
+        return from(this.jwtService.signAsync({ user }));
+      }
+    }),);
   }
 }

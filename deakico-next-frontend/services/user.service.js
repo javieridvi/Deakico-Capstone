@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth/auth.header";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 const entity = "users";
 const endpoint = API_URL + entity;
 
@@ -10,16 +10,18 @@ const insertUser = async (data) => {
     return await axios.post(endpoint, data); 
 };
 
-//u_id not needed in parameter. Get u_id of logged-in.
 const updateUser = async (data) => {
     return await axios.put(endpoint, data, {headers: authHeader()});
 };
+
+const deleteUser = async () => {
+    return await axios.delete(endpoint, {headers: authHeader()});
+}
 
 const getAllUsers = async () => {
     return await axios.get(endpoint);
 };
 
-//u_id not needed in parameter. Get u_id of logged-in.
 const getUser = async () => {
     return await axios.get(endpoint + "/user", {headers: authHeader()})
 }
@@ -27,7 +29,7 @@ const getUser = async () => {
 export default {
     insertUser,
     updateUser, 
+    deleteUser,
     getAllUsers,
     getUser,
-    //delete missing
 };

@@ -1,8 +1,9 @@
-import { Button, ButtonGroup, Grid, Typography, IconButton, Menu, MenuItem, Link, Box, Divider} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Button, ButtonGroup, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import authService from "../../../services/auth/auth.service";
 import userService from "../../../services/user.service";
+import { LogInPopUp } from "../../Modal";
 
 
 export default function Account() {
@@ -13,15 +14,26 @@ export default function Account() {
   const [loggedIn, setLoggedIn] = useState(undefined);
   const [currUser, setCurrUser] = useState(undefined);
 
+  const [openPopup, setOpenPopup] = useState(false);
+
+  function handlePopUpClose() {
+    setOpenPopup(false);
+  }
+
   const checkLoggedIn = () => {
     setLoggedIn(authService.isLoggedIn());
   }
-  
+
   const checkCurrUser = () => {
-    setCurrUser(userService.getUser()?.then((res) => {
+    setCurrUser(userService.getUser().then((res) => {
       setCurrUser(res.data);
     }).catch((err) => {
-      console.log(err);
+      //changed from "response" to "request" because it raised an error att: José
+      if (err.request.status == 401) {
+        setOpenPopup(true);
+      } else {
+        console.log(err);
+      }
     }));
   }
 
@@ -34,7 +46,7 @@ export default function Account() {
 
   const handleLogout = () => {
     authService.logout();
-    location.reload();
+    location.assign('/');
   }
 
   function MenuLink(props) {
@@ -47,53 +59,69 @@ export default function Account() {
   };
 
   useEffect(() => {
-    checkLoggedIn();    
-    checkCurrUser();
-    //console.log(loggedIn);
+    setLoggedIn((state) => {
+      let logged = authService.isLoggedIn();
+      if (logged) {
+      }
+        checkCurrUser();
+      return logged;
+    })
+    // checkLoggedIn();    
+    // checkCurrUser();
+    console.log(loggedIn);
   }, [])
 
   return typeof (loggedIn !== 'undefined') ? (
-      loggedIn ? (
+    loggedIn ? (
       <>
-        <Typography>Welcome, {currUser.username}</Typography>
+        <Typography>{currUser.username}</Typography>
         <IconButton
-              id="basic-button"
-              color='primary'
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              <AccountCircleIcon fontSize='large' />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink>
-              <MenuLink onClick={handleLogout}>Log Out</MenuLink>  
-              <Divider />
+          id="basic-button"
+          color='primary'
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
+          <AccountCircleIcon fontSize='large' />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {/* <MenuLink link='/admin' onClick={handleClose}>Profile</MenuLink> */}
+          <MenuLink onClick={handleLogout}>Log Out</MenuLink>
+          {/* <Divider />
               <MenuLink link='/' onClick={handleClose}>Home</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Services</MenuLink>
               <MenuLink link='/personal-feed' onClick={handleClose}>Products</MenuLink>
-              <MenuLink link='/about' onClick={handleClose}>About</MenuLink>
-            </Menu>
-      </>
-      ) : (
-          <ButtonGroup variant="outlined">
-            <Button href='/login'>
+              <MenuLink link='/about' onClick={handleClose}>About</MenuLink> */}
+        </Menu>
 
-              Log in
-            </Button>
-            <Button href='/signup' variant='contained'>
-              Sign Up
-            </Button>
-          </ButtonGroup>
-      ) 
+        {openPopup ?
+          <LogInPopUp
+            open={open}
+            handleClose={handlePopUpClose}
+            title={'Looks like your session logged out'}
+            message={'Sign in to continue using your account.'}
+          /> : null
+        }
+      </>
+    ) : (
+      <ButtonGroup variant="outlined">
+        <Button href='/login'>
+
+          Log in
+        </Button>
+        <Button href='/signup' variant='contained'>
+          Sign Up
+        </Button>
+      </ButtonGroup>
+    )
   ) : null
 }

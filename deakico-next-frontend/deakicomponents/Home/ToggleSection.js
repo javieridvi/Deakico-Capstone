@@ -1,8 +1,9 @@
-import { Switch, ToggleButton, Box, Typography, Card } from "@mui/material";
+import { Switch, ToggleButton, Box, Typography, Card, Stack } from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@mui/system";
-import { ToggleCard } from "../Card";
+import { ProductCard, ToggleCard } from "../Reusable/Card";
+import itemService from "../../services/item.service";
 
 let theme = createTheme({
   palette: {
@@ -21,10 +22,43 @@ let theme = createTheme({
 
 theme = responsiveFontSizes(theme);
 
+function sortIntHelper(a, b) {
+  if (a < b) {
+    return 1;
+  } else if (a > b) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
 export default function ToggleSection() {
 
   //arbitrarily, true==Product, false==Service
-  const [toggle, setToggle] = useState(true);
+
+  const [toggle, setToggle] = useState(true);  
+  var servToSort = [];
+  var prodToSort = [];
+  const [productList, setProductList] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
+
+  const fetchData = () => {
+    itemService.getItemByType('product').then((res) => {
+      prodToSort = res.data;
+      prodToSort.sort((a, b) => sortIntHelper(a.i_rating, b.i_rating));
+      prodToSort = prodToSort.slice(0,3);
+      setProductList(prodToSort);
+    })
+    itemService.getItemByType('service').then((res) => {
+     servToSort = res.data;
+     servToSort.sort((a, b) => sortIntHelper(a.i_rating, b.i_rating));
+     servToSort = servToSort.slice(0, 3);
+     setServiceList(servToSort);
+    })
+  }
+  useEffect(() => {
+    fetchData();
+  }, [])
 
   const displayItems = () => {
 
@@ -37,12 +71,19 @@ export default function ToggleSection() {
             }}>
             Products
           </Typography>
-          <ToggleCard
-            src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
-            label="Products"
-            children="Here goes various products that are trending or have good reviews. 
-                Deakico will offer many products from a diversity of local providers"
-          />
+          
+          {productList.map((product) => {
+            return (
+            <ProductCard
+              id={product.i_id}
+              title={product.i_name}
+              price={product.i_price}
+              rating={product.i_rating}
+              category={product.i_category}
+              description={product.i_description}
+            />
+            )
+          })}
         </Box>
       );
     }
@@ -55,12 +96,19 @@ export default function ToggleSection() {
             }}>
             Services
           </Typography>
-          <ToggleCard
-            src="https://www.usan.com/wp-content/uploads/2013/09/customer-self-service.jpg"
-            label="Services"
-            children="Here goes various services that are trending or have good reviews. 
-                    Deakico will offer many servicess from a diversity of local providers"
-          />
+          {serviceList.map((service) => {
+            return (
+            <ProductCard
+              id={service.i_id}
+              title={service.i_name}
+              price={service.i_price}
+              rating={service.i_rating}
+              category={service.i_category}
+              description={service.i_description}
+            />
+            )
+          })}
+          
         </Box>
 
       );
@@ -84,16 +132,24 @@ export default function ToggleSection() {
             paddingTop: '2rem',
           }}
         >
-          Service or Product
+          Best Sellers
         </Typography>
         <Switch
           checked={toggle}
           onChange={e => setToggle(e.target.checked)} >
 
         </Switch>
-        <Box paddingBottom={'4rem'}>
-          {displayItems()}
-        </Box>
+        <Stack 
+        direction={'row'} 
+        gap={4} 
+        paddingBottom='2rem' 
+        sx={{
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+        >
+        {displayItems()}
+        </Stack>
       </Box>
     </ThemeProvider>
   );

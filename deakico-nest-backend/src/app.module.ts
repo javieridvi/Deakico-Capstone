@@ -12,6 +12,7 @@ import { RequestModule } from './Request/requests.module';
 import { ReviewModule } from './Review/reviews.module';
 import { UserAccountModule } from './UserAccount/users.module';
 import { APP_FILTER } from '@nestjs/core';
+import { ArticleListModule } from './ArticleList/articleList.module';
 // import { AllExceptionsFilter } from './UserAccount/auth/core/all_exceptions.filter';
 
 @Module({
@@ -23,6 +24,7 @@ import { APP_FILTER } from '@nestjs/core';
     ReviewModule,
     LikesModule,
     FollowsModule,
+    ArticleListModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({

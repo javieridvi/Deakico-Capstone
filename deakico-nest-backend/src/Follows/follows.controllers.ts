@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
@@ -47,6 +49,18 @@ export class FollowsController {
   }
 
   /**
+   * Fetches the followers of a provider, grouping them by date 
+   * and counting them
+   * @param req is user to retrieve user account and pa_id
+   * @returns a Partial Follow object
+   */
+  @UseGuards(JwtGuard)
+  @Get('followers/group-by-date')
+  getFollowersGroupByDate(@Request() req: any) {
+    return this.followsService.getFollowersGroupByDate(req.user.pa_id);
+  }
+
+  /**
    * Fetches count (int) of given user following providers
    * @param req is user to retrived user account and u_id
    * @returns all providers ids given user is following
@@ -74,15 +88,21 @@ export class FollowsController {
     @Body() follow: Follow,
     @Request() req: any,
   ): Observable<Follow> {
-    return this.followsService.insertFollow(req.user, follow);
+    try {
+      return this.followsService.insertFollow(req.user, follow);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN, {cause: error});
+      
+    } 
   }
 
   @UseGuards(JwtGuard)
   @Delete()
-  deleteItem(
+  deleteFollow(
     @Body() follow: Follow,
     @Request() req: any,
   ): Observable<DeleteResult> {
-    return this.followsService.deleteFollow(req.user.u_id, follow.pa_id);
+    return this.followsService.deleteFollow(req.user.u_id, follow);
   }
 }
