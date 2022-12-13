@@ -1,41 +1,65 @@
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
 import { Alert, Box, Button, ButtonBase, Card, CardMedia, Collapse, IconButton, InputBase, Modal } from "@mui/material";
-import { useRef, useState } from "react";
-import Stars from "../deakicomponents/Reusable/Rating";
-import itemService from "../services/item.service";
+import { useEffect, useRef, useState } from "react";
+import Stars from '../../../Reusable/Rating';
+import itemService from "../../../../services/item.service";
+import { useRouter } from 'next/router'
+
+/*
+
+//...
 
 
-export default function AddProduct() {
-  const open =  props.open;
+*/
+export default function AddProduct(props) {
+  const open = props.open;
   const setOpen = props.setOpen;
   const [alert, setAlert] = useState(false);
-  const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [price, setPrice] = useState('');
   const imageupload = useRef();
+  const router = useRouter()
+
+  const item = props.item;
+  const [edit, setEdit] = useState(false);
+  const [image, setImage] = useState(null);
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    if (item != '') {
+      setEdit(true)
+      setImage(item.image);
+      setPrice(item.price);
+      setCategory(item.category);
+      setName(item.name);
+      setDescription(item.description);
+    }
+  }, [])
 
   async function handleUploadInput(event) {
     const file = event.target.files[0]
     console.log(file)
     if (!file.type.match(/image.*/)) return null;
-    
+
     const image = new Image();
     image.src = URL.createObjectURL(file);
-    
+
     await new Promise((res) => image.onload = res);
     const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d", {alpha: true});
+    const context = canvas.getContext("2d", { alpha: true });
 
     canvas.width = 320;
     canvas.height = 180;
-    
+
     // if (image.height <= image.width) {
-        const scaleProportions = canvas.height / image.height;
-        const scaledWidth = scaleProportions * image.width;
-        context.drawImage(image, (canvas.width - scaledWidth)/2, 0, scaledWidth, canvas.height);
-        // }
-        // else {
+    const scaleProportions = canvas.height / image.height;
+    const scaledWidth = scaleProportions * image.width;
+    context.drawImage(image, (canvas.width - scaledWidth) / 2, 0, scaledWidth, canvas.height);
+    // }
+    // else {
     //     const scaleProportions = canvas.width / image.width;
     //     const scaledHeight = scaleProportions * image.height;
     //     context.drawImage(image, 0, (canvas.height - scaledHeight)/2, canvas.width, scaledHeight);
@@ -54,19 +78,39 @@ export default function AddProduct() {
       };
     }, {})
     let filled = true;
-    if (imageFile == null || data.i_category == '' || data.i_name == '' || data.i_description == '' || data.i_price == '') {
-      setAlert(true);
-      filled = false;
+    data.i_type = 'product';
+
+    if (data.i_category == '' || data.i_name == '' || data.i_description == '' || data.i_price == '') {
+      if (imageFile == null && !edit) {
+        setAlert(true);
+        filled = false;
+      }
     }
-    if (filled) {
+    console.log('saving changes')
+    console.log('are you editing? '+edit)
+    if (filled && !edit) {
       itemService.getItemImageUploadUrl().then((res) => {
         console.log(res.data);
         itemService.putUploadItemImage(res.data, imageFile).then(() => {
           data.i_image = res.data.split('?')[0];
-          itemService.insertItem(data).then(res => console.log(res.data)).then(() => setOpen(false))
+          itemService.insertItem(data).then(() => reload()).then(() => setOpen(false))
         })
       })
+    } else if (edit && imageFile != null) {
+      itemService.getItemImageUploadUrl().then((res) => {
+        console.log(res.data);
+        itemService.putUploadItemImage(res.data, imageFile).then(() => {
+          data.i_image = res.data.split('?')[0];
+          itemService.updateItem(item.id, data).then(() => reload()).then(() => setOpen(false))
+        })
+      })
+    } else if (edit) {
+      data.i_image = item.image;
+      itemService.updateItem(item.id, data).then(() => reload()).then(() => setOpen(false))
     }
+  }
+  function reload(){
+    router.reload(window.location.pathname)
   }
 
   function localStringToNumber(s) {
@@ -186,6 +230,8 @@ export default function AddProduct() {
                     fontFamily: 'Comfortaa',
                   }}>
                   <InputBase
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                     sx={{
                       fontSize: '.625rem', // 10px
                       height: '.9375rem', //15px
@@ -218,6 +264,8 @@ export default function AddProduct() {
                   fontSize: '1.125rem', // 18px
                   fontFamily: 'Comfortaa',
                 }}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 id='title'
                 name='i_name'
                 type='text'
@@ -234,6 +282,9 @@ export default function AddProduct() {
                   overflow: 'clip',
                   fontFamily: 'Comfortaa',
                 }}
+                multiline
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 id='description'
                 name='i_description'
                 type='text'

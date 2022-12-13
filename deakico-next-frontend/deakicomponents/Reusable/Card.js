@@ -323,85 +323,69 @@ export function ProductCard(props) {
 }
 
 ///View of Provider Products Card 
-export function ProviderCardproducts(props){
-  const [isHovering, setIsHovering] = useState(false);
-  const handleMouseOver = () => {
-    setIsHovering(true);
-    setTimeout(() =>  5000);
-  };
-  const handleMouseOut = () => {
-   setIsHovering(false);
-  };
-  
-  function handleDelete(){
-    console.log("yup delete this");
-  }
+export function ProviderCardproducts(props) {
 
-return (
-   <Card sx={{m: '2rem', backgroundColor:'#e5e5e5', width:'20rem'}} >
+  return (
+    <Card sx={{ m: '2rem', backgroundColor: '#e5e5e5', width: '20rem' }} >
 
-    <Box onMouseOver={handleMouseOver}  >
-   
-     {isHovering && (
-     <Button variant="text" sx={{
-   display:'flex', ml:'80%', }}
-    onClick= {handleDelete}> X </Button>
- )}  
-  <CardMedia onMouseOut={handleMouseOut}
-  component="img"
-  image = {props.image}
-  sx={{
-    maxHeight:'14rem',
-    aspectRatio:'16/9',
-    color: 'whitesmoke' ,
-
-  }}
-    /> </Box>
-  <Typography variant={'h6'} className={'Card-Title'}
+      <Box >
+        <CardMedia component="img"
+          image={props.image}
           sx={{
-            height: '1.25rem', // 20px
-            overflow: 'clip',
-            marginTop: '.625rem', //10px 
-            fontWeight: '700',
-            fontSize: '1.125rem', // 18px
-            fontFamily: 'Comfortaa',
-            ml:'1rem'
-          }}
-        >
-          {props.title}
-  
-    </Typography>
+            maxHeight: '14rem',
+            aspectRatio: '16/9',
+            objectFit: 'cover',
+            // color: 'whitesmoke' 
 
-    <Typography variant={'body2'} className={'Card-Description'}
-          sx={{
-            height: '3.75rem', // 60px
-            fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
-            marginTop: '.4375rem', //7px 
-            color: 'black',
-            overflow: 'clip',
-            fontFamily: 'Comfortaa',
-            ml: "1rem"
+
           }}
-        >
-          {props.description}
-        </Typography>
-        <Typography variant={'h6'} className={'Price'}
+        /> </Box>
+      <Typography variant={'h6'} className={'Card-Title'}
+        sx={{
+          height: '1.25rem', // 20px
+          overflow: 'clip',
+          marginTop: '.625rem', //10px 
+          fontWeight: '700',
+          fontSize: '1.125rem', // 18px
+          fontFamily: 'Comfortaa',
+          ml: '1rem',
+          color: 'black'
+        }}
+      >
+        {props.title}
+
+      </Typography>
+
+      <Typography variant={'body2'} className={'Card-Description'}
+        sx={{
+          height: '3.75rem', // 60px
+          fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
+          marginTop: '.4375rem', //7px 
+          color: 'black',
+          overflow: 'clip',
+          fontFamily: 'Comfortaa',
+          ml: "1rem"
+        }}
+      >
+        {props.description}
+      </Typography>
+      <Typography variant={'h6'} className={'Price'}
         sx={{
           fontSize: '1.125rem', // 18px
           fontWeight: '700',
           fontFamily: 'Roboto, sans-serif',
-          display:'flex' ,
-          justifyContent:'flex-end' ,
-          mr:'1.5rem',
-          mb:'1rem'
+          display: 'flex',
+          justifyContent: 'flex-end',
+          mr: '1.5rem',
+          mb: '1rem'
         }}
       >
         {props.price}
       </Typography>
 
 
-  </Card>
-);
+    </Card>
+  );
 }
 
 function BaseCard(props) {
@@ -528,40 +512,6 @@ function ActionArea(props) {
     </Box>
   )
 }
-
-
-
-
-
-//Esto es solo para testing el card en las paginas luego se borrara 
-export function ProviderTest() {
-  return (
-    <ProviderCard
-      id={0}
-      type={'Type'}
-      category={'Category'}
-      src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-      // src={'/Test-Provider.png'}
-      title={'Provider Card'}
-      description={'This is a test card used to show how the provider Card will ultimately end up looking. Everthing seen here is solely for testing purposes and does note replicate real production component fully.'}
-      rating={4.5}
-    />
-  );
-};
-
-export function ProductTest() {
-  return (
-    <ProductCard
-      rating={4}
-      category={'Category'}
-      // src={'/Test-Provider.png'}
-      src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-      title={'Product Card'}
-      description={'This is a test card used to show how the product Card will ultimately end up looking. Everthing seen here is solely for testing purposes and does note replicate real production component fully.'}
-      price={'$29.99'}
-    />
-  );
-};
 
 export function ToggleCard(props) {
   const image = props.src;

@@ -34,6 +34,14 @@ const getProvider = async () => {
     return await axios.get(endpoint + "/account", {headers: authHeader()})
 }
 
+const getProviderImageUploadUrl = async () => {
+  return await axios.get(endpoint + "/image", {headers: authHeader()});
+};
+
+const putUploadProviderImage = async (url, file) => {
+  return await axios.put(url,file);
+};
+
 //fetches any provider, given the pa_id
 const getProviderProfile = async (pa_id) => {
   const data ={
@@ -53,6 +61,7 @@ export default {
     deleteProvider,
     getAllProviders,
     getProvider,
+    getProviderImageUploadUrl,
     getProviderProfile,
     getProviderCategory,
     getAllProvidersWithFollow,

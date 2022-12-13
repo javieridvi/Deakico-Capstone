@@ -12,8 +12,9 @@ import { AddProduct } from '../../AddProduct';
 import Stars from '../../Reusable/Rating';
 import userService from '../../../services/user.service';
 import providerService from '../../../services/provider.service';
-import Deletebutton from '../../Reusable/Deletebutton';
+import Deletebutton from './actions/Deletebutton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ProviderActions from './actions/providerActions';
 
 
 
@@ -36,7 +37,9 @@ const pageSize = 6;
 export default function Profile({ user }) {
   const [itemList, setItemList] = useState([]);
   const [open, setOpen] = useState(false);
+  const [Del, setDel] = useState(false);
   const [overallRating, setOverallRating] = useState(0);
+  const [selecDe, setselecDe] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [provider, setProvider] = useState({});
@@ -47,9 +50,7 @@ export default function Profile({ user }) {
   });
   const profileRating = async () => {
     const rvws = (await reviewService.getProviderReviews().catch(() => { })).data;
-    // console.log(rvws);
     let len = rvws.length;
-    // console.log("len: "+ len)    //cantiad de reviews hechos
     // message = rData.map((item) => item?.r_message ) // List of all the messages 
     const rating = rvws.map((item) => item?.rating)  // List of all the ratings. 
 
@@ -112,10 +113,12 @@ export default function Profile({ user }) {
   const handleClickOpen = () => {
     console.log("Open");
     setOpen(true); // opens modal
+
   }
 
   const handleClose = (e, reason) => {
     setOpen(false);
+    setDel(false);
   }
 
   //Services Handling
@@ -130,23 +133,26 @@ export default function Profile({ user }) {
     const to = (page - 1) * pageSize + pageSize;
     setPagination({ ...pagination, from: from, to: to });
   }
-  function handleDelete() {
-    console.log("yup delete this")
-  }
 
   return (
-
     <Container sx={{
       mt: 15,
       width: '100%'
     }}  >
-      <div className="topProfile"     >
+      <Box className="topProfile"
+      sx={{
+        display: 'flex',
+        flexDirection: {xs: 'column', md: 'row'}
+      }}
+      >
+
         <Container  >
           <Box xs={4} sx={{
             width: '100%',
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             flexWrap: 'wrap',
+            width:{xs: '70%', md: '100%'}
           }} >
 
             <Typography
@@ -169,37 +175,30 @@ export default function Profile({ user }) {
               fontWeight: '700',
               mt: '.6rem',
               mb: '1.2rem',
-              direction: 'column'
+              direction: 'column',
+              width: 'min(480px, 90%)',
 
             }}
             >
               {provider?.pa_desc}
             </Typography>
           </Box >
-          <Box id='provider-Buttons'>
-            <Stack className='topButtons' direction="row" spacing={2}>
-              <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
-              <AddProduct
-                open={open}
-                handleClose={handleClose}
-              />
-              <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-              {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
-            </Stack>
-          </Box>
         </Container>
 
-        <div className='profilePic'>
+        <Box className='profilePic'
+        sx={{width:{xs: '80%', md: '100%'}}}
+        >
           <CardMedia
             component="img"
             image='/Logphotos.png'
-            width='auto'
+              width='auto'
             height="auto"
-            sx={{ mb: "2rem" }}
+            alt='profilepicture'
+            sx={{ mb: "2rem"}}
           />
-        </div>
+        </Box>
 
-      </div>
+      </Box>
       <style jsx>{`
         .topProfile {
             margin:0px;
@@ -213,62 +212,64 @@ export default function Profile({ user }) {
       </style>
       <main>
 
+        {serviceList.length > 0 ?
+          <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
 
-        <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
 
+            <Typography
+              sx={{
+                mt: '2rem',
+                mb: '1rem',
+                width: '80%', fontWeight: '700'
+              }} >
 
-          <Typography
-            sx={{
-              mt: '2rem',
-              mb: '1rem',
-              width: '80%', fontWeight: '700'
-            }} >
+              What about my services :
+            </Typography>
+            {serviceList.map((e, index) => {
 
-            What about my services :
-          </Typography>
-          {serviceList.map((e, index) => {
-console.log(e)
+              return (
+                <div key={index} >
+                  <Stack >
+                    <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                        <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <CardMedia component='img' sx={{ aspectRatio: '9/4' }} src={e.image ? e.image : '/product-placeholder.png'} />
+                        <Typography sx={{ mt: '15px' }}> Description:  {e.description} </Typography>
+                        <Typography sx={{ mt: '10px' }}>  Price: {e.price} </Typography>
+                        <Typography sx={{ mt: '10px' }}>  Time: {e.timeslot} minutes </Typography>
+                        {/* <Button sx={{display:'flex' , textAlign:'center', height:'1.5rem', mt:'10px'}}>Request</Button>  */}
+                        {/* src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" foto de prueba */}
+                      </AccordionDetails>
+                    </Accordion></Stack> </div>
+              );
+            })}
 
-            return (
-              <div key={index} >
-                <Stack >
-                  <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                      <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
-                      <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <CardMedia component='img' sx={{ aspectRatio: '9/4' }} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" />
-                      <Typography> Description:  {e.description} </Typography>
-                      <Typography>  Price: {e.price} </Typography>
-                      <Typography>  Time: {e.timeslot} minutes </Typography>
-                      {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
-
-                    </AccordionDetails>
-                  </Accordion></Stack> </div>
-            );
-          })}
-
-        </Box >
+          </Box > : null
+        }
 
         <Box className='Products' display='flex' flexWrap='wrap'>
 
           {productList.slice(pagination.from, pagination.to).map((e, index) => (
             <div key={index} >
+
               <ProviderCardproducts
-                image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                image={e.image ? e.image : '/product-placeholder.png'}
                 rating={e.rating}
                 category={e.category}
                 title={e.name}
                 description={e.description}
                 price={e.price}
-              // delete= {handleDelete}   
+                alt="products"
               />
             </div>
           ))}
 
 
         </Box>
+
 
       </main>
       <footer>
@@ -279,6 +280,7 @@ console.log(e)
           />
         </Stack>
       </footer>
+      <ProviderActions list={itemList} />
     </Container>
   )
 }

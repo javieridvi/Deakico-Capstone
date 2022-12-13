@@ -40,6 +40,9 @@ export class ProviderAccountEntity {
   @Column({ nullable: false, type: 'enum', enum: ItemType})
   pa_type: string;
 
+  @Column({ nullable: true})
+  pa_image: string;
+
   @OneToMany((type) => ItemEntity, (item) => item.provider)
   items: ItemEntity[];
 

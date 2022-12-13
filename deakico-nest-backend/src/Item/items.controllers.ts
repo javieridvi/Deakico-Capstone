@@ -21,7 +21,7 @@ import getUploadImageUrl from '../imageS3';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) { }
+  constructor(private readonly itemsService: ItemsService){}
 
   @Get()
   getAllItems(): Observable<Item[]> {
@@ -37,7 +37,6 @@ export class ItemsController {
   @Get('image')
   async getImageUrl(@Request() req: any): Promise<String> {
     const url = await getUploadImageUrl('provider/'+req.user.pa_id+'/item/');
-    console.log(url)
     return url;
   }
 
@@ -135,11 +134,7 @@ export class ItemsController {
    */
   @UseGuards(JwtGuard)
   @Delete('/delete/:i_id')
-  deleteItem(
-    @Param('i_id') itemId: number,
-    @Body() item: Item,
-    @Request() req: any,
-  ): Promise<Observable<UpdateResult>> {
-    return this.itemsService.deleteItem(itemId, item, req.user.pa_id);
+  deleteItem(@Param('i_id') itemId: number, @Request() req: any): Promise<UpdateResult> {
+    return this.itemsService.deleteItem(itemId, req.user.pa_id);
   }
 }

@@ -128,11 +128,11 @@ export default function Feed() {
             height: '60px',
             padding: '0 .5rem',
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             alignItems: 'center',
           }}
         >
-          <TypeSelect />
+          {/* <TypeSelect /> */}
           <Button variant="outlined"
             onClick={handleOptionsVis}
             sx={{
@@ -182,7 +182,7 @@ export default function Feed() {
                 following={e.following}
                 LogIn={handleLogInOpen}
                 type={index % 2 == 0 ? 'Product' : 'Service'}
-                src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                src={e.image? e.image : "https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"}
               />
             </Grid>
           );

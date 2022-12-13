@@ -5,6 +5,7 @@ import providerService from "../../services/provider.service";
 import { useState } from "react";
 import { ConfirmationPopup, FormPopup } from "../Modal";
 import authService from "../../services/auth/auth.service";
+import EditProviderCard from './profile/editProviderCard';
 
 const style = {
     display: 'flex',
@@ -33,6 +34,7 @@ export default function Settings({user}) {
     //open states for each modal type
     const [openConf, setOpenConf] = useState(false); //Confirmation modal open state
     const [openForm, setOpenForm] = useState(false); //Form Modal open state
+    const [openEdit, setOpenEdit] = useState(false); //open edit profile modal
 
     const [modalType, setModalType] = useState(''); //
     const [modalProps, setModalProps] = useState({
@@ -364,6 +366,12 @@ export default function Settings({user}) {
         setModalType('company-name');
         setOpenForm(true); //open form modal
     }
+
+    const handleChangeProfile = () => {
+        setModalType('profile-edit');
+        setOpenEdit(true);
+        
+    }
     
     /*************************************/
     
@@ -383,11 +391,19 @@ export default function Settings({user}) {
     ]
     const providerSettingsRows = [
     createSettings('Change Company Name', 'Update', 'success', handleChangeCompName),
+    createSettings('Update Profile', 'Update', 'success', handleChangeProfile),
     ]
 
     return (
         
-        <Box sx={{ flexGrow: 0 }}> 
+        <Box sx={{ 
+          flexGrow: 0 , 
+          maxWidth: '1150px',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          }}> 
  
         <ConfirmationPopup
             title={modalProps.title}
@@ -411,6 +427,11 @@ export default function Settings({user}) {
             validationError={error.flag}
             errorMessage={error.msg}
             modalType={modalType}
+        />
+
+        <EditProviderCard
+        open={openEdit}
+        setOpen={() => setOpenEdit()}
         />
         <Typography sx={{
             padding: '25px 0px',
