@@ -88,7 +88,7 @@ export default function About() {
                 mt: '2%'
               }}
             >
-              - customers acknowledge the quality of local services and products because they are made with passion,
+              - Customers acknowledge the quality of local services and products because they are made with passion,
               dedication and with additional freshness or uniqueness.
               We expect that quality pushes business to a better price and demand. The fact is that big enterprises overshadow
               local services/products because they have name recognition privileges that makes them more "findable or reliable".
