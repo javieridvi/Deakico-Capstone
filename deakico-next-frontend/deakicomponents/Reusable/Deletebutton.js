@@ -1,12 +1,16 @@
 import {React, useState} from 'react'
 import { Dialog, DialogTitle , DialogContentText , Button, Typography,Box,Modal, DialogActions } from '@mui/material'
-
+import itemService from '../../services/item.service';
+import Profile from '../Sidebar/profile/profile';
 
 export default function Deletebutton(props) {
 
-function handleDeletion(){
-  console.log("handle delete");
-}
+//no hace nada rn mejor se haga desde profile cree una funcion de HandleDelete2
+// function handleDeletion(id){
+//   console.log("handle delete id:"+ id);
+//   itemService.deleteItem(id);
+
+// }
 
   return (
     <div id='handle-delete-modal'>
@@ -25,7 +29,7 @@ function handleDeletion(){
          Are you sure you want to delete this product?
         </Typography>
         <Box sx={{textAlign:'center', mt:'1rem'}}>
-        <Button onClick={handleDeletion}>Yes</Button><Button onClick={props.close}>No</Button>
+        <Button id={props.id} onClick={props.delete}>Yes</Button><Button onClick={props.close}>No</Button>
         </Box>
       </Box>
     </Modal>

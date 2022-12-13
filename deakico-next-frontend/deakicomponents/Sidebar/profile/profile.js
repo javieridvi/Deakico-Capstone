@@ -38,6 +38,7 @@ export default function Profile({user}) {
   const [open, setOpen] = useState(false);
   const [Del, setDel] = useState(false);
   const [overallRating, setOverallRating ] = useState(0);
+  const[selecDe, setselecDe]= useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [provider, setProvider] = useState({});
@@ -131,14 +132,20 @@ export default function Profile({user}) {
     const to = (page - 1) * pageSize + pageSize; 
     setPagination({...pagination, from: from, to: to});
   }
-function handleDelete(){
+
+  function handleDelete(event){
   setDel(true);
-  console.log("yup pls delete this");
-  
+  console.log("id event: ", event);
+  setselecDe(event);
+  return selecDe;
 }
-  return (
-      
-      
+
+function handleDelete2(id){
+    console.log("yup pls delete this");
+    // itemService.deleteItem(id);      no func.
+    setDel(false);
+}
+return (      
 <Container  sx={{
         mt: 15 ,
         width:'100%'
@@ -247,7 +254,7 @@ function handleDelete(){
           <Typography sx={{mt:'10px'}}>  Price: {e.price} </Typography>
           <Typography sx={{mt:'10px'}}>  Time: {e.timeslot} minutes </Typography>
           {/* <Button sx={{display:'flex' , textAlign:'center', height:'1.5rem', mt:'10px'}}>Request</Button>  */}
-
+          {/* src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" foto de prueba */}
         </AccordionDetails>
      </Accordion></Stack> </div> 
      ); 
@@ -255,13 +262,16 @@ function handleDelete(){
        
           </Box >
      
-        <Deletebutton 
-        open= {Del}
-        close = {handleClose} />
+      
           <Box className='Products' display='flex' flexWrap='wrap'>
           
-              {productList.slice(pagination.from, pagination.to).map((e,index)=> (
-       <div key={index} >
+       {productList.slice(pagination.from, pagination.to).map((e,index)=> (
+       <div key={index} > 
+        <Deletebutton 
+        open= {Del}
+        close = {handleClose}
+        delete = {handleDelete2}
+        />
             <ProviderCardproducts
                 image={e.image ? e.image : '/product-placeholder.png'}              
                 rating={e.rating}
@@ -269,7 +279,7 @@ function handleDelete(){
                 title={e.name}
                 description={e.description}
                 price={e.price}
-                delete= {handleDelete}   
+                delete = {() => handleDelete(e.id)}   
                 alt="products"
               />  
         </div>
