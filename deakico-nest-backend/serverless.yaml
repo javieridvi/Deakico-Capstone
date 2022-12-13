@@ -23,6 +23,7 @@ provider:
   deploymentMethod: direct
   # Disable automatic rollback by CloudFormation on failure. To be used for non-production environments.
   disableRollback: true
+  timeout: 15
   tracing:
     # Can only be true if API Gateway is inside a stack.
     apiGateway: true

@@ -21,7 +21,7 @@ import getUploadImageUrl from '../imageS3';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) { }
+  constructor(private readonly itemsService: ItemsService){}
 
   @Get()
   getAllItems(): Observable<Item[]> {
