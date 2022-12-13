@@ -391,7 +391,7 @@ export default function Settings({user}) {
     ]
     const providerSettingsRows = [
     createSettings('Change Company Name', 'Update', 'success', handleChangeCompName),
-    createSettings('Update profile', 'Update', 'success', handleChangeProfile),
+    createSettings('Update Profile', 'Update', 'success', handleChangeProfile),
     ]
 
     return (
