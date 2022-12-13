@@ -4,17 +4,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 export default function DeleteItem(props) {
   const open = props.open;
   const setOpen = props.setOpen;
-  const list =  props.list
-
-  /*
-  import { useRouter } from 'next/router'
-
-//...
-
-const router = useRouter()
-
-router.reload(window.location.pathname)
-*/
+  const list =  props.list;
+  const del = props.delete;
 
   return (
     <Box>
@@ -38,14 +29,14 @@ router.reload(window.location.pathname)
             return (
             <ListItem
               secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete" onClick={() => del(item)} >
                   <DeleteIcon />
                 </IconButton>
               }
             >
               <ListItemText
                 primary={item.name}
-                secondary={item.category}
+                secondary={item.type}
               />
             </ListItem>
           )})}

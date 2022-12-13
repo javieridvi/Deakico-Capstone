@@ -1,17 +1,20 @@
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, ButtonBase, CardMedia, Collapse, IconButton, InputBase, Modal, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Stars from '../../../Reusable/Rating';
 import itemService from "../../../../services/item.service";
+import { useRouter } from 'next/router'
 
 
 export default function AddService(props) {
+  console.log('addservice')
   const open = props.open;
   const setOpen = props.setOpen;
   const [alert, setAlert] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const imageupload = useRef();
+  const router = useRouter()
 
   const item = props.item;
   const [edit, setEdit] = useState(false);
@@ -61,6 +64,7 @@ export default function AddService(props) {
         [key]: map[key] ? [...map[key], value] : value,
       };
     }, {})
+    data.i_type = 'service';
 
     let filled = true;
 

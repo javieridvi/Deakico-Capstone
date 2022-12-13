@@ -140,11 +140,7 @@ export class ItemsService {
     return from(this.itemRepository.update(itemId, item));
   }
 
-  async deleteItem(
-    itemId: number,
-    item: Item,
-    providerId: number,
-  ): Promise<Observable<UpdateResult>> {
+  async deleteItem( itemId: number, providerId: number ): Promise<UpdateResult> {
     //check if item exists and belongs to provider
     await this.itemRepository.findOneOrFail({
       select: { pa_id: true },
@@ -154,7 +150,15 @@ export class ItemsService {
         disabled: false,
       },
     });
-    return from(this.itemRepository.update(itemId, item));
+    const response =  await this.itemRepository
+    .createQueryBuilder()
+    .update()
+    .set({
+      disabled: true,
+    })
+    .where("i_id = :i_id", { i_id: itemId })
+    .execute()
+    return response;
   }
 
   /**This is a helper service that deletes (disables) all items

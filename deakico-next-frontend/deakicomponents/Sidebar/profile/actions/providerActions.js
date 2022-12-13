@@ -13,6 +13,7 @@ import DeleteItem from './deleteItem';
 import AddProduct from './addProduct';
 import AddService from './addService';
 import { useState } from 'react';
+import Deletebutton from './Deletebutton';
 
 const actions = [
   { icon: <MoreTimeIcon />, name: 'Add Service', click: 'service' },
@@ -25,17 +26,19 @@ export default function ProviderActions(props) {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openDeleteButton, setOpenDeleteButton] = useState(false);
   const [openProduct, setOpenProduct] = useState(false);
   const [openService, setOpenService] = useState(false);
 
   const [product, setProduct] = useState('')
   const [service, setService] = useState('')
+  const [item2Delete, setItem2Delete] = useState('')
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  function itemEdit(item){
-    if(item.type == 'product'){
+  function itemEdit(item) {
+    if (item.type == 'product') {
       setProduct(item);
       setOpenProduct(true);
       setOpenEdit(false);
@@ -46,21 +49,25 @@ export default function ProviderActions(props) {
     }
   }
 
+  function deleteItem(item) {
+    setItem2Delete(item);
+    setOpenDeleteButton(true);
+  }
+
   function handleSpeedClick(action) {
     console.log(action)
     switch (action) {
-      case action=='service':
-        console.log('service')
+      case 'service':
         setOpenService(true)
         break;
       case 'product':
-      setOpenProduct(true)
+        setOpenProduct(true)
         break;
       case 'delete':
-      setOpenDelete(true)
+        setOpenDelete(true)
         break;
       case 'edit':
-      setOpenEdit(true)
+        setOpenEdit(true)
         break;
       default:
         break;
@@ -83,7 +90,7 @@ export default function ProviderActions(props) {
       <Box
         sx={{
           position: 'fixed',
-          right: { xs: 0, lg: 'calc(50% - 576px)' },
+          right: { xs: 0, lg: 'calc(50% - 700px)' },
           bottom: 0,
           margin: '1rem',
         }}
@@ -102,7 +109,7 @@ export default function ProviderActions(props) {
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}
-              onClick={()=>handleSpeedClick(action.click)}
+              onClick={() => handleSpeedClick(action.click)}
             />
           ))}
         </SpeedDial>
@@ -121,6 +128,7 @@ export default function ProviderActions(props) {
           open={openDelete}
           setOpen={setOpenDelete}
           list={props.list}
+          delete={deleteItem}
         /> :
         null
       }
@@ -140,6 +148,15 @@ export default function ProviderActions(props) {
         /> :
         null
       }
+      {openDeleteButton ?
+        <Deletebutton
+          open={openDeleteButton}
+          setOpen={setOpenDeleteButton}
+          item={item2Delete}
+        /> :
+        null
+      }
+
     </Box>
   )
 }

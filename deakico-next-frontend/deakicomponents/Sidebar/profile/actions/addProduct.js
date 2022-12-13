@@ -78,6 +78,7 @@ export default function AddProduct(props) {
       };
     }, {})
     let filled = true;
+    data.i_type = 'product';
 
     if (data.i_category == '' || data.i_name == '' || data.i_description == '' || data.i_price == '') {
       if (imageFile == null && !edit) {

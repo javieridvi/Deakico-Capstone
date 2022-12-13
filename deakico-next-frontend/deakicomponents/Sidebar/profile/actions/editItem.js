@@ -37,7 +37,7 @@ export default function EditItem(props) {
             >
               <ListItemText
                 primary={item.name}
-                secondary={item.category}
+                secondary={item.type}
               />
             </ListItem>
           )})}

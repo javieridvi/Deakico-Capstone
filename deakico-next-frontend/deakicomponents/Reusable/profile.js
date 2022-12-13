@@ -3,7 +3,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia ,Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
 import { ProductCard, } from "./Card";
@@ -116,36 +116,41 @@ export default function Profile(props) {
 
   // ** Profile info
 
-  
- const sendEmail = () =>{
-    return window.open('mailto:'+ email)
+
+  const sendEmail = () => {
+    return window.open('mailto:' + email)
   }
   const handleFollow = () => {
     const elem = document.getElementById('Follow');
 
-    if(elem.value == "Follow"){
+    if (elem.value == "Follow") {
       // alert("Followed");
-      
+
       elem.value = 'Followed';
       elem.innerHTML = 'Followed';
-      elem.style.backgroundColor= '#c1efdd';
-      elem.style.color= 'black';
+      elem.style.backgroundColor = '#c1efdd';
+      elem.style.color = 'black';
     }
 
-    else{
+    else {
       elem.value = "Follow";
       elem.innerHTML = '+ Follow';
       elem.style.backgroundColor = '#ea498c';
-      elem.style.color= 'whitesmoke';
+      elem.style.color = 'whitesmoke';
     }
 
   }
-  console.log("productlist",productList)
+  console.log("productlist", productList)
   // Profile Return
   return (
 
     <Container>
-      <div className="topProfile">
+      <Box className="topProfile"
+      sx={{
+        display: 'flex',
+        flexDirection: {xs: 'column', md: 'row'}
+      }}
+      >
         <Container
           sx={{
             mt: 20,
@@ -157,6 +162,8 @@ export default function Profile(props) {
             sx={{
               maxWidth: '80%',
               flexDirection: 'column',
+            width:{xs: '70%', md: '100%'}
+
             }}
           >
             <Box xs={4}
@@ -186,16 +193,17 @@ export default function Profile(props) {
                 fontWeight: '800',
                 mt: '10px',
                 mb: '20px',
-                direction: 'column'
+                direction: 'column',
+                width: 'min(480px, 90%)',
               }}
             >
               {provider?.pa_desc}
             </Typography>
           </Box >
           <Stack className='topButtons' direction="row" spacing={2}>
-          <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="primary" startIcon={<AddIcon />}> Follow </Button>
+            <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="primary" startIcon={<AddIcon />}> Follow </Button>
             {/* <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button> */}
-            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact</Button>
+            <Button variant="contained" onClick={sendEmail} startIcon={<EmailIcon />}>Contact</Button>
           </Stack>
         </Container>
         <Box xs={6}
@@ -204,17 +212,20 @@ export default function Profile(props) {
             position: 'left'
           }}
         >
-          <div className='profilePic'>
+        <Box className='profilePic'
+        sx={{width:{xs: '80%', md: '100%'}}}
+        >
             <CardMedia
               component="img"
               image='/Logphotos.png'
               width='auto'
+              maxWidth='100%'
               height="auto"
               alt='profilepicture'
             />
-          </div>
+          </Box>
         </Box>
-      </div>
+      </Box>
       <style jsx>{`
         .topProfile {
             margin:0px;
@@ -232,31 +243,31 @@ export default function Profile(props) {
       </style>
       <main>
         <Container className='Items'>
-        <Box className='serviceTab' sx={{mb:"4rem", width:'32rem'}} >
-  
+          <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
 
-  <Typography
-         sx={{
-           mt: '2rem',
-           mb: '1rem',
-           width:'80%', fontWeight:'700'
-         }} > 
 
-   What about my services :  
- </Typography> 
-{ serviceList.map((item) => ( 
-<Services
-id = {item.id}
-name = {item.name}
-category= {item.category}
-description = {item.description}
-price = {item.price}
-timeslot = {item.timeslot}
-request = {props.request}
-/>
-))} 
+            <Typography
+              sx={{
+                mt: '2rem',
+                mb: '1rem',
+                width: '80%', fontWeight: '700'
+              }} >
 
-</Box >
+              What about my services :
+            </Typography>
+            {serviceList.map((item) => (
+              <Services
+                id={item.id}
+                name={item.name}
+                category={item.category}
+                description={item.description}
+                price={item.price}
+                timeslot={item.timeslot}
+                request={props.request}
+              />
+            ))}
+
+          </Box >
           <Box className='Products' width='90%'>
             <Grid className="Results"
               container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
