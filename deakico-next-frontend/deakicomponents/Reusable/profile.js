@@ -3,7 +3,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Rating, Select, Stack, styled, Typography, CardMedia ,Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
 import { width } from '@mui/system';
 import Image from 'next/image';
 import { ProductCard, } from "./Card";
@@ -16,6 +16,7 @@ import providerService from '../../services/provider.service';
 import authService from '../../services/auth/auth.service';
 import { LogInPopUp } from '../Modal';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Services from './Services';
 import requestService from '../../services/request.service';
 
 
@@ -41,6 +42,10 @@ export default function Profile(props) {
   const [overallRating, setOverallRating] = useState(0);
   const [selecting, setSelecting] = useState('');
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState('"panel1"');
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
   // ** Old states
 
   // Modal**
@@ -93,12 +98,6 @@ export default function Profile(props) {
     }
 
     request(paID).then((res) => {
-      // console.log('items >');
-      // console.log(res.data);
-      // setItemList(res.data);
-      // const Services = res.data.map((item) => item?.i_type )
-      // console.log("Services Type: "+ Services);
-      console.log(res.data);
       res.data.forEach(element => {
         if (element.type == 'service') {
           console.log("true");
@@ -113,95 +112,35 @@ export default function Profile(props) {
       console.log(err);
     })
   }
+
+
   // ** Profile info
 
-  // Service Handling **
-  const [expanded, setExpanded] = useState('"panel1"');
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-  const handlePageChange = (event, page) => {
-    const from = (page - 1) * pageSize;
-    const to = (page - 1) * pageSize + pageSize;
-    setPagination({ ...pagination, from: from, to: to });
+  
+ const sendEmail = () =>{
+    return window.open('mailto:'+ email)
   }
-  // ** Service Handling
+  const handleFollow = () => {
+    const elem = document.getElementById('Follow');
 
-  // Request Handling **
-
-  // Send Request **
-  function handleRequestClick(id, name, price) {
-    const service = {
-      i_id: id,
-      qty: 1,
-      priceAtReq: price,
+    if(elem.value == "Follow"){
+      // alert("Followed");
+      
+      elem.value = 'Followed';
+      elem.innerHTML = 'Followed';
+      elem.style.backgroundColor= '#c1efdd';
+      elem.style.color= 'black';
     }
 
-    const fullRequest = {
-      request: {
-        pa_id: providerId,
-        req_totalprice: price,
-      },
-      articleList: [service],
+    else{
+      elem.value = "Follow";
+      elem.innerHTML = '+ Follow';
+      elem.style.backgroundColor = '#ea498c';
+      elem.style.color= 'whitesmoke';
     }
-    console.log('profile.js Request to send >');
-    console.log(fullRequest);
-    requestService.insertRequest(fullRequest).then(res => {
-      console.log('profile.js Request successful >');
-      console.log(res);
-    }).catch(err => {
-      if (err.request.status === 401) {
-        openModal(true);
-      }
-      console.log('Error at cart.js >');
-      console.log(err);
-    })
+
   }
-  // ** Send Request
-
-  // ** Request Handling
-
-  /*
-  const profileRating = async () => {
-    const rvws = (await reviewService.getProviderReviews()).data;
-    let len = rvws.length;
-    // console.log("len: "+ len)    //cantiad de reviews hechos
-    // message = rData.map((item) => item?.r_message ) // List of all the messages 
-    const rating = rvws.map((item) => item?.rating)  // List of all the ratings.   
-
-    let overallR = 0;   // overall rating calc  
-
-    rating.forEach(element => {
-      overallR += parseFloat(element)
-
-    });
-
-    setOverallRating(parseFloat(overallR / len).toFixed(2));
-
-    //  return(overallRating);  // el overall rating   
-  }
-  const handleSelect = (event) => {
-    console.log("event : " + event.target.value)
-    setSelecting(event.target.value)
-  };
-  // let testi = profileRating();  // As promise
-  // console.log(testi);
-  // const test =overallRating; 
-  // console.log("profileRating: "+ test)
-
-
-  const handleClickOpen = () => {
-    console.log("Open");
-    setOpen(true); // opens modal
-  }
-
-  const handleClose = (e, reason) => {
-    setOpen(false);
-  }
-  */
-
+  console.log("productlist",productList)
   // Profile Return
   return (
 
@@ -253,15 +192,11 @@ export default function Profile(props) {
               {provider?.pa_desc}
             </Typography>
           </Box >
-          {/* <Stack className='topButtons' direction="row" spacing={2}>
-            <Button variant="contained" id='addProduct' onClick={handleClickOpen} color="secondary" startIcon={<AddIcon />} > Add </Button>
-            <AddProduct
-              open={open}
-              handleClose={handleClose}
-            />
-            <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
-            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button>
-          </Stack> */}
+          <Stack className='topButtons' direction="row" spacing={2}>
+          <Button variant="contained" id='Follow' value={"Follow"} onClick={handleFollow} color="primary" startIcon={<AddIcon />}> Follow </Button>
+            {/* <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button> */}
+            <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Contact</Button>
+          </Stack>
         </Container>
         <Box xs={6}
           sx={{
@@ -275,6 +210,7 @@ export default function Profile(props) {
               image='/Logphotos.png'
               width='auto'
               height="auto"
+              alt='profilepicture'
             />
           </div>
         </Box>
@@ -296,55 +232,31 @@ export default function Profile(props) {
       </style>
       <main>
         <Container className='Items'>
+        <Box className='serviceTab' sx={{mb:"4rem", width:'32rem'}} >
+  
 
-          <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
+  <Typography
+         sx={{
+           mt: '2rem',
+           mb: '1rem',
+           width:'80%', fontWeight:'700'
+         }} > 
 
+   What about my services :  
+ </Typography> 
+{ serviceList.map((item) => ( 
+<Services
+id = {item.id}
+name = {item.name}
+category= {item.category}
+description = {item.description}
+price = {item.price}
+timeslot = {item.timeslot}
+request = {props.request}
+/>
+))} 
 
-            <Typography
-              sx={{
-                mt: '2rem',
-                mb: '1rem',
-                width: '80%', fontWeight: '700'
-              }} >
-
-              What about my services :
-            </Typography>
-            {serviceList.map((e, index) => {
-              return (
-                <div key={e.name}>
-                  <Stack >
-                    <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
-                      <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                        <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
-                        <Typography sx={{ color: 'text.secondary' }}>{e.category}</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <CardMedia component='img' sx={{ aspectRatio: '9/4' }} src="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000" />
-                        <Typography> Description:  {e.description} </Typography>
-                        <Typography>  Price: {e.price} </Typography>
-                        <Typography>  Time: {e.timeslot} minutes </Typography>
-                        <Stars width={'75px'} rating={e.rating} />
-                        <Button variant='outlined'
-                          onClick={() => handleRequestClick(e.id, e.name, e.price)}
-                          sx={{
-                            height: '20px',
-                            minWidth: '60px',
-                            fontSize: '.875rem', // 14px
-                            fontFamily: 'Roboto, sans-serif',
-                            fontWeight: '500',
-                          }}
-                        >
-                          +
-                        </Button>
-                        {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
-
-                      </AccordionDetails>
-                    </Accordion></Stack> </div>
-              );
-            })}
-
-          </Box >
-
+</Box >
           <Box className='Products' width='90%'>
             <Grid className="Results"
               container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
@@ -354,8 +266,7 @@ export default function Profile(props) {
                 maxWidth: '100rem',
                 paddingTop: '1rem',
                 paddingBottom: '100px'
-              }}
-            >
+              }} >
               {productList.map((item) => (
                 <Grid item key={item.id} xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
                   <ProductCard
