@@ -5,6 +5,7 @@ import providerService from "../../services/provider.service";
 import { useState } from "react";
 import { ConfirmationPopup, FormPopup } from "../Modal";
 import authService from "../../services/auth/auth.service";
+import EditProviderCard from './profile/editProviderCard';
 
 const style = {
     display: 'flex',
@@ -33,6 +34,7 @@ export default function Settings({user}) {
     //open states for each modal type
     const [openConf, setOpenConf] = useState(false); //Confirmation modal open state
     const [openForm, setOpenForm] = useState(false); //Form Modal open state
+    const [openEdit, setOpenEdit] = useState(false); //open edit profile modal
 
     const [modalType, setModalType] = useState(''); //
     const [modalProps, setModalProps] = useState({
@@ -364,6 +366,12 @@ export default function Settings({user}) {
         setModalType('company-name');
         setOpenForm(true); //open form modal
     }
+
+    const handleChangeProfile = () => {
+        setModalType('profile-edit');
+        setOpenEdit(true);
+        
+    }
     
     /*************************************/
     
@@ -383,6 +391,7 @@ export default function Settings({user}) {
     ]
     const providerSettingsRows = [
     createSettings('Change Company Name', 'Update', 'success', handleChangeCompName),
+    createSettings('Update profile', 'Update', 'success', handleChangeProfile),
     ]
 
     return (
@@ -418,6 +427,11 @@ export default function Settings({user}) {
             validationError={error.flag}
             errorMessage={error.msg}
             modalType={modalType}
+        />
+
+        <EditProviderCard
+        open={openEdit}
+        setOpen={() => setOpenEdit()}
         />
         <Typography sx={{
             padding: '25px 0px',
