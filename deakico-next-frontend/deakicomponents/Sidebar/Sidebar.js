@@ -148,7 +148,7 @@ export default function MainSidebar() {
       case 'Events':
         return (<></>);
       default:
-        return (<Profile user={currUser}/>);
+        return (<Settings user={currUser}/>);
     }
   }
 
