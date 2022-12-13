@@ -172,6 +172,9 @@ export function ProductCard(props) {
 
   // Like button function **
   function handleLikeClick(liked, title, id) {
+    console.log(liked)
+    console.log(title)
+    console.log(id)
     // When following undefined user is not logged in
     if (liked == undefined) {
       console.log('not logged');

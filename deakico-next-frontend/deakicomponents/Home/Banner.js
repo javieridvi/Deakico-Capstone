@@ -186,7 +186,8 @@ export default function Banner() {
         alignItems: 'center',
       }}
     >
-      <Box
+      
+       <Box
         className="Banner-Images"
         sx={{
           width: '100%',
@@ -196,8 +197,10 @@ export default function Banner() {
           justifyContent: 'center',
           overflow: 'hidden',
         }}
+        
       >
-        <TransitionGroup
+       {BannerImage("../../DeakicoBannerImage.png")}
+        {/* <TransitionGroup
           component={Box}
           className={'Transition-Group'}
           sx={{
@@ -232,9 +235,9 @@ export default function Banner() {
           <Button variant='text' onClick={Next}>
             <ChevronRightIcon />
           </Button>
-        </Stack>
+        </Stack> */}
       </Box>
-      {NavButtons}
+       {/* {NavButtons}  */}
     </Box>
   );
 };

@@ -31,7 +31,7 @@ function sortIntHelper(a, b) {
     }
   }
   
-export default function TopProviders() {
+export default function TopProviders(props) {
   var toSort = [];
   const [providerList, setProviderList] = useState([]);
 
@@ -88,8 +88,8 @@ export default function TopProviders() {
               rating={provider.rating}
               description={provider.desc}
               category={provider.category}
+              src={props.image ? props.image : '/product-placeholder.png'}
               //following
-              //src
               //logIn()
               />
             )

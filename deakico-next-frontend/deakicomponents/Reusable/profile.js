@@ -17,6 +17,8 @@ import authService from '../../services/auth/auth.service';
 import { LogInPopUp } from '../Modal';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Services from './Services';
+import requestService from '../../services/request.service';
+
 
 
 
@@ -96,7 +98,6 @@ export default function Profile(props) {
     }
 
     request(paID).then((res) => {
-
       res.data.forEach(element => {
         if (element.type == 'service') {
           console.log("true");

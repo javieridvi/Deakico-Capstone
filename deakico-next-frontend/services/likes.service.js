@@ -41,6 +41,7 @@ const insertLike = async (I_id) => {
 };
 
 const deleteLike = async (I_id) => {
+  console.log('item.service id: '+I_id);
   let data = {
     i_id: I_id
   };

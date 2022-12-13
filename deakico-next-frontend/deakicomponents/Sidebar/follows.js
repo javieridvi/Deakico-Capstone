@@ -61,7 +61,7 @@ export default function Follows() {
                   description={e.provider_pa_desc}
                   price={e.provider_pa_price}
                   rating={e.provider_pa_rating}
-                  followers={e.provider_pa_followers}
+                  following={true}
                 />
               </Grid>
             );
