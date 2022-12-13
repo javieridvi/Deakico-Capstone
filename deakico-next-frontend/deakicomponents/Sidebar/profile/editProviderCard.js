@@ -1,10 +1,12 @@
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, Box, Button, ButtonBase, Card, CardMedia, Collapse, IconButton, InputBase, Modal } from "@mui/material";
+import { Alert, Box, Button, ButtonBase, Card, CardMedia, Collapse, IconButton, InputBase, Modal, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import Stars from '../../../Reusable/Rating';
-import itemService from "../../../../services/item.service";
+import Stars from '../../Reusable/Rating';
+import itemService from "../../../services/item.service";
 import { useRouter } from 'next/router'
+import providerService from '../../../services/provider.service';
+import userService from '../../../services/user.service';
 
 /*
 
@@ -12,32 +14,41 @@ import { useRouter } from 'next/router'
 
 
 */
-export default function AddProduct(props) {
+export default function EditProviderCard(props) {
   const open = props.open;
   const setOpen = props.setOpen;
   const [alert, setAlert] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const imageupload = useRef();
   const router = useRouter()
+  const [provider, setProvider] = useState(null)
 
-  const item = props.item;
-  const [edit, setEdit] = useState(false);
   const [image, setImage] = useState(null);
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    if (item != '') {
-      setEdit(true)
-      setImage(item.image);
-      setPrice(item.price);
-      setCategory(item.category);
-      setName(item.name);
-      setDescription(item.description);
-    }
+    getProvider()
   }, [])
+
+  function getProvider() {
+    providerService.getProvider().then((res) => {
+      console.log(res.data);
+      setProvider(res.data)
+      setImage(res.data.pa_image)
+      setDescription(res.data.pa_desc)
+    userService.getUser().then((res)=>console.log(res.data))
+    });
+
+    /*
+    disabled
+    pa_category
+    pa_companyname
+    pa_desc
+    pa_id
+    pa_rating
+    pa_type
+    */
+  }
 
   async function handleUploadInput(event) {
     const file = event.target.files[0]
@@ -78,38 +89,24 @@ export default function AddProduct(props) {
       };
     }, {})
     let filled = true;
-    data.i_type = 'product';
 
-    if (data.i_category == '' || data.i_name == '' || data.i_description == '' || data.i_price == '') {
-      if (imageFile == null && !edit) {
+    if ( data.i_description == '' || image == null) {
         setAlert(true);
         filled = false;
-      }
     }
-    console.log('saving changes')
-    console.log('are you editing? '+edit)
-    if (filled && !edit) {
-      itemService.getItemImageUploadUrl().then((res) => {
+    if (imageFile != null) {
+      providerService.getProviderImageUploadUrl().then((res) => {
         console.log(res.data);
         itemService.putUploadItemImage(res.data, imageFile).then(() => {
           data.i_image = res.data.split('?')[0];
           itemService.insertItem(data).then(() => reload()).then(() => setOpen(false))
         })
       })
-    } else if (edit && imageFile != null) {
-      itemService.getItemImageUploadUrl().then((res) => {
-        console.log(res.data);
-        itemService.putUploadItemImage(res.data, imageFile).then(() => {
-          data.i_image = res.data.split('?')[0];
-          itemService.updateItem(item.id, data).then(() => reload()).then(() => setOpen(false))
-        })
-      })
-    } else if (edit) {
-      data.i_image = item.image;
-      itemService.updateItem(item.id, data).then(() => reload()).then(() => setOpen(false))
+    } else {
+      providerService.updateProvider(data).then((res)=>console.log(res.data))
     }
   }
-  function reload(){
+  function reload() {
     router.reload(window.location.pathname)
   }
 
@@ -168,6 +165,49 @@ export default function AddProduct(props) {
                 overflow: 'clip',
               }}
             >
+
+              {/* 
+    <CardActionArea
+      onClick={() =>
+        router.push('/profile/' + props.id)
+      }
+    >
+      <ActionArea
+        top={[infoRect(props.type, 0), infoRect(props.category, 1)]}
+        image={props.src}
+      />
+    </CardActionArea>
+    
+        <Box className='Category'
+      key={key}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        border: '1px solid rgb(170, 170, 170)',
+        borderRadius: '5px',
+        width: 'auto',
+        height: '1.25rem', // 20px
+        padding: '0 .5rem', // 8px  
+        fontFamily: 'Comfortaa',
+      }}>
+      <Typography variant={'caption'}
+        sx={{
+          fontSize: '.625rem', // 10px
+          height: '.9375rem', //15px
+          color: 'white',
+          // color: 'rgb(101, 101, 101)',
+        }}
+      >
+        {text}
+      </Typography>
+    </Box>
+
+
+    
+    */}
+{/* 
               <ButtonBase
                 onClick={() => imageupload.current.click()}
                 sx={{
@@ -187,13 +227,12 @@ export default function AddProduct(props) {
                   accept="image/*"
                   onChange={handleUploadInput}
                   id='image'
-                  name='i_image'
+                  name='pa_image'
                   type="file"
                   label='Image'
                   margin='none'
                 />
-                {/* Photo Here */}
-              </ButtonBase>
+              </ButtonBase> */}
               <CardMedia
                 component="img"
                 src={image}
@@ -215,7 +254,31 @@ export default function AddProduct(props) {
                   backgroundImage: 'linear-gradient(180deg, rgba(255,0,0, 0), rgba(0,0,0, 1))',
                 }}
               >
-                <Stars width={'75px'} rating={5} />
+                <Box className='Type'
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    border: '1px solid rgb(170, 170, 170)',
+                    borderRadius: '5px',
+                    width: 'auto',
+                    height: '1.25rem', // 20px
+                    padding: '0 .5rem', // 8px  
+                    fontFamily: 'Comfortaa',
+                  }}>
+                  <Typography variant={'caption'}
+                    sx={{
+                      fontSize: '.625rem', // 10px
+                      height: '.9375rem', //15px
+                      color: 'white',
+                      // color: 'rgb(101, 101, 101)',
+                    }}
+                  >
+                    {provider?.pa_type}
+                  </Typography>
+                </Box>
+
                 <Box className='Category'
                   sx={{
                     display: 'flex',
@@ -224,27 +287,21 @@ export default function AddProduct(props) {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     border: '1px solid rgb(170, 170, 170)',
                     borderRadius: '5px',
-                    minWidth: 'auto',
-                    minHeight: '1.25rem', // 20px
+                    width: 'auto',
+                    height: '1.25rem', // 20px
                     padding: '0 .5rem', // 8px  
                     fontFamily: 'Comfortaa',
                   }}>
-                  <InputBase
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                  <Typography variant={'caption'}
                     sx={{
                       fontSize: '.625rem', // 10px
                       height: '.9375rem', //15px
                       color: 'white',
                       // color: 'rgb(101, 101, 101)',
                     }}
-                    id='category'
-                    name='i_category'
-                    type='text'
-                    label='Category'
-                    margin='dense'
-                    placeholder="category"
-                  />
+                  >
+                    {provider?.pa_category}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -255,7 +312,7 @@ export default function AddProduct(props) {
                 padding: '0 1rem'
               }}
             >
-              <InputBase className={'Card-Title'}
+              <Typography variant={'h6'} className={'Card-Title'}
                 sx={{
                   height: '1.25rem', // 20px
                   overflow: 'clip',
@@ -264,17 +321,12 @@ export default function AddProduct(props) {
                   fontSize: '1.125rem', // 18px
                   fontFamily: 'Comfortaa',
                 }}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                id='title'
-                name='i_name'
-                type='text'
-                label='Name'
-                margin='dense'
-                placeholder="Name Here"
-              />
+              >
+                {provider?.pa_companyname}
+              </Typography>
               <InputBase className={'Card-Description'}
                 sx={{
+                  width: '100%',
                   height: '3.75rem', // 60px
                   fontSize: 'clamp(10.5px, 65%, 0.75rem)', // 12px
                   marginTop: '.4375rem', //7px 
@@ -286,7 +338,7 @@ export default function AddProduct(props) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 id='description'
-                name='i_description'
+                name='pa_desc'
                 type='text'
                 label='Description'
                 margin='dense'
@@ -302,7 +354,6 @@ export default function AddProduct(props) {
                 }}
               >
                 <Box
-                  key={0}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -310,25 +361,9 @@ export default function AddProduct(props) {
                     width: '100%',
                   }}
                 >
-                  <InputBase className={'Price'}
-                    value={price}
-                    onBlur={(e) => onBlur(e)}
-                    onChange={(e) => onFocus(e)}
-                    sx={{
-                      fontSize: '1.125rem', // 18px
-                      fontWeight: '700',
-                      fontFamily: 'Roboto, sans-serif',
-                    }}
-                    id='price'
-                    name='i_price'
-                    type='currency'
-                    label='Price'
-                    margin='dense'
-                    placeholder="Enter price"
-                  />
-                </Box>,
+                  <Stars width={'75px'} rating={provider?.rating} />
+                </Box>
                 <Box className={'Actions'}
-                  key={1}
                   sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
@@ -338,39 +373,17 @@ export default function AddProduct(props) {
                     width: '100%',
                   }}
                 >
-                  <Button variant='outlined'
+                  <Button variant='contained'
                     sx={{
                       height: '20px',
                       minWidth: '60px',
-                      fontSize: '.875rem', // 14px
+                      fontSize: '.625rem', // 14px
                       fontFamily: 'Roboto, sans-serif',
                       fontWeight: '500',
                     }}
                   >
-                    +
+                    Following
                   </Button>
-                  <Box
-                    // onClick={() => handleLikeClick(liked, 'product', props.id)}
-                    sx={{
-                      display: 'flex',
-                      width: '25px',
-                      height: '25px',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      margin: '0 0 -2px 7px',
-                      padding: '2px',
-                      borderRadius: '50%',
-                      transition: 'all .2s ease-in-out',
-                      '&:hover': {
-                        transform: 'scale(1.2)',
-                        backgroundColor: 'rgba(255, 0, 80, 0.16)'
-                      }
-                    }}
-                  >
-                    <svg width="22" height="20" viewBox="-1 -2 20 20" fill={"none"} xmlns="http://www.w3.org/2000/svg">
-                      <path stroke="red" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M15.6706 8.50513L9.0074 15L2.34419 8.50513C1.90469 8.08422 1.5585 7.5783 1.32743 7.01925C1.09635 6.46019 0.985392 5.8601 1.00154 5.25676C1.01769 4.65343 1.16059 4.05992 1.42125 3.51361C1.68191 2.9673 2.05468 2.48002 2.51609 2.08247C2.97749 1.68491 3.51754 1.38568 4.10222 1.20363C4.6869 1.02158 5.30355 0.960645 5.91333 1.02467C6.52312 1.08868 7.11283 1.27627 7.64533 1.57561C8.17783 1.87496 8.64159 2.27957 9.0074 2.76397C9.3748 2.28309 9.83909 1.88201 10.3712 1.58584C10.9034 1.28968 11.4919 1.1048 12.1 1.04278C12.708 0.980762 13.3226 1.04294 13.9051 1.22541C14.4876 1.40789 15.0256 1.70674 15.4854 2.10326C15.9452 2.49978 16.3169 2.98544 16.5772 3.52983C16.8375 4.07423 16.9808 4.66564 16.9982 5.26706C17.0156 5.86848 16.9067 6.46695 16.6782 7.02503C16.4498 7.58311 16.1068 8.08877 15.6706 8.51038" />
-                    </svg>
-                  </Box>
                 </Box>
               </Box>
             </Box>

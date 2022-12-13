@@ -513,40 +513,6 @@ function ActionArea(props) {
   )
 }
 
-
-
-
-
-//Esto es solo para testing el card en las paginas luego se borrara 
-export function ProviderTest() {
-  return (
-    <ProviderCard
-      id={0}
-      type={'Type'}
-      category={'Category'}
-      src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-      // src={'/Test-Provider.png'}
-      title={'Provider Card'}
-      description={'This is a test card used to show how the provider Card will ultimately end up looking. Everthing seen here is solely for testing purposes and does note replicate real production component fully.'}
-      rating={4.5}
-    />
-  );
-};
-
-export function ProductTest() {
-  return (
-    <ProductCard
-      rating={4}
-      category={'Category'}
-      // src={'/Test-Provider.png'}
-      src={'https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000'}
-      title={'Product Card'}
-      description={'This is a test card used to show how the product Card will ultimately end up looking. Everthing seen here is solely for testing purposes and does note replicate real production component fully.'}
-      price={'$29.99'}
-    />
-  );
-};
-
 export function ToggleCard(props) {
   const image = props.src;
   const title = props.label;

@@ -16,6 +16,7 @@ import { JwtGuard } from '../UserAccount/auth/guards/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ProviderAccount } from './providers.interface';
 import { ProviderAccountService } from './providers.service';
+import getUploadImageUrl from 'src/imageS3';
 
 @Controller('providers')
 export class ProviderAccountController {
@@ -43,6 +44,13 @@ export class ProviderAccountController {
     return this.providersService.getProvider(req.user.pa_id);
   }
 
+  // getProviderImageUploadUrl
+  @UseGuards(JwtGuard)
+  @Get('image')
+  async getImageUrl(@Request() req: any): Promise<String> {
+    const url = await getUploadImageUrl('provider/'+req.user.pa_id+'/profile/');
+    return url;
+  }
   /**
    * Fetches user's provider account
    * @param pa_id id of provider to return

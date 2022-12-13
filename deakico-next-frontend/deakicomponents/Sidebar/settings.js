@@ -387,7 +387,14 @@ export default function Settings({user}) {
 
     return (
         
-        <Box sx={{ flexGrow: 0 }}> 
+        <Box sx={{ 
+          flexGrow: 0 , 
+          maxWidth: '1150px',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          }}> 
  
         <ConfirmationPopup
             title={modalProps.title}

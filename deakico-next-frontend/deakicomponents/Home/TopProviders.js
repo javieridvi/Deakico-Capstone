@@ -1,8 +1,8 @@
-import { Box, ThemeProvider, Typography, createTheme, responsiveFontSizes} from "@mui/material";
+import { Box, createTheme, responsiveFontSizes, ThemeProvider, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { DefaultTest, ProductTest, ProviderCard, ProviderTest } from "../Reusable/Card";
-import providerService from "../../services/provider.service";
 import { useEffect, useState } from "react";
+import providerService from "../../services/provider.service";
+import { ProviderCard } from "../Reusable/Card";
 
 let theme = createTheme({
   palette: {

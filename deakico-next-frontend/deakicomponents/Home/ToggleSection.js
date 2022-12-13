@@ -74,8 +74,8 @@ export default function ToggleSection(props) {
           <Box
           sx={{
             display: 'flex',
-            //flexWrap: 'wrap',
-            flexDirection: 'row',
+            // flexWrap: 'wrap',
+            flexDirection: {xs: 'column', md: 'row'},
             justifyContent: 'center',
           }}>
             
@@ -110,7 +110,7 @@ export default function ToggleSection(props) {
           sx={{
             display: 'flex',
             //flexWrap: 'wrap',
-            flexDirection: 'row',
+            flexDirection: {xs: 'column', md: 'row'},
             justifyContent: 'center',
           }}
           >
