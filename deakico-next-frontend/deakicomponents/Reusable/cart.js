@@ -329,7 +329,6 @@ export default function Cart(props) {
         color="primary"
         aria-label="add"
         onClick={toggleDrawer(true)}
-        // onClick={toggleDrawer(true)}
         sx={{
           position: 'fixed',
           right: { xs: 0, lg: 'calc(50% - 576px)' },

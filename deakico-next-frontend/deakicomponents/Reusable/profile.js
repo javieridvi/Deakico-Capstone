@@ -323,6 +323,7 @@ export default function Profile(props) {
                         <Typography> Description:  {e.description} </Typography>
                         <Typography>  Price: {e.price} </Typography>
                         <Typography>  Time: {e.timeslot} minutes </Typography>
+                        <Stars width={'75px'} rating={e.rating} />
                         <Button variant='outlined'
                           onClick={() => handleRequestClick(e.id, e.name, e.price)}
                           sx={{

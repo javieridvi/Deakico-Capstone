@@ -14,6 +14,7 @@ import userService from '../../../services/user.service';
 import providerService from '../../../services/provider.service';
 import Deletebutton from '../../Reusable/Deletebutton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ProviderActions from './actions/providerActions';
 
 
 
@@ -183,7 +184,6 @@ export default function Profile({ user }) {
                 open={open}
                 handleClose={handleClose}
               />
-              <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button>
               {/* <Button variant="contained" onClick={sendEmail}  startIcon={<EmailIcon />}>Settings</Button> */}
             </Stack>
           </Box>
@@ -212,26 +212,19 @@ export default function Profile({ user }) {
       `}
       </style>
       <main>
-
-
         <Box className='serviceTab' sx={{ mb: "4rem", width: '32rem' }} >
-
-
           <Typography
             sx={{
               mt: '2rem',
               mb: '1rem',
               width: '80%', fontWeight: '700'
             }} >
-
             What about my services :
           </Typography>
-          {serviceList.map((e, index) => {
-console.log(e)
-
-            return (
-              <div key={index} >
-                <Stack >
+          <Stack >
+            {serviceList.map((e, index) => {
+              return (
+                <div key={index} >
                   <Accordion expanded={expanded === index} onChange={handleChange(index)} TransitionProps={{ unmountOnExit: true }} >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                       <Typography sx={{ width: '33%', flexShrink: 0, mb: '1rem' }}> {e.name} </Typography>
@@ -243,20 +236,17 @@ console.log(e)
                       <Typography>  Price: {e.price} </Typography>
                       <Typography>  Time: {e.timeslot} minutes </Typography>
                       {/* <Button sx={{display:'flex' ,justifyContent:'space-between'}}>Request</Button>  */}
-
                     </AccordionDetails>
-                  </Accordion></Stack> </div>
-            );
-          })}
-
+                  </Accordion>
+                </div>)
+            })}
+          </Stack>
         </Box >
-
         <Box className='Products' display='flex' flexWrap='wrap'>
-
           {productList.slice(pagination.from, pagination.to).map((e, index) => (
             <div key={index} >
               <ProviderCardproducts
-                image="https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"
+                image={e.image ? e.image : "https://img.freepik.com/free-psd/cosmetic-product-packaging-mockup_1150-40281.jpg?w=2000"}
                 rating={e.rating}
                 category={e.category}
                 title={e.name}
@@ -279,6 +269,7 @@ console.log(e)
           />
         </Stack>
       </footer>
+      <ProviderActions list={itemList} />
     </Container>
   )
 }
