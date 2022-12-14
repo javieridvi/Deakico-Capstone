@@ -88,7 +88,7 @@ export default function TopProviders(props) {
               rating={provider.rating}
               description={provider.desc}
               category={provider.category}
-              src={props.image ? props.image : '/product-placeholder.png'}
+              src={provider.image ? provider.image : '/product-placeholder.png'}
               //following
               //logIn()
               />

@@ -91,7 +91,7 @@ export default function ToggleSection(props) {
                     rating={product.i_rating}
                     category={product.i_category}
                     description={product.i_description}
-                    src={props.image ? props.image : '/product-placeholder.png'}
+                    src={product.i_image ? product.i_image : '/product-placeholder.png'}
                   />
                 </div>
               )
@@ -121,6 +121,7 @@ export default function ToggleSection(props) {
             {serviceList.map((service) => {
               return (
                 <div key={service.i_id}>
+                  
                   <ProductCard
                     id={service.i_id}
                     title={service.i_name}
@@ -128,7 +129,7 @@ export default function ToggleSection(props) {
                     rating={service.i_rating}
                     category={service.i_category}
                     description={service.i_description}
-                    src={props.image ? props.image : '/product-placeholder.png'}
+                    src={service.i_image ? service.i_image : '/product-placeholder.png'}
                   />
                 </div>
               )
