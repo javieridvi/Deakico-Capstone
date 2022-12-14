@@ -62,6 +62,7 @@ export default {
     getAllProviders,
     getProvider,
     getProviderImageUploadUrl,
+    putUploadProviderImage,
     getProviderProfile,
     getProviderCategory,
     getAllProvidersWithFollow,
