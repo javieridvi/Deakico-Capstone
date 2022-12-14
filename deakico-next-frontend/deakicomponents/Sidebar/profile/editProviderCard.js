@@ -90,16 +90,16 @@ export default function EditProviderCard(props) {
     }, {})
     let filled = true;
 
-    if ( data.i_description == '' || image == null) {
+    if ( data.pa_desc == '' || image == null) {
         setAlert(true);
         filled = false;
     }
     if (imageFile != null) {
       providerService.getProviderImageUploadUrl().then((res) => {
         console.log(res.data);
-        itemService.putUploadItemImage(res.data, imageFile).then(() => {
-          data.i_image = res.data.split('?')[0];
-          itemService.insertItem(data).then(() => reload()).then(() => setOpen(false))
+        providerService.putUploadProviderImage(res.data, imageFile).then(() => {
+          data.pa_image = res.data.split('?')[0];
+          // providerService.updateProvider(data).then(() => reload())
         })
       })
     } else {
@@ -207,7 +207,7 @@ export default function EditProviderCard(props) {
 
     
     */}
-{/* 
+
               <ButtonBase
                 onClick={() => imageupload.current.click()}
                 sx={{
@@ -232,7 +232,7 @@ export default function EditProviderCard(props) {
                   label='Image'
                   margin='none'
                 />
-              </ButtonBase> */}
+              </ButtonBase>
               <CardMedia
                 component="img"
                 src={image}

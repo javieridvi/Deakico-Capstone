@@ -100,7 +100,6 @@ export default function Profile(props) {
     request(paID).then((res) => {
       res.data.forEach(element => {
         if (element.type == 'service') {
-          console.log("true");
           setServiceList(serviceList => [...serviceList, element])
         }
         else {
@@ -146,23 +145,23 @@ export default function Profile(props) {
 
     <Container>
       <Box className="topProfile"
-      sx={{
-        display: 'flex',
-        flexDirection: {xs: 'column', md: 'row'}
-      }}
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' }
+        }}
       >
-        <Container
+        <Box
           sx={{
             mt: 20,
-            width: '100%'
+            width: {xs:'100%', md: '50%'}
           }}
         >
           <Box xs={6}
             className="presentation-u"
             sx={{
-              maxWidth: '80%',
+              // maxWidth: '80%',
               flexDirection: 'column',
-            width:{xs: '70%', md: '100%'}
+              width: '100%'
 
             }}
           >
@@ -205,19 +204,26 @@ export default function Profile(props) {
             {/* <Button variant="contained" onClick={() => { window.location.href = "/review"; }} startIcon={<StarOutlineIcon />}> My Reviews</Button> */}
             <Button variant="contained" onClick={sendEmail} startIcon={<EmailIcon />}>Contact</Button>
           </Stack>
-        </Container>
+        </Box>
         <Box xs={6}
           sx={{
-            justifyContent: 'flex',
+            display: 'flex',
+            mt: 15,
+            // justifyContent: 'center',
+            alignItems: 'center',
             position: 'left'
           }}
         >
-        <Box className='profilePic'
-        sx={{width:{xs: '80%', md: '100%'}}}
-        >
+          <Box className='profilePic'
+            sx={{
+              width: '100%',
+              borderRadius: '1rem',
+              overflow: 'hidden',
+            }}
+          >
             <CardMedia
               component="img"
-              image='/Logphotos.png'
+              image={'/Logphotos.png'}
               width='auto'
               maxWidth='100%'
               height="auto"
@@ -264,6 +270,7 @@ export default function Profile(props) {
                 price={item.price}
                 timeslot={item.timeslot}
                 request={props.request}
+                image={item.image}
               />
             ))}
 
