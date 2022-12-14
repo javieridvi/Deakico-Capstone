@@ -10,12 +10,18 @@ import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordR
 
 //Example array would be replaced with backend response
 const bannerImages = [
-  'https://image.shutterstock.com/image-photo/detailed-clouds-overhead-small-boat-600w-2172633529.jpg',
-  'https://image.shutterstock.com/image-photo/great-lakes-aerial-turquoise-ocean-600w-2109041426.jpg',
-  'https://image.shutterstock.com/image-photo/ocean-landscape-sea-rocks-foreground-600w-2124161561.jpg',
-  'https://image.shutterstock.com/image-photo/spinning-super-typhoon-hagibis-aerial-600w-2102142643.jpg',
-  'https://image.shutterstock.com/image-photo/smartphone-yellow-background-business-600w-2137290125.jpg',
-  'https://image.shutterstock.com/image-photo/bangkok-thailand-may-16-2017-600w-654422887.jpg',
+  '/DeakicoBannerImage.png',
+  '/slide1.png',
+  '/slide2.png',
+  '/slide3.png',
+  '/slide4.png',
+  // '/slide5.png',
+  '/slide6.png',
+  '/slide8.png',
+  '/slide9.png',
+
+
+
 ]
 export default function Banner() {
 
@@ -199,8 +205,8 @@ export default function Banner() {
         }}
         
       >
-       {BannerImage("../../DeakicoBannerImage.png")}
-        {/* <TransitionGroup
+       {/* {BannerImage("../../DeakicoBannerImage.png")} */}
+        <TransitionGroup
           component={Box}
           className={'Transition-Group'}
           sx={{
@@ -235,7 +241,7 @@ export default function Banner() {
           <Button variant='text' onClick={Next}>
             <ChevronRightIcon />
           </Button>
-        </Stack> */}
+        </Stack>
       </Box>
        {/* {NavButtons}  */}
     </Box>
